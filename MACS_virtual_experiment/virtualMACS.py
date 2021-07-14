@@ -70,6 +70,7 @@ class virtualMACS(object):
 		self.repeat_count = 1 
 		self.output_dir = self.exptdir+'/macs_kidney_scan_1'
 		self.instr_template_dir =None 
+		self.kidney_instr_dir=None
 		self.monochromator_instr_file = 'MACS_monochromator.instr'
 		self.mono_param_dir=None 
 		self.kidney_param_dir=None
@@ -162,18 +163,17 @@ class virtualMACS(object):
 		#Geneartes an instrument file using the current instrument parameters. Places it in the experiment directory.
 		#The template file will depend on the sample used. 
 		cwd=os.getcwd()
+		self.instr_template_dir=os.path.dirname(__file__)+'/UNION MACS Models/UNION MACS Base/'
+		self.kidney_instr_dir = os.path.dirname(__file__)+'/UNION MACS Models/UNION MACS Kidney Files/'
 		if self.sample.sample_shape not in ['box','cylinder','powder','spot']:
 			print('WARNING: Only allowed sample shapes are [box, cylinder, powder, spot]')
 			print('Instr file not written. ')
 		if self.sample.sample_shape=='cylinder':
-			instr_template_dir =  os.path.dirname(__file__)+'/UNION MACS Models/Union MACS Cylindrical Crystal/'
 			instr_main_file = 'MACS_sample_kidney_cylinder.instr'
 			self.instr_main_file=instr_main_file
 		if self.sample.sample_shape=='box':
-			instr_template_dir =  os.path.dirname(__file__)+'/UNION MACS Models/Union MACS Box Crystal/'
 			instr_main_file = 'MACS_sample_kidney_box.instr'
 			self.instr_main_file=instr_main_file
-		self.instr_template_dir=instr_template_dir
 			#first make a copy of the template files and put them into a new experiment directory
 		while os.path.exists(cwd+'/'+self.exptName+'/Instrument_files'):
 			print('WARNING: Old instrument directory found. Older files deleted, instrument will need to be recompiled.')
@@ -181,9 +181,10 @@ class virtualMACS(object):
 			self.clean_expt_directory()
 		self.instr_file_directory = cwd+'/'+self.exptName+'/Instrument_files/' 
 		self.instr_main_file = self.instr_file_directory+self.instr_main_file #This now points directly to the instr file that will be modified
-		#Copy these files into the new instrument directory
+		#Copy the base files into the new instrument directory
 		shutil.copytree(self.instr_template_dir,self.instr_file_directory)
-
+		#Copy the particular instrument file into the instrument directory
+		shutil.copy(self.kidney_instr_dir+instr_main_file,self.instr_file_directory)
 		#Also need to move the lau file into the instrument directory
 		shutil.copy(cwd+'/'+self.sample.laufile,self.instr_file_directory)
 		shutil.copy(cwd+'/'+self.sample.ciffile,self.instr_file_directory)

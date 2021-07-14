@@ -7,7 +7,7 @@
 # Atom  O1                     0.30490   0.30490   0.00000   0.44216   0.25000   0.00000   0.00000
 # COMMAND cif2hkl TiO2.cif --output TiO2.cif.hkl
 # CIF2HKL (c) ILL 2012 E. Farhi <farhi@ill.eu> based on CrysFML
-# DATE    13/07/2021 at 12:27:52
+# DATE    14/07/2021 at 11:36:17
 #
 # Physical parameters:
 # sigma_coh        19.89746 coherent   scattering cross section in [barn]

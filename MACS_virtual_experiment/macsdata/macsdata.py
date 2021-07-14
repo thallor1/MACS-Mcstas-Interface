@@ -320,7 +320,7 @@ class Data(object):
 		diff_PTAI_array = diff_array[:,self.data_matrix['PTAI'].tolist()]
 		spec_PTAI_array = spec_array[:,self.data_matrix['PTAI'].tolist()]
 		#Generate a list of detector angles:
-		det_index_list = np.arange(1,21,1):
+		det_index_list = np.arange(1,21,1)
 		# Centered at kidney angle, spaced 8 degrees from each other. -(4+9*8)+kidney=(-76)+kid is first det
 		det_angle_mat = np.outer(-76.0+det_index_list*8.0,kid_array)
 		
