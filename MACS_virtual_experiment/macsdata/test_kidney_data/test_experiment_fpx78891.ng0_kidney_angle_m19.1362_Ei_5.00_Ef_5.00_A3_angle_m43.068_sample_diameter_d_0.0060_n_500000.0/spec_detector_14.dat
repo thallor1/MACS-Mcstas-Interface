@@ -1,0 +1,76 @@
+# Format: McCode with text headers
+# URL: http://www.mccode.org
+# Creator: McStas 2.7 - Nov. 27, 2020
+# Instrument: MACS_sample_kidney_cylinder.instr
+# Ncount: 2592532
+# Trace: no
+# Gravitation: no
+# Seed: 1624780723
+# Directory: test_experiment_fpx78891.ng0_kidney_angle_m19.1362_Ei_5.00_Ef_5.00_A3_angle_m43.068_sample_diameter_d_0.0060_n_500000.0
+# Param: A3_angle=-43.0676
+# Param: kidney_angle=-19.1362
+# Param: EM=5
+# Param: EF_all=4.99757
+# Param: HF=1
+# Param: VF=1
+# Param: sample_diameter_d=0.006
+# Param: beta_1=1.01646
+# Param: beta_2=2.3076
+# Param: CPF=0
+# Param: MPL=6.06
+# Param: MPD=0.775
+# Param: APE_h=0.35
+# Param: APE_v=0.35
+# Param: misalign_mono_deg=0.15
+# Param: DIRDEV=0
+# Param: DIVSOU=3
+# Param: L0_delta=-1.06
+# Param: L1_delta=0
+# Param: mon_t=0
+# Param: mon_e=0
+# Param: monrot_delta=0
+# Param: slit_h=0.2
+# Param: slit_v=0.2
+# Param: resolution_mode=0
+# Param: res_radius=0.01
+# Param: res_height=0.03
+# Param: repeat_count=2
+# Param: E0_resolution=4.99757
+# Param: dE_resolution=1
+# Date: Sun Jun 27 02:46:13 2021 (1624776373)
+# type: array_2d(5, 5)
+# Source: dmtas (MACS_sample_kidney_cylinder.instr)
+# component: spec_detector_14
+# position: 0.295632 0 1.45655
+# title: PSD monitor
+# Ncount: 2592532
+# filename: spec_detector_14.dat
+# statistics: X0=0.28842; dX=1.08581; Y0=0.0416279; dY=0.746407;
+# signal: Min=0; Max=91.7179; Mean=8.59816;
+# values: 214.954 84.7457 64
+# xvar: X
+# yvar: Y
+# xlabel: X position [cm]
+# ylabel: Y position [cm]
+# zvar: I
+# zlabel: Signal per bin
+# xylimits: -1.8 1.8 -7 7
+# variables: I I_err N
+# Data [spec_detector_14/spec_detector_14.dat] I:
+0 0 0 0 0 
+0 0 5.105213973 0.9581550832 1.693178406e-139 
+9.928044259 80.74343485 10.31031569 6.931841748 91.71793274 
+4.673654513 0 2.217350203 0.008118908978 2.359990991 
+0 0 0 0 0 
+# Errors [spec_detector_14/spec_detector_14.dat] I_err:
+0 0 0 0 0 
+0 0 4.941861012 1.173495524 1.693178406e-139 
+6.958384639 51.80480693 6.31078332 3.660168059 70.35605796 
+4.673654513 0 2.08333764 0.009942686904 1.78181836 
+0 0 0 0 0 
+# Events [spec_detector_14/spec_detector_14.dat] N:
+0 0 0 1 0 
+1 0 4 2 1 
+4 14 10 12 7 
+1 1 2 2 2 
+0 0 0 0 0 

@@ -1,0 +1,1334 @@
+McStas simulation description file for dmtas.
+Date:    Sun Jun 27 02:45:34 2021
+Program: McStas 2.7 - Nov. 27, 2020
+
+begin instrument: dmtas
+  File: test_experiment_fpx78891.ng0_kidney_angle_m19.1362_Ei_5.00_Ef_5.00_A3_angle_m43.068_sample_diameter_d_0.0060_n_500000.0/mccode
+  Source: MACS_sample_kidney_cylinder.instr
+  Parameters:  A3_angle(double) kidney_angle(double) EM(double) EF_all(double) HF(int) VF(int) sample_diameter_d(double) beta_1(double) beta_2(double) CPF(double) MPL(double) MPD(double) APE_h(double) APE_v(double) misalign_mono_deg(double) DIRDEV(double) DIVSOU(double) L0_delta(double) L1_delta(double) mon_t(double) mon_e(double) monrot_delta(double) slit_h(double) slit_v(double) resolution_mode(double) res_radius(double) res_height(double) repeat_count(int) E0_resolution(double) dE_resolution(double)
+  Trace_enabled: yes
+  Default_main: yes
+  Embedded_runtime: yes
+end instrument
+
+begin simulation: test_experiment_fpx78891.ng0_kidney_angle_m19.1362_Ei_5.00_Ef_5.00_A3_angle_m43.068_sample_diameter_d_0.0060_n_500000.0
+  Format: McCode with text headers
+  URL: http://www.mccode.org
+  Creator: McStas 2.7 - Nov. 27, 2020
+  Instrument: MACS_sample_kidney_cylinder.instr
+  Ncount: 500000
+  Trace: no
+  Gravitation: no
+  Seed: 1624780723
+  Directory: test_experiment_fpx78891.ng0_kidney_angle_m19.1362_Ei_5.00_Ef_5.00_A3_angle_m43.068_sample_diameter_d_0.0060_n_500000.0
+  Param: A3_angle=-43.0676
+  Param: kidney_angle=-19.1362
+  Param: EM=5
+  Param: EF_all=4.99757
+  Param: HF=1
+  Param: VF=1
+  Param: sample_diameter_d=0.006
+  Param: beta_1=1.01646
+  Param: beta_2=2.3076
+  Param: CPF=0
+  Param: MPL=6.06
+  Param: MPD=0.775
+  Param: APE_h=0.35
+  Param: APE_v=0.35
+  Param: misalign_mono_deg=0.15
+  Param: DIRDEV=0
+  Param: DIVSOU=3
+  Param: L0_delta=-1.06
+  Param: L1_delta=0
+  Param: mon_t=0
+  Param: mon_e=0
+  Param: monrot_delta=0
+  Param: slit_h=0.2
+  Param: slit_v=0.2
+  Param: resolution_mode=0
+  Param: res_radius=0.01
+  Param: res_height=0.03
+  Param: repeat_count=2
+  Param: E0_resolution=0
+  Param: dE_resolution=1
+end simulation
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_0
+  position: -1.07513 0 0.143363
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_0.dat
+  statistics: X0=0.640554; dX=0.314387; Y0=2.41194; dY=1.84218;
+  signal: Min=0; Max=28.9319; Mean=1.26077;
+  values: 31.5193 30.1349 12
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_0
+  position: -1.23871 0 0.0583766
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_0.dat
+  statistics: X0=8.37456e-09; dX=0.000108799; Y0=2.6786; dY=0.570244;
+  signal: Min=0; Max=39.8645; Mean=1.66685;
+  values: 41.6712 43.6318 5
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_1
+  position: -1.07811 0 0.293932
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_1.dat
+  statistics: X0=0.54623; dX=1.23248; Y0=-1.79335; dY=1.44666;
+  signal: Min=0; Max=14.2107; Mean=0.879449;
+  values: 21.9862 15.5947 17
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_1
+  position: -1.25194 0 0.23254
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_1.dat
+  statistics: X0=0.727454; dX=0.0728871; Y0=-4.13616e-09; dY=0.000107616;
+  signal: Min=0; Max=482.346; Mean=19.4957;
+  values: 487.393 528.182 5
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_2
+  position: -1.06011 0 0.443451
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_2.dat
+  statistics: X0=-0.424617; dX=0.361109; Y0=-0.521163; dY=2.76196;
+  signal: Min=0; Max=2.17447; Mean=0.147127;
+  values: 3.67817 2.71099 16
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_2
+  position: -1.24079 0 0.406848
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_2.dat
+  statistics: X0=0.586578; dX=1.01042; Y0=1.01051; dY=1.34487;
+  signal: Min=0; Max=12.2672; Mean=1.34493;
+  values: 33.6232 19.2183 11
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_3
+  position: -1.02148 0 0.589011
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_3.dat
+  statistics: X0=-1.0794; dX=0.685021; Y0=2.40141; dY=2.40795;
+  signal: Min=0; Max=100.647; Mean=5.54838;
+  values: 138.709 104.302 19
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_3
+  position: -1.20549 0 0.577909
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_3.dat
+  statistics: X0=0.094572; dX=0.787423; Y0=-0.0573297; dY=0.39653;
+  signal: Min=0; Max=18.6228; Mean=2.07939;
+  values: 51.9846 27.3719 11
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_4
+  position: -0.962968 0 0.727777
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_4.dat
+  statistics: X0=0.582179; dX=0.64214; Y0=-0.526384; dY=2.42396;
+  signal: Min=0; Max=3.67339; Mean=0.389745;
+  values: 9.74364 5.06041 26
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_4
+  position: -1.14673 0 0.742393
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_4.dat
+  statistics: X0=-0.669863; dX=0.294713; Y0=2.09776; dY=1.21437;
+  signal: Min=0; Max=11.996; Mean=0.640384;
+  values: 16.0096 12.5636 18
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_5
+  position: -0.885711 0 0.857049
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_5.dat
+  statistics: X0=1.27627; dX=0.380843; Y0=-1.74852; dY=3.03301;
+  signal: Min=0; Max=13.1964; Mean=0.746326;
+  values: 18.6581 13.7351 23
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_5
+  position: -1.06566 0 0.897099
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_5.dat
+  statistics: X0=1.06066; dX=0.35948; Y0=2.79645; dY=0.14071;
+  signal: Min=0; Max=6.35296; Mean=0.482909;
+  values: 12.0727 8.91504 10
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_6
+  position: -0.791215 0 0.974311
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_6.dat
+  statistics: X0=1.43019; dX=0.12257; Y0=2.77911; dY=0.364479;
+  signal: Min=0; Max=306.542; Mean=12.3548;
+  values: 308.87 284.66 23
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_6
+  position: -0.963834 0 1.03901
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_6.dat
+  statistics: X0=-0.316647; dX=0.370573; Y0=-0.123536; dY=0.615946;
+  signal: Min=0; Max=592.703; Mean=47.0678;
+  values: 1176.7 815.533 16
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_7
+  position: -0.681318 0 1.07728
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_7.dat
+  statistics: X0=1.3666; dX=0.436378; Y0=-2.52057; dY=1.19234;
+  signal: Min=0; Max=475.937; Mean=20.4888;
+  values: 512.22 485.525 26
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_7
+  position: -0.843253 0 1.16538
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_7.dat
+  statistics: X0=-0.00770692; dX=0.0912737; Y0=0.0322476; dY=0.298753;
+  signal: Min=0; Max=191.106; Mean=7.83994;
+  values: 195.999 199.59 11
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_8
+  position: -0.558161 0 1.16395
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_8.dat
+  statistics: X0=0.637353; dX=0.329693; Y0=-2.50031; dY=1.2578;
+  signal: Min=0; Max=124.191; Mean=5.29934;
+  values: 132.483 126.737 25
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_8
+  position: -0.706259 0 1.27373
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_8.dat
+  statistics: X0=0.718234; dX=0.0525955; Y0=-0.000665108; dY=0.0431493;
+  signal: Min=0; Max=2759.92; Mean=110.556;
+  values: 2763.91 2824.08 17
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_9
+  position: -0.424139 0 1.23264
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_9.dat
+  statistics: X0=0.962321; dX=0.764067; Y0=-0.314723; dY=2.87164;
+  signal: Min=0; Max=56.8471; Mean=3.55245;
+  values: 88.8111 58.4217 47
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_9
+  position: -0.555518 0 1.36196
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_9.dat
+  statistics: X0=0.683512; dX=0.333637; Y0=-0.068478; dY=0.432507;
+  signal: Min=0; Max=543.874; Mean=23.1567;
+  values: 578.917 533.861 36
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_10
+  position: -0.281863 0 1.28201
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_10.dat
+  statistics: X0=-0.122439; dX=1.13166; Y0=-0.295005; dY=4.55785;
+  signal: Min=0; Max=21.36; Mean=5.69905;
+  values: 142.476 34.7111 100
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_10
+  position: -0.393965 0 1.42836
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_10.dat
+  statistics: X0=0.016307; dX=0.268015; Y0=2.55197; dY=0.840005;
+  signal: Min=0; Max=487.663; Mean=21.813;
+  values: 545.325 489.7 53
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_11
+  position: -0.1341 0 1.3111
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_11.dat
+  statistics: X0=0.476543; dX=1.00231; Y0=0.802999; dY=3.93225;
+  signal: Min=0.992884; Max=119.134; Mean=15.936;
+  values: 398.4 116.732 249
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_11
+  position: -0.224743 0 1.47162
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_11.dat
+  statistics: X0=-0.0206226; dX=0.709818; Y0=0.159823; dY=1.04593;
+  signal: Min=0; Max=132.851; Mean=10.164;
+  values: 254.099 91.6742 104
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_12
+  position: 0.0162735 0 1.31934
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_12.dat
+  statistics: X0=0.351787; dX=0.513944; Y0=1.24754; dY=3.32904;
+  signal: Min=0; Max=2.58411; Mean=0.324623;
+  values: 8.11557 3.49787 16
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_12
+  position: -0.0511476 0 1.49091
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_12.dat
+  statistics: X0=1.12653; dX=0.35698; Y0=1.21902; dY=1.38825;
+  signal: Min=0; Max=3.10405; Mean=0.2199;
+  values: 5.49751 4.12305 8
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_13
+  position: 0.16633 0 1.30657
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_13.dat
+  statistics: X0=-0.607425; dX=1.05508; Y0=-0.229137; dY=2.40205;
+  signal: Min=0.175834; Max=404.252; Mean=31.3404;
+  values: 783.51 411.072 260
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_13
+  position: 0.123444 0 1.48586
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_13.dat
+  statistics: X0=-0.213785; dX=0.711246; Y0=0.301783; dY=1.08174;
+  signal: Min=0; Max=241.487; Mean=23.9708;
+  values: 599.27 219.571 147
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_14
+  position: 0.313149 0 1.27304
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_14.dat
+  statistics: X0=-0.239601; dX=0.695445; Y0=-0.598186; dY=3.42863;
+  signal: Min=3.37255e-06; Max=32.2475; Mean=5.29877;
+  values: 132.469 34.4755 109
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_14
+  position: 0.295632 0 1.45655
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_14.dat
+  statistics: X0=0.28842; dX=1.08581; Y0=0.0416279; dY=0.746407;
+  signal: Min=0; Max=91.7179; Mean=8.59816;
+  values: 214.954 84.7457 64
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_15
+  position: 0.453873 0 1.2194
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_15.dat
+  statistics: X0=0.73305; dX=0.847732; Y0=1.83038; dY=2.63257;
+  signal: Min=0; Max=101.794; Mean=7.59759;
+  values: 189.94 110.282 54
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_15
+  position: 0.462067 0 1.40357
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_15.dat
+  statistics: X0=-0.045354; dX=0.836532; Y0=-0.202043; dY=1.38768;
+  signal: Min=0; Max=7.63464; Mean=0.912578;
+  values: 22.8145 7.46052 33
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_16
+  position: 0.585762 0 1.14671
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_16.dat
+  statistics: X0=-1.43316; dX=0.124234; Y0=-5.57973; dY=0.38669;
+  signal: Min=0; Max=379.948; Mean=15.2485;
+  values: 381.213 390.959 17
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:13 2021 (1624776373)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_16
+  position: 0.619507 0 1.32794
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_16.dat
+  statistics: X0=-0.706357; dX=0.254334; Y0=0.094903; dY=0.508476;
+  signal: Min=0; Max=369.198; Mean=16.0096;
+  values: 400.239 363.86 16
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_17
+  position: 0.706251 0 1.05636
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_17.dat
+  statistics: X0=-0.709754; dX=0.177385; Y0=-0.0210769; dY=0.247448;
+  signal: Min=0; Max=599.434; Mean=24.275;
+  values: 606.876 617.737 15
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_17
+  position: 0.76489 0 1.23113
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_17.dat
+  statistics: X0=0.00596475; dX=0.16889; Y0=2.74438; dY=0.426205;
+  signal: Min=0; Max=648.452; Mean=26.6653;
+  values: 666.632 663.764 21
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_18
+  position: 0.812993 0 0.950124
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_18.dat
+  statistics: X0=0.223267; dX=1.37445; Y0=2.77163; dY=3.21912;
+  signal: Min=0; Max=22.2529; Mean=1.85592;
+  values: 46.398 28.9725 19
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_18
+  position: 0.895385 0 1.11503
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_18.dat
+  statistics: X0=-0.838826; dX=0.776405; Y0=-1.41879; dY=1.39987;
+  signal: Min=0; Max=11.1001; Mean=0.900085;
+  values: 22.5021 15.5193 7
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: diffraction_detector_19
+  position: 0.903911 0 0.830066
+  title: PSD monitor
+  Ncount: 2592532
+  filename: diff_detector_19.dat
+  statistics: X0=-0.627318; dX=0.274584; Y0=2.87431; dY=0.69111;
+  signal: Min=0; Max=12.4915; Mean=0.582748;
+  values: 14.5687 12.9183 17
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_2d(5, 5)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_19
+  position: 1.00845 0 0.981905
+  title: PSD monitor
+  Ncount: 2592532
+  filename: spec_detector_19.dat
+  statistics: X0=-0.00543053; dX=0.0623168; Y0=-2.0195e-05; dY=0.00751968;
+  signal: Min=0; Max=183.791; Mean=7.40754;
+  values: 185.188 201.275 5
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -1.8 1.8 -7 7
+  variables: I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_0
+  position: -1.23871 0 0.0583766
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_0.dat
+  statistics: X0=10; dX=10;
+  signal: Min=0; Max=41.6712; Mean=0.833425;
+  values: 83.3425 58.2384 14
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_1
+  position: -1.25194 0 0.23254
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_1.dat
+  statistics: X0=2.57766; dX=2.79232;
+  signal: Min=0; Max=487.393; Mean=9.74786;
+  values: 974.786 705.731 13
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_2
+  position: -1.24079 0 0.406848
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_2.dat
+  statistics: X0=12.7317; dX=18.9872;
+  signal: Min=0; Max=33.6232; Mean=0.793817;
+  values: 79.3817 29.3286 28
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_3
+  position: -1.20549 0 0.577909
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_3.dat
+  statistics: X0=9.22317; dX=8.87143;
+  signal: Min=0; Max=51.9846; Mean=1.55357;
+  values: 155.357 46.401 33
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_4
+  position: -1.14673 0 0.742393
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_4.dat
+  statistics: X0=11.9945; dX=8.87901;
+  signal: Min=0; Max=16.0096; Mean=0.480261;
+  values: 48.0261 21.384 54
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_5
+  position: -1.06566 0 0.897099
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_5.dat
+  statistics: X0=9.99679; dX=9.99693;
+  signal: Min=0; Max=12.0727; Mean=0.241532;
+  values: 24.1532 12.2613 30
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_6
+  position: -0.963834 0 1.03901
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_6.dat
+  statistics: X0=17.5308; dX=23.7827;
+  signal: Min=0; Max=1176.7; Mean=34.7025;
+  values: 3470.25 1386.89 41
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_7
+  position: -0.843253 0 1.16538
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_7.dat
+  statistics: X0=19.7213; dX=24.668;
+  signal: Min=0; Max=195.999; Mean=5.85559;
+  values: 585.559 335.696 33
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_8
+  position: -0.706259 0 1.27373
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_8.dat
+  statistics: X0=2.658; dX=3.70447;
+  signal: Min=0; Max=2763.91; Mean=55.469;
+  values: 5546.9 3926.22 42
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_9
+  position: -0.555518 0 1.36196
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_9.dat
+  statistics: X0=3.33915; dX=4.52503;
+  signal: Min=0; Max=578.917; Mean=11.9575;
+  values: 1195.75 748.912 94
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_10
+  position: -0.393965 0 1.42836
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_10.dat
+  statistics: X0=17.2711; dX=23.2752;
+  signal: Min=0; Max=545.325; Mean=15.9256;
+  values: 1592.56 843.367 128
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_11
+  position: -0.224743 0 1.47162
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_11.dat
+  statistics: X0=18.1589; dX=21.5026;
+  signal: Min=0; Max=254.099; Mean=6.87371;
+  values: 687.371 156.893 255
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_12
+  position: -0.0511476 0 1.49091
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_12.dat
+  statistics: X0=11.4297; dX=9.56624;
+  signal: Min=0; Max=5.49751; Mean=0.133884;
+  values: 13.3884 6.16269 18
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_13
+  position: 0.123444 0 1.48586
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_13.dat
+  statistics: X0=11.5673; dX=15.8697;
+  signal: Min=0; Max=599.27; Mean=14.3061;
+  values: 1430.61 323.449 345
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_14
+  position: 0.295632 0 1.45655
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_14.dat
+  statistics: X0=13.5609; dX=20.117;
+  signal: Min=0; Max=214.954; Mean=4.99929;
+  values: 499.929 129.266 151
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_15
+  position: 0.462067 0 1.40357
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_15.dat
+  statistics: X0=9.56469; dX=9.41976;
+  signal: Min=0; Max=22.8145; Mean=0.505524;
+  values: 50.5524 10.9114 80
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_16
+  position: 0.619507 0 1.32794
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_16.dat
+  statistics: X0=17.1369; dX=23.1638;
+  signal: Min=0; Max=400.239; Mean=11.7395;
+  values: 1173.95 617.816 46
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_17
+  position: 0.76489 0 1.23113
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_17.dat
+  statistics: X0=19.8036; dX=24.6679;
+  signal: Min=0; Max=666.632; Mean=19.838;
+  values: 1983.8 1132.25 60
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_18
+  position: 0.895385 0 1.11503
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_18.dat
+  statistics: X0=10.0667; dX=9.03137;
+  signal: Min=0; Max=22.5021; Mean=0.580265;
+  values: 58.0265 24.0803 22
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data
+
+begin data
+  Date: Sun Jun 27 02:46:14 2021 (1624776374)
+  type: array_1d(100)
+  Source: dmtas (MACS_sample_kidney_cylinder.instr)
+  component: spec_detector_history_19
+  position: 1.00845 0 0.981905
+  title: extend monitor
+  Ncount: 2592532
+  filename: spec_detector_history_19.dat
+  statistics: X0=7.64659; dX=7.56773;
+  signal: Min=0; Max=185.188; Mean=5.55565;
+  values: 555.565 327.28 15
+  xvar: bin
+  yvar: (I,I_err)
+  xlabel: channel number [1]
+  ylabel: Intensity
+  xlimits: -0.5 99.5
+  variables: bin I I_err N
+end data

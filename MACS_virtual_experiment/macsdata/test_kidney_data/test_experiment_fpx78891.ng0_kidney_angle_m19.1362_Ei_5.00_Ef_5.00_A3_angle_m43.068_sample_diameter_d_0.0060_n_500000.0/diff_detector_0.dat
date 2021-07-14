@@ -1,0 +1,76 @@
+# Format: McCode with text headers
+# URL: http://www.mccode.org
+# Creator: McStas 2.7 - Nov. 27, 2020
+# Instrument: MACS_sample_kidney_cylinder.instr
+# Ncount: 2592532
+# Trace: no
+# Gravitation: no
+# Seed: 1624780723
+# Directory: test_experiment_fpx78891.ng0_kidney_angle_m19.1362_Ei_5.00_Ef_5.00_A3_angle_m43.068_sample_diameter_d_0.0060_n_500000.0
+# Param: A3_angle=-43.0676
+# Param: kidney_angle=-19.1362
+# Param: EM=5
+# Param: EF_all=4.99757
+# Param: HF=1
+# Param: VF=1
+# Param: sample_diameter_d=0.006
+# Param: beta_1=1.01646
+# Param: beta_2=2.3076
+# Param: CPF=0
+# Param: MPL=6.06
+# Param: MPD=0.775
+# Param: APE_h=0.35
+# Param: APE_v=0.35
+# Param: misalign_mono_deg=0.15
+# Param: DIRDEV=0
+# Param: DIVSOU=3
+# Param: L0_delta=-1.06
+# Param: L1_delta=0
+# Param: mon_t=0
+# Param: mon_e=0
+# Param: monrot_delta=0
+# Param: slit_h=0.2
+# Param: slit_v=0.2
+# Param: resolution_mode=0
+# Param: res_radius=0.01
+# Param: res_height=0.03
+# Param: repeat_count=2
+# Param: E0_resolution=4.99757
+# Param: dE_resolution=1
+# Date: Sun Jun 27 02:46:13 2021 (1624776373)
+# type: array_2d(5, 5)
+# Source: dmtas (MACS_sample_kidney_cylinder.instr)
+# component: diffraction_detector_0
+# position: -1.07513 0 0.143363
+# title: PSD monitor
+# Ncount: 2592532
+# filename: diff_detector_0.dat
+# statistics: X0=0.640554; dX=0.314387; Y0=2.41194; dY=1.84218;
+# signal: Min=0; Max=28.9319; Mean=1.26077;
+# values: 31.5193 30.1349 12
+# xvar: X
+# yvar: Y
+# xlabel: X position [cm]
+# ylabel: Y position [cm]
+# zvar: I
+# zlabel: Signal per bin
+# xylimits: -1.8 1.8 -7 7
+# variables: I I_err N
+# Data [diffraction_detector_0/diff_detector_0.dat] I:
+0 1.457689716 0 0 0 
+0 0 0 0 0 
+7.939367084e-06 0 0.5624668738 2.773887227e-07 0 
+0 0 0 28.93191051 0 
+0 0 0 0.5671911963 1.51983344e-12 
+# Errors [diffraction_detector_0/diff_detector_0.dat] I_err:
+0 1.492411065 0 0 0 
+0 0 0 0 0 
+7.939367084e-06 0 0.6475239015 2.773887227e-07 0 
+0 0 0 28.93191051 0 
+0 0 0 0.6945481728 1.51983344e-12 
+# Events [diffraction_detector_0/diff_detector_0.dat] N:
+0 2 0 0 1 
+0 0 0 0 0 
+1 0 3 1 0 
+0 0 0 1 0 
+0 0 0 2 1 

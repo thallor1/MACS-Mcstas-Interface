@@ -1,0 +1,156 @@
+# Format: McCode with text headers
+# URL: http://www.mccode.org
+# Creator: McStas 2.7 - Nov. 27, 2020
+# Instrument: MACS_sample_kidney_cylinder.instr
+# Ncount: 2592532
+# Trace: no
+# Gravitation: no
+# Seed: 1624780806
+# Directory: test_experiment_fpx78891.ng0_kidney_angle_m19.1362_Ei_5.00_Ef_5.00_A3_angle_m42.867_sample_diameter_d_0.0060_n_500000.0
+# Param: A3_angle=-42.8672
+# Param: kidney_angle=-19.1362
+# Param: EM=5
+# Param: EF_all=4.99757
+# Param: HF=1
+# Param: VF=1
+# Param: sample_diameter_d=0.006
+# Param: beta_1=1.01646
+# Param: beta_2=2.3076
+# Param: CPF=0
+# Param: MPL=6.06
+# Param: MPD=0.775
+# Param: APE_h=0.35
+# Param: APE_v=0.35
+# Param: misalign_mono_deg=0.15
+# Param: DIRDEV=0
+# Param: DIVSOU=3
+# Param: L0_delta=-1.06
+# Param: L1_delta=0
+# Param: mon_t=0
+# Param: mon_e=0
+# Param: monrot_delta=0
+# Param: slit_h=0.2
+# Param: slit_v=0.2
+# Param: resolution_mode=0
+# Param: res_radius=0.01
+# Param: res_height=0.03
+# Param: repeat_count=2
+# Param: E0_resolution=4.99757
+# Param: dE_resolution=1
+# Date: Sun Jun 27 02:46:56 2021 (1624776416)
+# type: array_1d(100)
+# Source: dmtas (MACS_sample_kidney_cylinder.instr)
+# component: spec_detector_history_1
+# position: -1.25194 0 0.23254
+# title: extend monitor
+# Ncount: 2592532
+# filename: spec_detector_history_1.dat
+# statistics: X0=2.60207; dX=2.88166;
+# signal: Min=0; Max=1155.69; Mean=23.1351;
+# values: 2313.51 1644.88 27
+# xvar: bin
+# yvar: (I,I_err)
+# xlabel: channel number [1]
+# ylabel: Intensity
+# xlimits: -0.5 99.5
+# variables: bin I I_err N
+0 1155.689542 1204.625972 9 
+1 0 0 0 
+2 0 0 0 
+3 0 0 0 
+4 0 0 0 
+5 1142.939619 1142.939619 1 
+6 0 0 0 
+7 3.834975161e-07 4.696866158e-07 2 
+8 0.004102390022 0.00502438114 2 
+9 0.08352951912 0.09645108237 3 
+10 0 0 0 
+11 0 0 0 
+12 1.352253997e-16 1.352253997e-16 1 
+13 0 0 0 
+14 0 0 0 
+15 0 0 0 
+16 0 0 0 
+17 0 0 0 
+18 1.352253997e-16 1.352253997e-16 1 
+19 0 0 0 
+20 12.66639368 8.5864919 6 
+21 0 0 0 
+22 0 0 0 
+23 0 0 0 
+24 2.042185431 2.042185431 1 
+25 0.08352913551 0.08352913551 1 
+26 0 0 0 
+27 0 0 0 
+28 0 0 0 
+29 0 0 0 
+30 0 0 0 
+31 0 0 0 
+32 0 0 0 
+33 0 0 0 
+34 0 0 0 
+35 0 0 0 
+36 0 0 0 
+37 0 0 0 
+38 0 0 0 
+39 0 0 0 
+40 0 0 0 
+41 0 0 0 
+42 0 0 0 
+43 0 0 0 
+44 0 0 0 
+45 0 0 0 
+46 0 0 0 
+47 0 0 0 
+48 0 0 0 
+49 0 0 0 
+50 0 0 0 
+51 0 0 0 
+52 0 0 0 
+53 0 0 0 
+54 0 0 0 
+55 0 0 0 
+56 0 0 0 
+57 0 0 0 
+58 0 0 0 
+59 0 0 0 
+60 0 0 0 
+61 0 0 0 
+62 0 0 0 
+63 0 0 0 
+64 0 0 0 
+65 0 0 0 
+66 0 0 0 
+67 0 0 0 
+68 0 0 0 
+69 0 0 0 
+70 0 0 0 
+71 0 0 0 
+72 0 0 0 
+73 0 0 0 
+74 0 0 0 
+75 0 0 0 
+76 0 0 0 
+77 0 0 0 
+78 0 0 0 
+79 0 0 0 
+80 0 0 0 
+81 0 0 0 
+82 0 0 0 
+83 0 0 0 
+84 0 0 0 
+85 0 0 0 
+86 0 0 0 
+87 0 0 0 
+88 0 0 0 
+89 0 0 0 
+90 0 0 0 
+91 0 0 0 
+92 0 0 0 
+93 0 0 0 
+94 0 0 0 
+95 0 0 0 
+96 0 0 0 
+97 0 0 0 
+98 0 0 0 
+99 0 0 0 

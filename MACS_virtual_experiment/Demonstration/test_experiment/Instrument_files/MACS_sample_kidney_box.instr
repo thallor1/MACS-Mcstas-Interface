@@ -1,0 +1,826 @@
+/*****************************************************************************
+*  Monte-Carlo simulation of MACS sample and kidney
+*  
+*
+*  Bsed on work by
+*  Yiming Qiu 4/6/00
+*  Jose A. Rodriguez  9/22/06
+*
+*
+*  INPUT PARAMETERS:
+*    repeat_count=1:    how many times the virtual out from MACS_monochromator is used
+*    A3_angle=0:        sample rotation [deg]
+*    kidney_angle=0:    kidney rotation [deg]
+*    EM=3.4             monochromator energy setting [meV]
+*    EF_all=3.4         analyser energy setting (for all analyser pairs) [meV]
+*    HF=1               Horizontal focusing (ALWAYS 1, 0 mode broken)
+*    VF=1               Vertical focusing (ALWAYS 1, 0 mode broken)
+*    sample_diameter_d=0.02
+*    beta_1=1
+*    beta_2=1
+*    misalign_mono_deg=0.15
+*    slit_h=0.2         Slit after guide horizontal [m]
+*    slit_v=0.2         Slit after guide vertical [m]
+*    resolution_mode=0  If resolution_mode == 1, the resolution sample is used and mcresplot will work
+*    res_radius=0.01    radius of resolution sample
+*    res_height=0.03    height of resolution sample
+*    E0_resolution=0    energy mean of rays scattered in resolution sample (0 = Auto EM)
+*    dE_resolution=1    energy width of rays scattered in resolution sample
+*    CPF(m):  distance between the focal point and the neutron source
+*   negative if the focal point is behind the source
+*    MPL(m):  distance between monochromator and source when 2theta=90 
+*    MPD(m):  distance between drum and monochromator when 2theta=90
+*               (The distance btw monoch. and sample is 1.675 m when 2theta=90.)
+*    EM(meV): neutron energy set at monochromator
+*    APE_h: vertical aperture
+*    APE_v: horizontal aperture
+*    DIRDEV(min):misorientation of the monochromator blade(FWHM)
+*    DIVSOU(deg): aceptance angle
+*    L0_delta (m)  special feature to scan L0 delta to optimize the focal point.
+*    L1_delta (m)  special feature to scan L0 delta to optimize the focal point.
+*    mon_t(m)  Monochormator translation  (montrans)
+*    mon_e(m)  Monochomator elevation (monrot)
+*    monrot_delta(deg)  monochromator stand delta rotation
+*
+*
+******************************************************************************/
+
+
+DEFINE INSTRUMENT dmtas(A3_angle=0,kidney_angle=0, EM=3.4,EF_all=3.4 ,int HF=1, int VF=1, sample_diameter_d=0.02, beta_1=1, beta_2=1, CPF=0, MPL=6.06, MPD=0.775, APE_h=0.35, APE_v=0.35, misalign_mono_deg=0.15,  DIRDEV=0, DIVSOU=3.0, L0_delta=-1.06, L1_delta=0.0, mon_t=0.0, mon_e=0.0, monrot_delta=0,slit_h=0.2,slit_v=0.2,resolution_mode=0,res_radius=0.01,res_height=0.03,int repeat_count=1,E0_resolution=0,dE_resolution=1)
+
+DECLARE
+%{
+
+  #define MAX_VOLUME_HISTORY_LENGTH 50
+  #define DOUBLE_MAX_VOLUME_HISTORY_LENGTH 100
+  
+  %include "splint.c"
+  %include "monochromator.c"
+  
+  double dmtas_sou_radusv=0.055;  /*source (in cm)*/
+  double dmtas_sou_radush=0.055;    
+  
+  double phi_source=0;
+
+  double diverg;
+ 
+  double dmtas_sou_E0, dmtas_sou_dE, MPL;
+  // double mon_tras, mon_ele;
+  double dist_slit1,dist_slit2;
+  double xmax_slit1,xmin_slit1,ymax_slit1,ymin_slit1;
+  double xmax_slit2,xmin_slit2,ymax_slit2,ymin_slit2;
+  double emin, emax;
+  double lambda;
+   
+  double dist_tub1  = 0.15;   /*tube1 Pee Wee*/
+  double tub1_r1  =0.065  ;
+  double tub1_r2  =0.065  ;
+  double tub1_length =0.79;
+
+  double sample_radius; 
+
+  //Below are user defined.
+  double samp_ax; //can be calculated from lattice params and u v matrix 
+  double samp_ay; 
+  double samp_az; 
+  double samp_bx; 
+  double samp_by; 
+  double samp_bz; 
+  double samp_cx; 
+  double samp_cy; 
+  double samp_cz; 
+  double samp_abs_xc; 
+  double samp_mosaic; 
+  double samp_delta_d; 
+  double samp_inc_xc; 
+  double samp_cell_vol; 
+  double samp_xwidth;
+  double samp_ywidth;
+  double samp_zwidth;
+  double crystal_axis_xrot; 
+  double crystal_axis_yrot; 
+  double crystal_axis_zrot; 
+
+  double plate_distance;
+
+  double dist_tub1A = 0.95;   /*tube1A Pee Wee*/
+  double tub1A_r1 =0.165  ;
+  double tub1A_r2 =0.165  ;
+  double tub1A_length   =1.69;
+
+  double dist_tub2   =2.650;      /*tube2*/
+  double tub2_r1     =0.1187       ;
+  double tub2_r2     =0.1411       ;
+  double tub2_length =0.8;
+
+  double dist_tub3   =3.475 ;      /*tube3*/
+  double tub3_r1     =0.1418       ;
+  double tub3_r2     =0.1543       ;
+  double tub3_length =0.45         ;
+ 
+  double dist_tub4   =3.935 ;      /*tube4*/
+  double tub4_r1     =0.1546       ;
+  double tub4_r2     =0.159        ;
+  double tub4_length =0.159        ;
+
+  double apev, apeh;              /*aptertures*/
+  double dist_ape_v=4.550;
+  double dist_ape_h=4.655;
+  double slv_xmin,slv_xmax,slv_ymin,slv_ymax;
+  double slh_xmin,slh_xmax,slh_ymin,slh_ymax;
+
+  
+  double dist_collA =4.150;       /*collimatorA*/
+  double dmtas_collA_R1 =4.152,dmtas_collA_R2 =4.287;
+  double dmtas_collA_h =0.460;
+  double dmtas_collA_n  =98;
+  double dmtas_collA_w  =0.0033;
+
+  double dist_collB =4.295;       /*collimatorB*/
+  double dmtas_collB_R1 =4.295,dmtas_collB_R2 =4.503;
+  double dmtas_collB_h =0.460;
+  double dmtas_collB_n  =98;
+  double dmtas_collB_w  =0.003415;
+
+  double hight_at_reference,R_at_reference;
+  double tan_ver,tan_hor;
+  double angle_of_ver,len_of_ver;
+  double dmtas_guide_w1;        /*super mirror guide*/
+  double dmtas_guide_w2;
+  double dmtas_guide_h1, dmtas_guide_h2;
+  double dmtas_guide_len;
+  double dmtas_guide_l  =1.7;     /*only use the geometry*/
+
+%include "generated_includes/monochromator_declare.c"
+
+  double dmtas_det_w    =0.02;    /*detector*/
+  double dmtas_det_h  =0.04;
+  double xmax_det, xmin_det, ymax_det, ymin_det;
+  double tmp_dist,xx_mon;
+
+
+%include "generated_includes/kidney_declare.c"
+
+/**** Defining reflectivity vectors  ******/
+
+/**** Virtual output/input ****/
+  char virtual_file_name[2048];
+
+/***spline calculation ***/
+
+/* Analyzators */
+int iterate;
+double analyzator_theta[20];
+double delta_analyzator_position[20];
+double distance_between_analyzators[20];
+double EF[20];
+
+double analyzator_1_radius;
+double analyzator_2_radius;
+double analyzator_depth;
+double number_of_analyzator_blades;
+double analyzator_horizontal_mosaic;
+double analyzator_vertical_mosaic;
+double analyzator_dirdev;
+double analyzator_r0;
+double analyzator_q;
+double analyzator_transverse_distance;
+double sample_analyzator_channel_distance;
+double detector_analyzator_center_distance;
+
+int analyzator_flag;
+int channel_number;
+
+/* ** nD ** */
+
+// Sample environment
+double stick_displacement;
+
+// Flags
+
+int scatter_events_in_sample;
+int scatter_events_in_sample_environment;
+int only_sample_scattering;
+
+int flag_index;
+// Update 50 if we go beyond 49 volumes in sample/sample environment
+int scattering_history_sample_master[MAX_VOLUME_HISTORY_LENGTH];
+int number_of_volumes_sample_main;
+
+// Resolution mode
+// When resolution_mode == 1, the system
+int number_of_activations_normal;
+int number_of_activations_exit;
+int number_of_activations_sample;
+
+// Temp test
+int E_off;
+double E,vlength;
+
+
+%}
+ 
+INITIALIZE
+%{
+
+  for (flag_index=0;flag_index<MAX_VOLUME_HISTORY_LENGTH;flag_index++) scattering_history_sample_master[flag_index] = 0;
+
+
+  dmtas_sou_E0  = EM;
+  dmtas_sou_dE  = 2*(1.79*exp(EM/20.07902)-1.9);
+  apeh=APE_h;
+  apev=APE_v;
+  diverg=DIVSOU;
+  slv_xmin=-0.181;
+  slv_xmax=0.181;
+  slv_ymin= -apev/2.;
+  slv_ymax= apev/2.;
+  slh_xmin=-apeh/2.;
+  slh_xmax=apeh/2.;
+  slh_ymin= -0.181;
+  slh_ymax= 0.181; 
+
+// The values below are initialization of from the MACS_mcstas_python package
+/*
+  //Now define the sample parameters here; These lines are written in later, but should look like this.
+/* BEGIN INSERT BLOCK
+*/ 
+   samp_ax = 3.25276; //can be calculated from lattice params and u v matrix 
+   samp_ay = -3.25276; 
+   samp_az = -0.0; 
+   samp_bx = 3.25276; 
+   samp_by = 3.25276; 
+   samp_bz = -0.0; 
+   samp_cx = 0.0; 
+   samp_cy = 0.0; 
+   samp_cz = 2.9288; 
+   samp_abs_xc = 12.18076; 
+   samp_mosaic = 30.0; 
+   samp_delta_d = 0.0005; 
+   samp_inc_xc = 2.8716; 
+   samp_cell_vol = 62.74; 
+   samp_xwidth = 0.0043; 
+   samp_ywidth = 0.0033; 
+   samp_zwidth = 0.0013; 
+   crystal_axis_xrot = 60.0; 
+   crystal_axis_yrot = 0.0 ; 
+   crystal_axis_zrot = 0.0; 
+/*
+/* END INSERT BLOCK
+*/
+
+  plate_distance=samp_ywidth/2.0;
+  lambda=9.045/sqrt(EM);
+
+  //%include "splint.c"
+  //%include "monochromator.c"
+  %include "generated_includes/monochromator_initialize.c"
+  
+  dist_slit1  =MPD/sin(2.*mono_theta)-0.43;
+      /*distance from monochromator to slit1*/
+  dist_slit2  =MPD/sin(2.*mono_theta)+0.65;
+      /*distance from monochromator to slit2*/
+
+  angle_of_ver =mono_theta+mono_psi[10]*DEG2RAD;
+  len_of_ver =0.22*sin(angle_of_ver)*2;
+
+  tan_ver =dist_mono_L1_pos/((hight_at_reference-0.04)/2);
+
+  tan_hor =(MPD/sin(2.*mono_theta)-0.22*cos(angle_of_ver)+0.65)/((len_of_ver-0.02)/2);
+
+  //printf("mos=%f\n",dmtas_mon_mos);
+  /*printf("dtheta=%f\n",dmtas_mon_mos);*/
+
+/* printf("tan_ver=%f,tan_hor=%f\n",tan_ver,tan_hor);*/
+  
+  dmtas_guide_h1=hight_at_reference-(MPD-0.43)/tan_ver*2;
+  dmtas_guide_h2=hight_at_reference-(MPD+0.65)/tan_ver*2;
+
+  dmtas_guide_w1=len_of_ver-(MPD/sin(2.*mono_theta)-0.22*cos(angle_of_ver)-0.43)/tan_hor*2;
+  dmtas_guide_w2=len_of_ver-(MPD/sin(2.*mono_theta)-0.22*cos(angle_of_ver)+0.65)/tan_hor*2;
+
+/*  printf("dmtas_guide_h1=%f,dmtas_guide_h2=%f,dmtas_guide_w1=%f,dmtas_guide_w2=%f\n",dmtas_guide_h1,dmtas_guide_h2,dmtas_guide_w1,dmtas_guide_w2);*/
+  dmtas_guide_len=1.080;
+  mono_phi  =mono_phi*RAD2DEG;
+  mono_theta  =mono_theta*RAD2DEG;
+  xmax_det  =dmtas_det_w/2.;
+  xmin_det  =-xmax_det;
+  ymax_det  =dmtas_det_h/2.;
+  ymin_det  =-ymax_det;
+ 
+  emin=EM-1;
+  emax=EM+1;
+
+
+%include "generated_includes/kidney_initialize.c"
+  
+  
+/**** Virtual output/input ****/
+sprintf(virtual_file_name,"E%.2fmeV_HF%d_VF%d_Sample%.3f_b1_%.2f_b2_%.2f_mono_mis%.2f_CPF%.2f_MPL%.2f_MPD%.2f_dL0_%.3f_dL1_%.3f_APE_h%.3f_APE_v%.3f.dat", EM, HF, VF,sample_diameter_d, beta_1, beta_2, misalign_mono_deg, CPF, MPL, MPD, L0_delta, L1_delta, APE_h, APE_v);
+
+/* Analyzator calculations */
+
+/*
+sample_analyzator_channel_distance = 0.45;
+detector_analyzator_center_distance = 0.1;
+
+analyzator_1_radius = sample_analyzator_distance;
+analyzator_2_radius = sample_analyzator_distance;
+analyzator_depth = 0.04;
+analyzator_r0 = dmtas_mon_r0;
+number_of_analyzator_blades=9;
+
+analyzator_horizontal_mosaic = dmtas_mon_mos;
+analyzator_vertical_mosaic = dmtas_mon_mos;
+analyzator_dirdev = dmtas_mon_dirdev;
+analyzator_q = dmtas_mon_q;
+analyzator_transverse_distance=0.07;
+*/
+
+/*
+for (iterate=0;iterate<20;iterate++) {
+EF[iterate] = EF_all;
+//analyzator_theta[iterate] = RAD2DEG*asin(analyzator_q*sqrt(HBAR*HBAR/(8*EF[iterate]*1.602E-22*MNEUTRON)));
+analyzator_theta[iterate] = asin(analyzator_q/2.0/sqrt(EF[iterate]/2.0717));
+    
+ if (analyzator_theta[iterate] > 45) {
+ delta_analyzator_position[iterate] = 0.5*analyzator_transverse_distance/tan(2*analyzator_theta[iterate]);
+ } else {
+ delta_analyzator_position[iterate] = -0.5*analyzator_transverse_distance/tan((180-2*analyzator_theta[iterate]));
+ }
+ distance_between_analyzators[iterate] = 2*sqrt(0.25*analyzator_transverse_distance*analyzator_transverse_distance+delta_analyzator_position[iterate]*delta_analyzator_position[iterate]);
+ 
+analyzator_theta[iterate] = RAD2DEG*analyzator_theta[iterate];
+printf("analyzator_theta[%d] = %f\n",iterate,analyzator_theta[iterate]);
+printf("delta_analyzator_position[%d] = %f\n",iterate,delta_analyzator_position[iterate]);
+}
+*/
+
+stick_displacement = 0;
+
+// Resolution mode
+
+if (resolution_mode == 1) {
+  number_of_activations_sample = 0;
+  number_of_activations_normal = 2;
+  number_of_activations_exit = 1;
+} else {
+  number_of_activations_sample = 1;
+  number_of_activations_normal = 1;
+  number_of_activations_exit = 0;
+}
+
+if (E0_resolution == 0)
+  E0_resolution = EF_all;
+
+
+%}
+
+TRACE
+
+COMPONENT Al_incoherent = Incoherent_process(sigma=4.0*0.0082,packing_factor=1,unit_cell_volume=66.4) //,interact_fraction=0.8)
+AT (0,0,0) ABSOLUTE
+
+COMPONENT Al_powder = Powder_process(reflections="Al.laz",packing_factor=1)
+AT (0,0,0) ABSOLUTE
+
+COMPONENT Al = Union_make_material(my_absorption=100*4*0.231/66.4)
+AT (0,0,0) ABSOLUTE
+
+COMPONENT TiO2_incoherent = Incoherent_process(sigma=2.8716, packing_factor=1, unit_cell_volume=62.74, interact_fraction=0.8)
+AT (0,0,0) ABSOLUTE
+ROTATED (0,0,0) ABSOLUTE
+
+/*
+COMPONENT single_crystal_orientation_110_x = Arm()
+AT (0,0,0) ABSOLUTE
+ROTATED (0,45,0) ABSOLUTE
+
+COMPONENT single_crystal_orientation_110_vertical = Arm()
+AT (0,0,0) ABSOLUTE
+ROTATED (90,0,0) RELATIVE single_crystal_orientation_110_x
+*/
+
+COMPONENT TiO2_single_crystal = Single_crystal_process(
+          delta_d_d=0.0005, mosaic = 30.0,
+          ax = 3.25276,      ay = -3.25276,     az = -0.0,
+          bx = 3.25276,      by = 3.25276,     bz = -0.0,
+          cx = 0.0,      cy = 0.0,     cz = 2.9288,
+          reflections="TiO2.lau",barns=1,
+          packing_factor=1,powder=0,PG=0,interact_fraction=0.8)
+AT (0,0,0) ABSOLUTE
+ROTATED (0,0,0) ABSOLUTE
+
+COMPONENT TiO2 = Union_make_material(my_absorption=12.18076,
+  process_string="TiO2_incoherent,TiO2_single_crystal")
+AT (0,0,0) ABSOLUTE
+ROTATED (0,0,0) ABSOLUTE
+
+COMPONENT TiO2_poly_incoherent = Incoherent_process(sigma=2.8716, packing_factor=1, unit_cell_volume=62.74, interact_fraction=-1)
+AT (0,0,0) ABSOLUTE
+ROTATED (0,0,0) ABSOLUTE
+
+//COMPONENT TiO2_poly_powder = Powder_process(reflections="TiO2.lau")
+//AT (0,0,0) ABSOLUTE
+
+COMPONENT TiO2_poly = Union_make_material(my_absorption=12.18076,
+//  process_string="TiO2_poly_incoherent,TiO2_poly_powder")
+  process_string="TiO2_poly_incoherent")
+AT (0,0,0) ABSOLUTE
+ROTATED (0,0,0) ABSOLUTE
+
+// Boronated Al, 4.5% Boron
+COMPONENT Al_incoherent_B = Incoherent_process(sigma=4*0.0082,packing_factor=1,unit_cell_volume=66.4) //,interact_fraction=0.8)
+AT (0,0,0) ABSOLUTE
+
+COMPONENT Al_powder_B = Powder_process(reflections="Al.laz")
+AT (0,0,0) ABSOLUTE
+
+// Approx 1mm free path in this material % 767
+//COMPONENT Al_B = Union_make_material(my_absorption=100*(4*0.231*0.955+4*3835*0.045)/66.4,process_string="Al_incoherent_B,Al_powder_B")
+COMPONENT Al_B = Union_make_material(my_absorption=100*(4*0.231*0.955+4*767*0.045)/66.4,process_string="Al_incoherent_B,Al_powder_B")
+AT (0,0,0) ABSOLUTE
+
+COMPONENT Arm0 = Progress_bar()
+  AT (0,0,0) ABSOLUTE
+
+// 1 cm after end of guide
+
+
+
+COMPONENT Guide_end = Virtual_input(filename=virtual_file_name,repeat_count=repeat_count)
+  AT (0,0,0) ABSOLUTE
+  ROTATED (0,0,0) ABSOLUTE
+/*
+  COMPONENT Guide_end = Arm()
+  AT (0,0,0) ABSOLUTE
+  
+
+COMPONENT PSD_monitor_guide_end = PSD_monitor(xmin=-0.1, xmax=0.1, ymin=-0.1, ymax=0.1,
+            nx=100, ny=100, filename="guide_end_PSD.dat",restore_neutron=1)
+AT (0,0,0.000001) RELATIVE PREVIOUS
+ROTATED (0,0,0) RELATIVE PREVIOUS
+*/
+COMPONENT main_slit = Slit(xwidth=slit_h,yheight=slit_v)
+  AT (0,0,dist_mono_L1_pos - dist_slit1 - dmtas_guide_len - 0.01 - 0.227) RELATIVE Guide_end
+  ROTATED (0,0,0) RELATIVE Guide_end
+
+COMPONENT target = Arm()	/*no sample in the simulation*/
+  AT (0,0,dist_mono_L1_pos - dist_slit1 - dmtas_guide_len - 0.01) RELATIVE Guide_end
+  ROTATED (0, 0, 0) RELATIVE Guide_end
+
+
+
+/*
+// These monitors create a bug, and are not needed.
+COMPONENT EPSD_monitor_sample = EPSD_monitor(xmin=-0.1, xmax=0.1, ymin=-0.1, ymax=0.1,
+   Emin=1, Emax=50, nx=90, nE=90, filename="sample_EPSD",restore_neutron=1)
+AT (0,0,-0.05) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+
+COMPONENT PSD_monitor_guide_end = PSD_monitor(xmin=-0.1, xmax=0.1, ymin=-0.1, ymax=0.1,
+            nx=90, ny=90, filename="sample_PSD.dat",restore_neutron=1)
+AT (0,0,0.000001) RELATIVE PREVIOUS
+ROTATED (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT Divergence_monitor_sample = Divergence_monitor(nh=100, nv=100, filename="sample_divergence.dat",
+    xmin=-0.1, xmax=0.1, ymin=-0.1, ymax=0.1,maxdiv_h=6, maxdiv_v=4,restore_neutron=1)
+AT (0,0,0.000001) RELATIVE PREVIOUS
+ROTATED (0,0,0) RELATIVE PREVIOUS
+*/
+
+
+COMPONENT cryostat_center = Arm()
+AT (0.008,0,0.0015) RELATIVE target // Crystal offset slightly in this experiment, and entire cryostat is rotated with it.
+ROTATED (0,0,0) RELATIVE target
+
+COMPONENT drum_center = Arm()
+AT (0,0.603,0) RELATIVE cryostat_center
+ROTATED (0,0,0) RELATIVE cryostat_center
+
+COMPONENT crystal_assembly = Arm()
+AT (0,0,0) RELATIVE target
+ROTATED (0,A3_angle,0) RELATIVE target
+
+COMPONENT crystal_axis = Arm()
+AT (0,0,0) RELATIVE crystal_assembly
+ROTATED (60.0,0.0,0.0) RELATIVE crystal_assembly
+
+
+// Sample at beam spot (larger than needed, then masked
+// V1
+COMPONENT sample = Union_box(xwidth=0.00215,yheight=0.00165,zdepth=0.00065, priority=100, material_string="TiO2")
+AT (0,0,0) RELATIVE crystal_assembly
+ROTATED (0,0,0) RELATIVE crystal_axis
+
+COMPONENT sample_plate = Union_cylinder(
+    radius=0.006, yheight=0.002, priority=2,
+    material_string="Al")
+AT (0,plate_distance,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE crystal_axis
+
+COMPONENT sample_plate_rod = Union_cylinder(radius=0.00125, yheight=0.0633, priority=3, material_string="Al")
+AT (0,2.0*plate_distance+0.0315,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+
+COMPONENT sample_base = Union_cylinder(radius=0.0065, yheight=0.013, priority=4, material_string="Al")
+AT (0,0.0628,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+
+COMPONENT sample_base_gap = Union_cylinder(radius=0.004, yheight=0.009, priority=5, material_string="Vacuum")
+AT (0,0.0668,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+
+
+// V13
+COMPONENT cryostat_mountin_plate = Union_cylinder(radius=0.215,yheight=0.01,priority=7,material_string="Al",number_of_activations=number_of_activations_normal)
+AT (0,-0.147,0) RELATIVE cryostat_center
+ROTATED (0,0,0) RELATIVE cryostat_center
+
+
+
+// V14
+COMPONENT cryostat_drum_walls = Union_cylinder(radius=0.1975,yheight=0.800,priority=8,material_string="Al",number_of_activations=number_of_activations_normal)
+AT (0,0,0) RELATIVE drum_center
+ROTATED (0,0,0) RELATIVE drum_center
+
+// V15
+COMPONENT cryostat_drum_vacuum = Union_cylinder(radius=0.19,yheight=0.790,priority=9,material_string="Vacuum",number_of_activations=number_of_activations_normal)
+AT (0,0,0) RELATIVE drum_center
+ROTATED (0,0,0) RELATIVE drum_center
+
+// V16
+COMPONENT outer_cryostat_wall = Union_cylinder(radius=0.180,yheight=0.355,priority=10,material_string="Al",p_interact=0.20,number_of_activations=number_of_activations_normal)
+AT (0,0.032,0) RELATIVE cryostat_center
+ROTATED (0,0,0) RELATIVE cryostat_center
+
+// V17
+COMPONENT outer_cryostat_vacuum = Union_cylinder(radius=0.178,yheight=0.355,priority=11,material_string="Vacuum",number_of_activations=number_of_activations_normal)
+AT (0,0.037,0) RELATIVE cryostat_center
+ROTATED (0,0,0) RELATIVE cryostat_center
+
+// V18
+COMPONENT inner_cryostat_wall = Union_cylinder(radius=0.052,yheight=0.16,priority=12,material_string="Al",p_interact=0.20,number_of_activations=number_of_activations_normal)
+AT (0,0.01,0) RELATIVE cryostat_center
+ROTATED (0,0,0) RELATIVE cryostat_center
+
+// V19
+COMPONENT inner_cryostat_vacuum = Union_cylinder(radius=0.05,yheight=0.15,priority=13,material_string="Vacuum",number_of_activations=number_of_activations_normal)
+AT (0,0.01,0) RELATIVE cryostat_center
+ROTATED (0,0,0) RELATIVE cryostat_center
+
+// V20
+COMPONENT sample_stick_walls = Union_cylinder(radius=0.04,yheight=0.935,priority=14,material_string="Al",number_of_activations=number_of_activations_normal)
+AT (0,0.555,0) RELATIVE cryostat_center
+ROTATED (0,0,0) RELATIVE cryostat_center
+
+// V21
+COMPONENT sample_stick_vacuum = Union_cylinder(radius=0.035,yheight=0.94,priority=15,material_string="Vacuum",number_of_activations=number_of_activations_normal)
+AT (0,0.55,0) RELATIVE cryostat_center
+ROTATED (0,0,0) RELATIVE cryostat_center
+
+
+COMPONENT sample_rod_bottom = Arm()
+AT (0,0.06+stick_displacement,0) RELATIVE cryostat_center
+ROTATED (0,85,0) RELATIVE cryostat_center
+
+// V22
+COMPONENT sample_rod = Union_cylinder(radius=0.0075,yheight=1,priority=25,material_string="Al",number_of_activations=number_of_activations_normal)
+AT (0,0.5,0) RELATIVE sample_rod_bottom
+ROTATED (0,0,0) RELATIVE sample_rod_bottom
+
+// V23
+COMPONENT sample_rod_collar_1 = Union_cylinder(radius=0.034,yheight=0.02,priority=17,material_string="Al",number_of_activations=number_of_activations_normal)
+AT (0,0.048,0) RELATIVE sample_rod_bottom
+ROTATED (0,0,0) RELATIVE sample_rod_bottom
+
+// V24
+COMPONENT sample_rod_collar_2 = Union_cylinder(radius=0.034,yheight=0.02,priority=18,material_string="Al",number_of_activations=number_of_activations_normal)
+AT (0,0.14,0) RELATIVE sample_rod_bottom
+ROTATED (0,0,0) RELATIVE sample_rod_bottom
+
+// V25
+COMPONENT sample_rod_collar_3 = Union_cylinder(radius=0.034,yheight=0.02,priority=19,material_string="Al",number_of_activations=number_of_activations_normal)
+AT (0,0.34,0) RELATIVE sample_rod_bottom
+ROTATED (0,0,0) RELATIVE sample_rod_bottom
+
+// V26
+COMPONENT sample_rod_collar_4 = Union_cylinder(radius=0.034,yheight=0.02,priority=20,material_string="Al",number_of_activations=number_of_activations_normal)
+AT (0,0.635,0) RELATIVE sample_rod_bottom
+ROTATED (0,0,0) RELATIVE sample_rod_bottom
+
+// V27
+COMPONENT sample_rod_collar_1_vacuum = Union_cylinder(radius=0.03,yheight=0.016,priority=21,material_string="Vacuum",number_of_activations=number_of_activations_normal)
+AT (0,0.048-0.005,0) RELATIVE sample_rod_bottom
+ROTATED (0,0,0) RELATIVE sample_rod_bottom
+
+// V28
+COMPONENT sample_rod_collar_2_vacuum = Union_cylinder(radius=0.03,yheight=0.016,priority=22,material_string="Vacuum",number_of_activations=number_of_activations_normal)
+AT (0,0.14-0.005,0) RELATIVE sample_rod_bottom
+ROTATED (0,0,0) RELATIVE sample_rod_bottom
+
+// V29
+COMPONENT sample_rod_collar_3_vacuum = Union_cylinder(radius=0.03,yheight=0.016,priority=23,material_string="Vacuum",number_of_activations=number_of_activations_normal)
+AT (0,0.34-0.005,0) RELATIVE sample_rod_bottom
+ROTATED (0,0,0) RELATIVE sample_rod_bottom
+
+// V30
+COMPONENT sample_rod_collar_4_vacuum = Union_cylinder(radius=0.03,yheight=0.016,priority=24,material_string="Vacuum",number_of_activations=number_of_activations_normal)
+AT (0,0.635-0.005,0) RELATIVE sample_rod_bottom
+ROTATED (0,0,0) RELATIVE sample_rod_bottom
+
+
+// Exit volume for resolution mode
+// V31
+COMPONENT resolution_sample_exit = Union_cylinder(radius=1.01*res_radius, yheight=1.01*res_height, priority=51,
+    material_string="Exit",number_of_activations=number_of_activations_exit)
+AT (0,0,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+
+/*
+COMPONENT logger_2DQ_plane_all = Union_logger_2DQ(
+  filename="2DQ_scat_plane_all.dat",target_geometry="cylinder_sample_union",target_process="NaCaNi2F7_single_crystal",
+  n1=200,Q_direction_1="z",Q1_min=-4,Q1_max=4,
+  n2=200,Q_direction_2="x",Q2_min=-4,Q2_max=4)
+AT (0,0,0) RELATIVE target
+
+COMPONENT logger_2DQ_off_plane_all = Union_logger_2DQ(
+  filename="2DQ_out_of_scat_plane_all.dat",target_geometry="cylinder_sample_union",target_process="NaCaNi2F7_single_crystal",
+  n1=200,Q_direction_1="z",Q1_min=-4,Q1_max=4,
+  n2=200,Q_direction_2="y",Q2_min=-4,Q2_max=4)
+AT (0,0,0) RELATIVE target
+
+COMPONENT logger_2DQ_plane_1 = Union_logger_2DQ(
+  filename="2DQ_scat_plane_1.dat",target_geometry="cylinder_sample_union",target_process="NaCaNi2F7_single_crystal",
+  n1=200,Q_direction_1="z",Q1_min=-4,Q1_max=4,
+  n2=200,Q_direction_2="x",Q2_min=-4,Q2_max=4,order_total=1)
+AT (0,0,0) RELATIVE target
+
+COMPONENT logger_2DQ_off_plane_1 = Union_logger_2DQ(
+  filename="2DQ_out_of_scat_plane_1.dat",target_geometry="cylinder_sample_union",target_process="NaCaNi2F7_single_crystal",
+  n1=200,Q_direction_1="z",Q1_min=-4,Q1_max=4,
+  n2=200,Q_direction_2="y",Q2_min=-4,Q2_max=4,order_total=1)
+AT (0,0,0) RELATIVE target
+
+COMPONENT logger_2DQ__plane_2 = Union_logger_2DQ(
+  filename="2DQ_scat_plane_2.dat",target_geometry="cylinder_sample_union",target_process="NaCaNi2F7_single_crystal",
+  n1=200,Q_direction_1="z",Q1_min=-4,Q1_max=4,
+  n2=200,Q_direction_2="x",Q2_min=-4,Q2_max=4,order_total=2)
+AT (0,0,0) RELATIVE target
+
+COMPONENT logger_2DQ_off_plane_2 = Union_logger_2DQ(
+  filename="2DQ_out_of_scat_plane_2.dat",target_geometry="cylinder_sample_union",target_process="NaCaNi2F7_single_crystal",
+  n1=200,Q_direction_1="z",Q1_min=-4,Q1_max=4,
+  n2=200,Q_direction_2="y",Q2_min=-4,Q2_max=4,order_total=2)
+AT (0,0,0) RELATIVE target
+
+*/
+/*
+COMPONENT logger_space_zx_all = Union_logger_2D_space(
+  filename="space_horizontal.dat",
+  n1=2000,D_direction_1="z",D1_min=-0.5,D1_max=1.5,
+  n2=1200,D_direction_2="x",D2_min=-0.6,D2_max=0.6)
+AT (0,0,0) RELATIVE target
+
+COMPONENT logger_space_zy_all = Union_logger_2D_space(
+  filename="space_vertical.dat",
+  n1=2000,D_direction_1="z",D1_min=-0.5,D1_max=1.5,
+  n2=750,D_direction_2="y",D2_min=-0.3,D2_max=1.2)
+AT (0,0,0) RELATIVE target
+
+COMPONENT logger_space_zx_all_small = Union_logger_2D_space(
+  filename="space_horizontal_small.dat",
+  n1=600,D_direction_1="z",D1_min=-0.045,D1_max=0.045,
+  n2=600,D_direction_2="x",D2_min=-0.045,D2_max=0.045)
+AT (0,0,0) RELATIVE target
+
+COMPONENT logger_space_zy_all_small = Union_logger_2D_space(
+  filename="space_vertical_small.dat",
+  n1=600,D_direction_1="z",D1_min=-0.045,D1_max=0.045,
+  n2=900,D_direction_2="y",D2_min=-0.015,D2_max=0.075)
+AT (0,0,0) RELATIVE target
+
+COMPONENT logger_space_zx_all_small_sample = Union_logger_2D_space(
+  target_geometry="cylinder_sample_union,NaCaNi2F7_poly_rod,Al_plate,poly_rod_sheild,sample_holder_base_sheild,sample_holder_base_Al,poly_rod_sheild,end_shield_box",
+  filename="space_horizontal_small_sample.dat",
+  n1=600,D_direction_1="z",D1_min=-0.045,D1_max=0.045,
+  n2=600,D_direction_2="x",D2_min=-0.045,D2_max=0.045)
+AT (0,0,0) RELATIVE target
+
+COMPONENT logger_space_zy_all_small_sample = Union_logger_2D_space(
+  target_geometry="cylinder_sample_union,NaCaNi2F7_poly_rod,Al_plate,poly_rod_sheild,sample_holder_base_sheild,sample_holder_base_Al,poly_rod_sheild,end_shield_box",
+  filename="space_vertical_small_sample.dat",
+  n1=600,D_direction_1="z",D1_min=-0.045,D1_max=0.045,
+  n2=900,D_direction_2="y",D2_min=-0.015,D2_max=0.075)
+AT (0,0,0) RELATIVE target
+
+COMPONENT logger_space_xy_all_small_sample = Union_logger_2D_space(
+  target_geometry="cylinder_sample_union,NaCaNi2F7_poly_rod,Al_plate,poly_rod_sheild,sample_holder_base_sheild,sample_holder_base_Al,poly_rod_sheild,end_shield_box",
+  filename="space_beam_dir_small_sample.dat",
+  n1=600,D_direction_1="x",D1_min=-0.045,D1_max=0.045,
+  n2=900,D_direction_2="y",D2_min=-0.015,D2_max=0.075)
+AT (0,0,0) RELATIVE target
+*/
+
+
+
+COMPONENT sample_cryostat = Union_master(enable_conditionals=0)
+AT(0,0,0) RELATIVE target
+EXTEND %{
+  scatter_events_in_sample = scattered_flag[1];
+  scatter_events_in_sample_environment = number_of_scattering_events - scatter_events_in_sample;
+  if (scatter_events_in_sample_environment == 0) only_sample_scattering = 1;
+  else only_sample_scattering = 0;
+  
+  //number_of_volumes_sample_main = number_of_volumes;
+  
+  for (flag_index=0;flag_index<number_of_volumes;flag_index++) scattering_history_sample_master[flag_index] = scattered_flag[flag_index];
+%}
+
+
+
+COMPONENT Resolution_sample = Res_sample(thickness=0.008, radius=res_radius, yheight=res_height, E0=E0_resolution, dE=dE_resolution,
+    target_x=sin(DEG2RAD*kidney_angle), target_y=0, target_z=cos(DEG2RAD*kidney_angle), focus_aw=155, focus_ah=10)
+WHEN (resolution_mode == 1)
+AT (0,0,0) RELATIVE target
+
+
+// Uncomment second Union master to have scattering with cryostat after resolution sample, but this breaks the ability
+//  for loggers to work accros the three Union masters when the instrument is NOT in resolution mode.
+/*
+// Second
+COMPONENT sample_cryostat_after = Union_master(allow_inside_start=1,enable_conditionals=0,inherit_number_of_scattering_events=1)
+WHEN (resolution_mode == 1)
+AT(0,0,0) RELATIVE target
+EXTEND %{
+    vlength=vx*vx+vy*vy+vz*vz;
+    E=VS2E*(vx*vx+vy*vy+vz*vz);
+    if (fabs(dmtas_sou_E0 - E) > 0.5) E_off = 1;
+    else E_off = 0;
+
+%}
+*/
+
+
+// USED MONITORS
+// Monitors to be included in both Union_masters
+
+
+// Monitors just before the kidney
+/*
+COMPONENT banana_detector = Monitor_nD(
+xwidth=2*(target_filter_dist-0.01),yheight=0.2, filename="banana_A4.dat",
+options = "banana, theta limits=[-150,150], bins=600, y, bins=20",restore_neutron=1)
+AT (0,0,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+
+COMPONENT banana_detector_1D = Monitor_nD(
+xwidth=2*(target_filter_dist-0.01),yheight=0.2, filename="banana_A4_1D.dat",
+options = "banana, theta limits=[-150,150], bins=600",restore_neutron=1)
+AT (0,0,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+*/
+
+COMPONENT post_sample_beamstop = Beamstop(xwidth=0.04,yheight=0.15)
+AT (0,0,0.22) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+
+
+
+
+/*
+COMPONENT banana_energy = Monitor_nD(
+xwidth=target_filter_dist-0.01,yheight=0.2,
+options = "banana, theta limits=[-120,120], bins=200, energy limits=[4 6], bins=21",restore_neutron=1)
+AT (0,0,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+*/
+
+/*
+COMPONENT banana_energy_wavevector = Monitor_nD(
+xwidth=target_filter_dist-0.01,yheight=analyzator_height,
+options = "banana, wavevector limits=[0,4.5], bins=200, energy limits=[0 60], bins=200",restore_neutron=1)
+AT (0,0,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+
+COMPONENT banana_theta_wavevector = Monitor_nD(
+xwidth=target_filter_dist-0.01,yheight=analyzator_height,
+options = "banana, theta limits=[-120,120], bins=200, wavevector limits=[0,4.5], bins=200",restore_neutron=1)
+AT (0,0,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+*/
+
+
+
+%include "generated_includes/kidney_trace.c"
+
+
+
+FINALLY
+%{
+%}
+
+END
+
+
+

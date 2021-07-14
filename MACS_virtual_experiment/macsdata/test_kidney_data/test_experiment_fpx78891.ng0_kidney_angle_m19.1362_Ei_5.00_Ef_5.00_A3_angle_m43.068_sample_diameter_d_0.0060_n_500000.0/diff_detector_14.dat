@@ -1,0 +1,76 @@
+# Format: McCode with text headers
+# URL: http://www.mccode.org
+# Creator: McStas 2.7 - Nov. 27, 2020
+# Instrument: MACS_sample_kidney_cylinder.instr
+# Ncount: 2592532
+# Trace: no
+# Gravitation: no
+# Seed: 1624780723
+# Directory: test_experiment_fpx78891.ng0_kidney_angle_m19.1362_Ei_5.00_Ef_5.00_A3_angle_m43.068_sample_diameter_d_0.0060_n_500000.0
+# Param: A3_angle=-43.0676
+# Param: kidney_angle=-19.1362
+# Param: EM=5
+# Param: EF_all=4.99757
+# Param: HF=1
+# Param: VF=1
+# Param: sample_diameter_d=0.006
+# Param: beta_1=1.01646
+# Param: beta_2=2.3076
+# Param: CPF=0
+# Param: MPL=6.06
+# Param: MPD=0.775
+# Param: APE_h=0.35
+# Param: APE_v=0.35
+# Param: misalign_mono_deg=0.15
+# Param: DIRDEV=0
+# Param: DIVSOU=3
+# Param: L0_delta=-1.06
+# Param: L1_delta=0
+# Param: mon_t=0
+# Param: mon_e=0
+# Param: monrot_delta=0
+# Param: slit_h=0.2
+# Param: slit_v=0.2
+# Param: resolution_mode=0
+# Param: res_radius=0.01
+# Param: res_height=0.03
+# Param: repeat_count=2
+# Param: E0_resolution=4.99757
+# Param: dE_resolution=1
+# Date: Sun Jun 27 02:46:13 2021 (1624776373)
+# type: array_2d(5, 5)
+# Source: dmtas (MACS_sample_kidney_cylinder.instr)
+# component: diffraction_detector_14
+# position: 0.313149 0 1.27304
+# title: PSD monitor
+# Ncount: 2592532
+# filename: diff_detector_14.dat
+# statistics: X0=-0.239601; dX=0.695445; Y0=-0.598186; dY=3.42863;
+# signal: Min=3.37255e-06; Max=32.2475; Mean=5.29877;
+# values: 132.469 34.4755 109
+# xvar: X
+# yvar: Y
+# xlabel: X position [cm]
+# ylabel: Y position [cm]
+# zvar: I
+# zlabel: Signal per bin
+# xylimits: -1.8 1.8 -7 7
+# variables: I I_err N
+# Data [diffraction_detector_14/diff_detector_14.dat] I:
+0.003537235576 0.03690894929 9.240423852 1.056142875 0.6572937304 
+20.2161215 6.678613997 32.24754169 2.393091853 0.7442418716 
+0.5735202677 3.428278841 13.06963015 7.380489587 3.372550211e-06 
+0.05985593573 2.09674308 6.253377806 5.108849443 0.0001531189502 
+1.083412497 11.70068252 3.469139922 4.953121848 0.018036612 
+# Errors [diffraction_detector_14/diff_detector_14.dat] I_err:
+0.002702582728 0.02405957768 5.040732687 1.127004304 0.6852390422 
+14.1426082 6.036399093 28.62338177 2.923266402 0.4946372246 
+0.3723348567 1.975730385 10.06343327 5.589261888 3.372550211e-06 
+0.06419132086 1.917606525 4.452934063 3.458209647 0.0001873109735 
+0.5976991616 7.025967824 2.105287085 4.176284117 0.02209024805 
+# Events [diffraction_detector_14/diff_detector_14.dat] N:
+3 3 8 4 3 
+4 6 7 2 5 
+6 4 6 2 1 
+4 4 5 6 2 
+5 8 5 4 2 

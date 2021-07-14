@@ -1,0 +1,76 @@
+# Format: McCode with text headers
+# URL: http://www.mccode.org
+# Creator: McStas 2.7 - Nov. 27, 2020
+# Instrument: MACS_sample_kidney_cylinder.instr
+# Ncount: 2592532
+# Trace: no
+# Gravitation: no
+# Seed: 1624780806
+# Directory: test_experiment_fpx78891.ng0_kidney_angle_m19.1362_Ei_5.00_Ef_5.00_A3_angle_m42.867_sample_diameter_d_0.0060_n_500000.0
+# Param: A3_angle=-42.8672
+# Param: kidney_angle=-19.1362
+# Param: EM=5
+# Param: EF_all=4.99757
+# Param: HF=1
+# Param: VF=1
+# Param: sample_diameter_d=0.006
+# Param: beta_1=1.01646
+# Param: beta_2=2.3076
+# Param: CPF=0
+# Param: MPL=6.06
+# Param: MPD=0.775
+# Param: APE_h=0.35
+# Param: APE_v=0.35
+# Param: misalign_mono_deg=0.15
+# Param: DIRDEV=0
+# Param: DIVSOU=3
+# Param: L0_delta=-1.06
+# Param: L1_delta=0
+# Param: mon_t=0
+# Param: mon_e=0
+# Param: monrot_delta=0
+# Param: slit_h=0.2
+# Param: slit_v=0.2
+# Param: resolution_mode=0
+# Param: res_radius=0.01
+# Param: res_height=0.03
+# Param: repeat_count=2
+# Param: E0_resolution=4.99757
+# Param: dE_resolution=1
+# Date: Sun Jun 27 02:46:56 2021 (1624776416)
+# type: array_2d(5, 5)
+# Source: dmtas (MACS_sample_kidney_cylinder.instr)
+# component: diffraction_detector_9
+# position: -0.424139 0 1.23264
+# title: PSD monitor
+# Ncount: 2592532
+# filename: diff_detector_9.dat
+# statistics: X0=0.648854; dX=1.27581; Y0=2.7554; dY=0.640186;
+# signal: Min=0; Max=1044.49; Mean=58.2663;
+# values: 1456.66 1118.47 46
+# xvar: X
+# yvar: Y
+# xlabel: X position [cm]
+# ylabel: Y position [cm]
+# zvar: I
+# zlabel: Signal per bin
+# xylimits: -1.8 1.8 -7 7
+# variables: I I_err N
+# Data [diffraction_detector_9/diff_detector_9.dat] I:
+0 1.885619175e-12 0.007205446752 4.038097436 0 
+0 7.688063851 0.7356983325 2.069687966e-09 4.927795846e-13 
+0.09519230635 1.781550439e-06 0.009138087776 0.2111584689 0 
+385.9655484 7.019788763 0.2983928824 0 1044.489726 
+0.3608564194 0 2.203683347 0.02693228534 3.506956748 
+# Errors [diffraction_detector_9/diff_detector_9.dat] I_err:
+0 1.885619175e-12 0.008317147927 4.038097436 0 
+0 6.2077572 0.8926346076 2.069687966e-09 4.927795846e-13 
+0.09519230635 1.781550439e-06 0.009138087776 0.2111584689 0 
+420.6164172 6.703372859 0.3654551056 0 1139.645979 
+0.3608564194 0 1.217656866 0.02693228534 4.029569771 
+# Events [diffraction_detector_9/diff_detector_9.dat] N:
+0 1 3 1 0 
+1 6 2 1 1 
+1 1 1 1 0 
+4 6 2 0 5 
+1 0 5 1 2 

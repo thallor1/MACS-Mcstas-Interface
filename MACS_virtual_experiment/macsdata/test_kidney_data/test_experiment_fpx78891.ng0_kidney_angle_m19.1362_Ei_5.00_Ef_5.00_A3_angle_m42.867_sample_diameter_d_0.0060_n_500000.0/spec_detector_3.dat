@@ -1,0 +1,76 @@
+# Format: McCode with text headers
+# URL: http://www.mccode.org
+# Creator: McStas 2.7 - Nov. 27, 2020
+# Instrument: MACS_sample_kidney_cylinder.instr
+# Ncount: 2592532
+# Trace: no
+# Gravitation: no
+# Seed: 1624780806
+# Directory: test_experiment_fpx78891.ng0_kidney_angle_m19.1362_Ei_5.00_Ef_5.00_A3_angle_m42.867_sample_diameter_d_0.0060_n_500000.0
+# Param: A3_angle=-42.8672
+# Param: kidney_angle=-19.1362
+# Param: EM=5
+# Param: EF_all=4.99757
+# Param: HF=1
+# Param: VF=1
+# Param: sample_diameter_d=0.006
+# Param: beta_1=1.01646
+# Param: beta_2=2.3076
+# Param: CPF=0
+# Param: MPL=6.06
+# Param: MPD=0.775
+# Param: APE_h=0.35
+# Param: APE_v=0.35
+# Param: misalign_mono_deg=0.15
+# Param: DIRDEV=0
+# Param: DIVSOU=3
+# Param: L0_delta=-1.06
+# Param: L1_delta=0
+# Param: mon_t=0
+# Param: mon_e=0
+# Param: monrot_delta=0
+# Param: slit_h=0.2
+# Param: slit_v=0.2
+# Param: resolution_mode=0
+# Param: res_radius=0.01
+# Param: res_height=0.03
+# Param: repeat_count=2
+# Param: E0_resolution=4.99757
+# Param: dE_resolution=1
+# Date: Sun Jun 27 02:46:56 2021 (1624776416)
+# type: array_2d(5, 5)
+# Source: dmtas (MACS_sample_kidney_cylinder.instr)
+# component: spec_detector_3
+# position: -1.20549 0 0.577909
+# title: PSD monitor
+# Ncount: 2592532
+# filename: spec_detector_3.dat
+# statistics: X0=0.0921419; dX=0.323998; Y0=-0.00894539; dY=0.15801;
+# signal: Min=0; Max=62.2357; Mean=3.10502;
+# values: 77.6254 65.4004 15
+# xvar: X
+# yvar: Y
+# xlabel: X position [cm]
+# ylabel: Y position [cm]
+# zvar: I
+# zlabel: Signal per bin
+# xylimits: -1.8 1.8 -7 7
+# variables: I I_err N
+# Data [spec_detector_3/spec_detector_3.dat] I:
+0 0 0 0 0 
+0 0 0 0.1826104434 0.06538600467 
+0 2.994575708 62.23567551 11.67908245 0.4681077452 
+0 1.219728444e-13 0 0 0 
+0 0 0 0 0 
+# Errors [spec_detector_3/spec_detector_3.dat] I_err:
+0 0 0 0 0 
+0 0 0 0.1826104434 0.06538600467 
+0 3.44733351 76.22280315 13.48584275 0.517175803 
+0 1.219728444e-13 0 0 0 
+0 0 0 0 0 
+# Events [spec_detector_3/spec_detector_3.dat] N:
+0 0 0 0 0 
+0 0 0 1 1 
+0 3 2 3 4 
+0 1 0 0 0 
+0 0 0 0 0 

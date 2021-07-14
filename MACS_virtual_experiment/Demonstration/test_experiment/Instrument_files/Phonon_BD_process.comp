@@ -1,0 +1,403 @@
+/*******************************************************************************
+*
+*  McStas, neutron ray-tracing package
+*  Copyright(C) 2007 Risoe National Laboratory.
+*
+* %I
+* Written by: Mads Bertelsen
+* Date: 20.08.15
+* Version: $Revision: 0.1 $
+* Origin: Svanevej 19
+*
+*
+* %D
+*
+* This is a template for a new contributor to create their own physical process.
+* The comments in this file are meant to teach the user about creating their own
+*  process file, rather than explaining this one. For comments on how this code works,
+*  look in the Incoherent_process.comp.
+*
+* Part of the Union components, a set of components that work together and thus
+*  sperates geometry and physics within McStas.
+* The use of this component requires other components to be used.
+*
+* 1) One specifies a number of processes using process components like this one
+* 2) These are gathered into material definitions using Union_make_material
+* 3) Geometries are placed using Union_box / Union_cylinder, assigned a material
+* 4) A Union_master component placed after all of the above
+*
+* Only in step 4 will any simulation happen, and per default all geometries
+*  defined before the master, but after the previous will be simulated here.
+*
+* There is a dedicated manual available for the Union_components
+*
+*
+* Algorithm:
+* Described elsewhere
+*
+* %P
+* INPUT PARAMETERS:
+* unit_cell_volume: [AA^3]   Unit cell volume
+* a: [AA]   fcc lattice constant
+* c: [meV*AA]  Velocity of sound
+* M: [unit]  Nucleus atomic mass in units
+* b: [fm] scattring length
+*
+* OUTPUT PARAMETERS:
+* Template_storage          // Important to update this output paramter
+* effective_my_scattering   // Variable used in initialize
+*
+* %L
+*
+* %E
+******************************************************************************/
+
+DEFINE COMPONENT Template_process // Remember to change the name of process here
+DEFINITION PARAMETERS ()
+SETTING PARAMETERS(packing_factor=1,unit_cell_volume=13.8,interact_fraction=-1,a=4.95,c=10,M=207.2,b=9.4)
+OUTPUT PARAMETERS (This_process,Template_storage,effective_my_scattering)
+
+SHARE
+%{
+#ifndef Union
+#define Union $Revision: 0.8 $
+
+#include "Union_functions.c"
+#include "Union_initialization.c"
+
+#endif
+
+// Very important to add a pointer to this struct in the Union_functions.c file
+struct Template_physics_storage_struct{
+    // Variables that needs to be transfered between any of the following places:
+    // The initialize in this component
+    // The function for calculating my
+    // The function for calculating scattering
+    double k_final;
+    double k_init;
+    double kk_x;
+    double kk_y;
+    double kk_z;
+    double ki_x;
+    double ki_y;
+    double ki_z;
+    double aa;
+    double cc;
+    double solid_angle;
+    // Avoid duplicates of output parameters and setting parameters in naming
+    double my_scattering;
+};
+
+/* Ridder's false position algorithm for finding roots. */
+#define UNLIKELY_ANS (-1.11e30)
+#define MAXITER 60
+
+void rooterror(char *s) {
+  //printf(stderr, "%s\n",s);
+  //printf("Det hele fejler !!!! %s\n",s);
+  exit(1);
+}
+
+double zriddr (double (*func)(union data_transfer_union*), double x1, double x2, double xacc, union data_transfer_union *func_parameters) {
+  int j;
+  double ans, f_high, f_low, f_mid, f_new, s, x_high, x_low, x_mid, x_new;
+  //printf("Naar vi her til? Ridder\n");
+  func_parameters->pointer_to_a_Template_physics_storage_struct->k_final = x1;
+  f_low = (*func)(func_parameters);
+  func_parameters->pointer_to_a_Template_physics_storage_struct->k_final = x2;
+  f_high = (*func)(func_parameters);
+
+  if (f_low * f_high >= 0) {
+    //printf("brackets\n");
+    // Check if the brackets are roots
+    if ((f_low) == 0) { return x1;}
+    if ((f_high) == 0) {return x2;}
+    return UNLIKELY_ANS;
+  } else {
+    //printf("meat\n");
+    x_low = x1;
+    x_high = x2;
+    ans = UNLIKELY_ANS;
+    for (j = 1; j<MAXITER; j++) {
+      //printf("Ridder loop %d\n",j);
+      x_mid = 0.5*(x_low + x_high);
+      func_parameters->pointer_to_a_Template_physics_storage_struct->k_final = x_mid;
+      f_mid = (*func)(func_parameters);                                            // 1 of 2 function evaluations per iteration.
+      s = sqrt(f_mid*f_mid - f_low*f_high);
+      if (s == 0) return ans;
+      x_new = x_mid + (x_mid-x_low) * ((f_low >= f_high ? 1.0 : -1.0) * f_mid/s); // Update formula.
+      if (fabs(x_new-ans) <= xacc) return ans;
+      ans = x_new;
+      func_parameters->pointer_to_a_Template_physics_storage_struct->k_final = ans;
+      f_new = (*func)(func_parameters);                                           // 2 of 2 function evaluations per iteration.
+      if (f_new == 0.0) return ans;
+      if (fabs(f_mid)*SIGN(f_new) != f_mid) {                                     // Bookkeeping
+        x_low = x_mid;
+        f_low = f_mid;
+        x_high = ans;
+        f_high = f_new;
+      } else if (fabs(f_low)*SIGN(f_new) != f_low) {
+        x_high = ans;
+        f_high = f_new;
+      } else if (fabs(f_high)*SIGN(f_new) != f_high) {
+        x_low = ans;
+        f_low = f_new;
+      } else {
+        rooterror("zriddr failed to find roots!");
+      }
+      if (fabs(x_high-x_low) <= xacc) return ans;
+    }
+    rooterror("zriddr exceeded maximum iterations!");
+  }
+  //printf("Naar vi her til? Ridder 0.0\n");
+  return 0.0;
+}
+/* END OF Ridder's algorithm. */
+
+/* Root finding function using Ridder's algorithm. */
+# define ROOTACC 1e-8
+void findroots (double low, double mid, double high, double *rootlist,int *listindex, double (*func)(union data_transfer_union*), union data_transfer_union *func_parameters)
+{
+  double root, x1,x2;
+  double range = mid-low;
+  int steps = 100;
+  //printf("Naar vi her til?\n");
+  for (int j=1; j<steps; j++) {
+    x1 = low+range*j/(int)steps;
+    x2 = low+range*(j+1)/(int)steps;
+    //printf("%d\n",j);
+    root = zriddr(func,x1,x2,ROOTACC, func_parameters);
+    //printf("Ridder output: %f\n", root);
+    if (root != UNLIKELY_ANS){
+      rootlist[(*listindex)++] = root;
+    }
+  }
+  root = zriddr(func,mid,high,ROOTACC, func_parameters);
+  if (root != UNLIKELY_ANS) {
+    rootlist[(*listindex)++] = root;
+  }
+}
+#undef ROOTACC
+#undef MAXITER
+#undef UNLIKELY_ANS
+/* END OF root finding function.*/
+
+/* Calculate ħOmega_q */
+double omega_q (union data_transfer_union *parameter_struct) {
+  double kf, ki, kk_x, kk_y, kk_z, ki_x, ki_y, ki_z;
+  double q, qx, qy, qz, Jq, E_phonon, E_neutron;
+  double a, c, ah;
+  //printf("Naar vi her til? Omega_q\n");
+  kf = parameter_struct->pointer_to_a_Template_physics_storage_struct->k_final;
+  ki = parameter_struct->pointer_to_a_Template_physics_storage_struct->k_init;
+  kk_x = parameter_struct->pointer_to_a_Template_physics_storage_struct->kk_x;
+  kk_y = parameter_struct->pointer_to_a_Template_physics_storage_struct->kk_y;
+  kk_z = parameter_struct->pointer_to_a_Template_physics_storage_struct->kk_z;
+  ki_x = parameter_struct->pointer_to_a_Template_physics_storage_struct->ki_x;
+  ki_y = parameter_struct->pointer_to_a_Template_physics_storage_struct->ki_y;
+  ki_z = parameter_struct->pointer_to_a_Template_physics_storage_struct->ki_z;
+  a = parameter_struct->pointer_to_a_Template_physics_storage_struct->aa;
+  c = parameter_struct->pointer_to_a_Template_physics_storage_struct->cc;
+
+  ah = 0.5*a;
+
+  qx = ki_x - kk_x*kf;
+  qy = ki_y - kk_y*kf;
+  qz = ki_z - kk_z*kf;
+
+  q = sqrt(qx*qx + qy*qy + qz*qz);
+
+  Jq=2*(cos(ah*(qx+qy)) + cos(ah*(qx-qy)) + cos(ah*(qx+qz)) + cos(ah*(qx-qz)) + cos(ah*(qy+qz)) + cos(ah*(qy-qz)));
+
+  E_phonon = c/a * sqrt(12-Jq);
+  E_neutron = fabs(VS2E * K2V*K2V * (ki*ki - kf*kf));
+
+  return (E_phonon - E_neutron);
+}
+/* END OF Omega_q */
+
+
+// Function for calculating my, the inverse penetration depth (for only this scattering process).
+// The input for this function and its order may not be changed, but the names may be updated.
+int Template_physics_my(double *my, double *k_initial, union data_transfer_union data_transfer, struct focus_data_struct *focus_data) {
+    // *k_initial is a pointer to a simple vector with 3 doubles, k[0], k[1], k[2] which describes the wavevector
+    double k_final,kappa2;
+    int nf = 0;
+    int index; // number of allowed k_vectors.
+    double kf_list[2]; // List of final k_vectors.
+    double solid_angle;
+    double sigma, sigma_int; // The remainder of the scattring crosssection.
+    double a,c,ah;
+    // Length of the incomming k-vector
+    double k_length = sqrt(k_initial[0]*k_initial[0]+k_initial[1]*k_initial[1]+k_initial[2]*k_initial[2]);
+    printf("%f\n", k_length);
+    double low, mid, high;
+    Coords k_out;
+    // Here is the focusing system in action, get an output vector
+    //printf("Vi proever det!\n");
+
+    focus_data->focusing_function(&k_out,&solid_angle,focus_data);
+    NORM(k_out.x,k_out.y,k_out.z);
+    data_transfer.pointer_to_a_Template_physics_storage_struct->solid_angle = solid_angle;
+
+    // Setting k-values in the data_transfer_struct for later function calls.
+    data_transfer.pointer_to_a_Template_physics_storage_struct->k_final = -1;
+    data_transfer.pointer_to_a_Template_physics_storage_struct->k_init = k_length;
+    data_transfer.pointer_to_a_Template_physics_storage_struct->kk_x = k_out.x;
+    data_transfer.pointer_to_a_Template_physics_storage_struct->kk_y = k_out.y;
+    data_transfer.pointer_to_a_Template_physics_storage_struct->kk_z = k_out.z;
+    data_transfer.pointer_to_a_Template_physics_storage_struct->ki_x = k_initial[0];
+    data_transfer.pointer_to_a_Template_physics_storage_struct->ki_y = k_initial[1];
+    data_transfer.pointer_to_a_Template_physics_storage_struct->ki_z = k_initial[2];
+
+    // Retrieving parameters:
+
+    a = data_transfer.pointer_to_a_Template_physics_storage_struct->aa;
+    c = data_transfer.pointer_to_a_Template_physics_storage_struct->cc;
+    ah = 0.5*a;
+
+    low = 0;
+    mid = k_length;
+    high = k_length + 2*c/VS2E;
+    //printf("Er der her?\n");
+    findroots(low, mid, high, &kf_list[0], &nf, omega_q, &data_transfer);
+    //printf("Eller her?\n");
+    index = (int)floor(rand01()*nf);
+
+    k_final = kf_list[index];
+
+    kappa2 = (k_length - k_final)*(k_length - k_final);
+    //omega = (k_length*k_length - k_final*k_final);
+
+
+    // MC integration of dσ/dΩ in Ω
+    sigma = k_final*k_final/k_length;
+    printf("%f\n", sigma);
+    sigma_int = 0;
+    int mc_steps = 1000;
+    double dk = 0.0001;
+    double jac, f1, f2;
+    double phi, theta,kappa_x,kappa_y,kappa_z,Jq,disp;
+    for (int n = 0 ; n < mc_steps ; n++) {
+
+      theta = rand01()*2*PI;
+      phi =  rand01()*PI;
+      kappa_x = (k_initial[0] - k_final*cos(theta)*sin(phi));
+      kappa_y = (k_initial[1] - k_final*sin(theta)*sin(phi));
+      kappa_z = (k_initial[2] - k_final*cos(phi));
+
+      kappa2 = kappa_x*kappa_x + kappa_y*kappa_y + kappa_z*kappa_z;
+      Jq= 2*(cos(ah*(kappa_x+kappa_y)) + cos(ah*(kappa_x-kappa_y)) + cos(ah*(kappa_x+kappa_z)) + cos(ah*(kappa_x-kappa_z)) + cos(ah*(kappa_y+kappa_z)) + cos(ah*(kappa_y-kappa_z)));
+
+      disp = a/c*sqrt(12-Jq);
+
+      data_transfer.pointer_to_a_Template_physics_storage_struct->k_final = k_final - dk;
+      f1 = omega_q(&data_transfer);
+      data_transfer.pointer_to_a_Template_physics_storage_struct->k_final = k_final + dk;
+      f2 = omega_q(&data_transfer);
+      jac = 0.5*fabs(f2-f1)/dk;
+      sigma_int += kappa2/(disp*jac);
+    }
+    printf("%f\n", sigma_int);
+    sigma *= sigma_int/mc_steps;
+    //sigma_int = kappa2(kf)/(disp(kf) * Jac(kf))
+    data_transfer.pointer_to_a_Template_physics_storage_struct->k_final = k_final;
+
+    // Simple case, just retrive the parameter saved from initialize
+    *my = data_transfer.pointer_to_a_Template_physics_storage_struct->my_scattering*sigma;
+    printf("Vi klarede det!\n");
+    printf("%f\n", sigma);
+    return 1;
+};
+
+// Function that provides description of a basic scattering event.
+// Do not change the
+int Template_physics_scattering(double *k_final, double *k_initial, double *weight, union data_transfer_union data_transfer, struct focus_data_struct *focus_data) {
+
+    double kf, kkx,kky,kkz, sl;
+    // k_final and k_initial are passed as pointers to double vector[3]
+    //double k_length = data_transfer.pointer_to_a_Template_physics_storage_struct->k_init;
+    //printf("Naar vi her til?\n");
+    kf = data_transfer.pointer_to_a_Template_physics_storage_struct->k_final;
+    kkx = data_transfer.pointer_to_a_Template_physics_storage_struct->kk_x;
+    kky = data_transfer.pointer_to_a_Template_physics_storage_struct->kk_y;
+    kkz = data_transfer.pointer_to_a_Template_physics_storage_struct->kk_z;
+    sl = data_transfer.pointer_to_a_Template_physics_storage_struct->solid_angle;
+    *weight *= sl*0.25/PI;
+    k_final[0] = kkx * kf;
+    k_final[1] = kky * kf;
+    k_final[2] = kkz * kf;
+    // A pointer to k_final is returned, and the wavevector will be set to k_final after a scattering event
+    return 1; // return 1 is sucess, return 0 is failure, and the ray will be absorbed.
+              // failure should not happen, as this function will only be called when
+              // the cross section for the current k_initial is above zero.
+
+    // There is access to the data_transfer from within the scattering function
+    // In this case the only variable is my, but it could be read by:
+    // double my = data_transfer.pointer_to_a_Template_physics_storage_struct->my_scattering;
+    // One can assume that if the scattering function is running, the my fuction was
+    //  executed just before and for the same k_initial.
+
+};
+
+%}
+
+DECLARE
+%{
+// Declare for this component, to do calculations on the input / store in the transported data
+struct Template_physics_storage_struct Template_storage; // Replace template with your own name here
+
+// Variables needed in initialize of this function.
+double effective_my_scattering;
+double sigma_const;
+
+// Needed for transport to the main component, will be the same for all processes
+struct global_process_element_struct global_process_element;
+struct scattering_process_struct This_process;
+
+// These lines help with future error correction, and tell other Union components
+//  that at least one process have been defined.
+#ifndef PROCESS_DETECTOR
+    // Obsolete
+	//struct pointer_to_global_process_list global_process_list = {0,NULL};
+	#define PROCESS_DETECTOR dummy
+#endif
+%}
+
+INITIALIZE
+%{
+
+  // Initialize done in the component
+  sigma_const = b*b;
+  sigma_const *= HBAR*HBAR*HBAR*HBAR;
+  sigma_const /= 2*M*MNEUTRON*1.660539e-27;
+  effective_my_scattering = ((packing_factor/unit_cell_volume) * 100 * sigma_const);
+  Template_storage.my_scattering = effective_my_scattering;
+  Template_storage.aa = a;
+  Template_storage.cc = c;
+
+  // Need to specify if this process is isotropic
+  //This_process.non_isotropic_rot_index = -1; // Yes (powder)
+  This_process.non_isotropic_rot_index =  1;  // No (single crystal)
+
+  // Packing the data into a structure that is transported to the main component
+  This_process.data_transfer.pointer_to_a_Template_physics_storage_struct = &Template_storage;
+  This_process.probability_for_scattering_function = &Template_physics_my;
+  This_process.scattering_function = &Template_physics_scattering;
+
+  // This will be the same for all process's, and can thus be moved to an include.
+  sprintf(This_process.name,NAME_CURRENT_COMP);
+  This_process.process_p_interact = interact_fraction;
+  rot_copy(This_process.rotation_matrix,ROT_A_CURRENT_COMP);
+  sprintf(global_process_element.name,NAME_CURRENT_COMP);
+  global_process_element.component_index = INDEX_CURRENT_COMP;
+  global_process_element.p_scattering_process = &This_process;
+  add_element_to_process_list(&global_process_list,global_process_element);
+ %}
+
+TRACE
+%{
+    // Trace should be empty, the simulation is done in Union_master
+%}
+
+END

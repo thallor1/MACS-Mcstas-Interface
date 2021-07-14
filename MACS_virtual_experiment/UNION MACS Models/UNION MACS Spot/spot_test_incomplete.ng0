@@ -1,0 +1,32 @@
+#ICE           0.4.0
+#ICERepositoryInfo /ice/server/releases/ALL_2014_05_22 
+#Filename    a3scan_elastic_1p6K_60273 
+#Date        2016-07-27 17:57:57 EDT 
+#InstrName   NG0 
+#Epoch       1469656677.57 
+#ExptID      20160727
+#ExptName    
+#ExptParticipants  
+#ExptDetails 
+#ExptComment 
+#User        ncnr
+#Comment     
+#Npoints     361
+#TemperatureUnits Kelvin
+#Ncolumns    137
+#DetectorDims
+#Signal      8 Monitor
+#Reference   8 Monitor
+#ScanType   ANGLE
+#Scan        10 A3 
+#ScanRanges: 10 A3 
+#DetectorEfficiencies SPEC08=1.06822 DIFF08=1.0 SPEC13=1.02982 SPEC=1.0 DIFF12=1.0 DIFF06=1.0 DIFF20=1.0 SPEC18=1.65028 DIFF13=1.0 DIFF14=1.0 DIFF15=1.0 DIFF16=1.0 DIFF17=1.0 DIFF10=1.0 DIFF11=1.0 DIFF18=1.0 DIFF19=1.0 DIFF03=1.0 DIFF02=1.0 DIFF01=1.0 DIFF07=1.0 DIFF05=1.0 DIFF04=1.0 DIFF09=1.0 SPEC19=0.953006 SPARE=1.0 SPEC20=1.02213 Time=1.0 SPEC01=0.8707 SPEC10=0.791158 SPEC11=0.762235 SPEC14=1.15965 SPEC15=1.22142 SPEC16=1.00225 SPEC17=0.82556 SPEC12=0.807705 DIFF=1.0 SPEC06=0.914812 SPEC05=1.05829 SPEC04=0.842027 SPEC03=1.01165 SPEC02=1.06092 SPEC09=1.09363 SPEC07=0.854509 Monitor=1.0 
+#FixedE     
+#Lattice     4.594 4.594 2.959 90 90 90
+#Orient      1 1 0 0 0 1
+#MonoSpacing 3.35416
+#AnaSpacing  3.35416
+#UBEnabled   0
+#Fixed       All devices are free
+#ScanDescr   Scan:SubID=20160727:JType=ANGLE:Npts=361:Counts=2600.0:Prefac=3.0:DetectorType=Monitor:CountType=Monitor:Filename=a3scan_elastic_1p6K_:HoldScan=0.0:Range=A3=-90.0 90.0 s:Title=a3scan_elastic
+#Columns             QX            QY            QZ             E            A4          Time          Temp       Monitor            A2            A3            A5            A6           DFM            A1       AColMon AnalyzerTheta01 AnalyzerTheta02 AnalyzerTheta03 AnalyzerTheta04 AnalyzerTheta05 AnalyzerTheta06 AnalyzerTheta07 AnalyzerTheta08 AnalyzerTheta09 AnalyzerTheta10 AnalyzerTheta11 AnalyzerTheta12 AnalyzerTheta13 AnalyzerTheta14 AnalyzerTheta15 AnalyzerTheta16 AnalyzerTheta17 AnalyzerTheta18 AnalyzerTheta19 AnalyzerTheta20       BColMon BaseSampleTheta      BeFilMon         Beta1         Beta2        DFMDTS          DIFF        DIFF01        DIFF02        DIFF03        DIFF04        DIFF05        DIFF06        DIFF07        DIFF08        DIFF09        DIFF10        DIFF11        DIFF12        DIFF13        DIFF14        DIFF15        DIFF16        DIFF17        DIFF18        DIFF19        DIFF20          DMBT            Ef            Ei          FLIP         Focus             H           HKL             K        Kidney             L      MBTSlide          MCFX      MgFilMon    MonBlade01    MonBlade02    MonBlade03    MonBlade04    MonBlade05    MonBlade06    MonBlade07    MonBlade08    MonBlade09    MonBlade10    MonBlade11    MonBlade12    MonBlade13    MonBlade14    MonBlade15    MonBlade16    MonBlade17    MonBlade18    MonBlade19    MonBlade20    MonBlade21        MonRot      MonTrans          PTAI      PgFilMon         SPARE          SPEC        SPEC01        SPEC02        SPEC03        SPEC04        SPEC05        SPEC06        SPEC07        SPEC08        SPEC09        SPEC10        SPEC11        SPEC12        SPEC13        SPEC14        SPEC15        SPEC16        SPEC17        SPEC18        SPEC19        SPEC20     SmplLTilt     SmplUTilt         SmplX         SmplY         SmplZ          VBAH          VBAV         cfxbe       cfxhopg        cfxmgf TemperatureControlReading TemperatureSetpoint TemperatureHeaterPower TemperatureSensor2 TemperatureSensor3    timestamp

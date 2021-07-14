@@ -1,0 +1,76 @@
+# Format: McCode with text headers
+# URL: http://www.mccode.org
+# Creator: McStas 2.7 - Nov. 27, 2020
+# Instrument: MACS_sample_kidney_cylinder.instr
+# Ncount: 2592532
+# Trace: no
+# Gravitation: no
+# Seed: 1624780806
+# Directory: test_experiment_fpx78891.ng0_kidney_angle_m19.1362_Ei_5.00_Ef_5.00_A3_angle_m42.867_sample_diameter_d_0.0060_n_500000.0
+# Param: A3_angle=-42.8672
+# Param: kidney_angle=-19.1362
+# Param: EM=5
+# Param: EF_all=4.99757
+# Param: HF=1
+# Param: VF=1
+# Param: sample_diameter_d=0.006
+# Param: beta_1=1.01646
+# Param: beta_2=2.3076
+# Param: CPF=0
+# Param: MPL=6.06
+# Param: MPD=0.775
+# Param: APE_h=0.35
+# Param: APE_v=0.35
+# Param: misalign_mono_deg=0.15
+# Param: DIRDEV=0
+# Param: DIVSOU=3
+# Param: L0_delta=-1.06
+# Param: L1_delta=0
+# Param: mon_t=0
+# Param: mon_e=0
+# Param: monrot_delta=0
+# Param: slit_h=0.2
+# Param: slit_v=0.2
+# Param: resolution_mode=0
+# Param: res_radius=0.01
+# Param: res_height=0.03
+# Param: repeat_count=2
+# Param: E0_resolution=4.99757
+# Param: dE_resolution=1
+# Date: Sun Jun 27 02:46:56 2021 (1624776416)
+# type: array_2d(5, 5)
+# Source: dmtas (MACS_sample_kidney_cylinder.instr)
+# component: diffraction_detector_19
+# position: 0.903911 0 0.830066
+# title: PSD monitor
+# Ncount: 2592532
+# filename: diff_detector_19.dat
+# statistics: X0=1.20678; dX=0.472216; Y0=1.51509; dY=2.3704;
+# signal: Min=0; Max=209.646; Mean=11.1546;
+# values: 278.866 220.692 27
+# xvar: X
+# yvar: Y
+# xlabel: X position [cm]
+# ylabel: Y position [cm]
+# zvar: I
+# zlabel: Signal per bin
+# xylimits: -1.8 1.8 -7 7
+# variables: I I_err N
+# Data [diffraction_detector_19/diff_detector_19.dat] I:
+0 0 0 0.7737975334 0.0005157579036 
+0 7.97315728 0.005038836138 54.59376163 0.2967638788 
+0 0 0.0001680430359 0.001582250602 0.02321894793 
+0 0 5.396142186 0.04101419223 209.6456375 
+1.430703688e-06 0.04031508314 2.456283569e-07 0.07442832499 0 
+# Errors [diffraction_detector_19/diff_detector_19.dat] I_err:
+0 0 0 0.9477045606 0.0005157579036 
+0 9.188871068 0.006171288717 54.59376163 0.3072864918 
+0 0 0.0001680430359 0.001582250602 0.02321894793 
+0 0 3.676079491 0.04101419223 209.6456375 
+1.430703688e-06 0.04031508314 2.570963709e-07 0.07442832499 0 
+# Events [diffraction_detector_19/diff_detector_19.dat] N:
+0 0 0 2 1 
+0 3 2 1 2 
+0 0 1 1 1 
+0 0 6 1 1 
+1 1 2 1 0 

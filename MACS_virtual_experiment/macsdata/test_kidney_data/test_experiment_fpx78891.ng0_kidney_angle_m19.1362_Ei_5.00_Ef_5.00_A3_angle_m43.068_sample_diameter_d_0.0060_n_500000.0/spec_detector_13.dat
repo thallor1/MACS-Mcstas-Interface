@@ -1,0 +1,76 @@
+# Format: McCode with text headers
+# URL: http://www.mccode.org
+# Creator: McStas 2.7 - Nov. 27, 2020
+# Instrument: MACS_sample_kidney_cylinder.instr
+# Ncount: 2592532
+# Trace: no
+# Gravitation: no
+# Seed: 1624780723
+# Directory: test_experiment_fpx78891.ng0_kidney_angle_m19.1362_Ei_5.00_Ef_5.00_A3_angle_m43.068_sample_diameter_d_0.0060_n_500000.0
+# Param: A3_angle=-43.0676
+# Param: kidney_angle=-19.1362
+# Param: EM=5
+# Param: EF_all=4.99757
+# Param: HF=1
+# Param: VF=1
+# Param: sample_diameter_d=0.006
+# Param: beta_1=1.01646
+# Param: beta_2=2.3076
+# Param: CPF=0
+# Param: MPL=6.06
+# Param: MPD=0.775
+# Param: APE_h=0.35
+# Param: APE_v=0.35
+# Param: misalign_mono_deg=0.15
+# Param: DIRDEV=0
+# Param: DIVSOU=3
+# Param: L0_delta=-1.06
+# Param: L1_delta=0
+# Param: mon_t=0
+# Param: mon_e=0
+# Param: monrot_delta=0
+# Param: slit_h=0.2
+# Param: slit_v=0.2
+# Param: resolution_mode=0
+# Param: res_radius=0.01
+# Param: res_height=0.03
+# Param: repeat_count=2
+# Param: E0_resolution=4.99757
+# Param: dE_resolution=1
+# Date: Sun Jun 27 02:46:13 2021 (1624776373)
+# type: array_2d(5, 5)
+# Source: dmtas (MACS_sample_kidney_cylinder.instr)
+# component: spec_detector_13
+# position: 0.123444 0 1.48586
+# title: PSD monitor
+# Ncount: 2592532
+# filename: spec_detector_13.dat
+# statistics: X0=-0.213785; dX=0.711246; Y0=0.301783; dY=1.08174;
+# signal: Min=0; Max=241.487; Mean=23.9708;
+# values: 599.27 219.571 147
+# xvar: X
+# yvar: Y
+# xlabel: X position [cm]
+# ylabel: Y position [cm]
+# zvar: I
+# zlabel: Signal per bin
+# xylimits: -1.8 1.8 -7 7
+# variables: I I_err N
+# Data [spec_detector_13/spec_detector_13.dat] I:
+3.434450289e-23 0 0 0 0 
+0.4530896529 1.153836348 0.5984639353 0.2260849537 13.4766259 
+13.76693071 241.4870063 158.9738428 55.99319026 32.64337851 
+5.676430914 59.32831531 0.1269067319 15.36560006 0 
+0 0 0 0 0 
+# Errors [spec_detector_13/spec_detector_13.dat] I_err:
+3.434450289e-23 0 0 0 0 
+0.5548663232 1.312951347 0.7325327846 0.259373996 9.637309902 
+7.629279066 200.3100214 73.67524406 16.06113352 12.89210285 
+5.228503702 63.01142283 0.1269067319 12.15160333 0 
+0 0 0 0 0 
+# Events [spec_detector_13/spec_detector_13.dat] N:
+1 0 0 0 0 
+2 3 2 3 2 
+13 30 38 27 17 
+2 3 1 3 0 
+0 0 0 0 0 

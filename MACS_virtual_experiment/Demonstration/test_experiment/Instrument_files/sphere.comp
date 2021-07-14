@@ -1,0 +1,134 @@
+/*******************************************************************************
+*
+*  McStas, neutron ray-tracing package
+*  Copyright(C) 2007 Risoe National Laboratory.
+*
+* %I
+* Written by: Mads Bertelsen
+* Date: 20.08.15
+* Version: $Revision: 0.1 $
+* Origin: Svanevej 19
+*
+* A sample component to separate geometry and phsysics
+*
+* %D
+* Alpha version, no input system yet
+* Hardcode input to geometry engine
+* Allows complicated geometry by combination of simple shapes
+*
+* Algorithm:
+* Described elsewhere
+*
+* %P
+* INPUT PARAMETERS:
+* radius:  [m] Outer radius of sample in (x,z) plane
+*
+* OUTPUT PARAMETERS:
+* V_rho:  [AA^-3] Atomic density
+*
+* %L
+* The test/example instrument <a href="../examples/Test_Phonon.instr">Test_Phonon.instr</a>.
+*
+* %E
+******************************************************************************/
+
+DEFINE COMPONENT sphere
+DEFINITION PARAMETERS ()
+SETTING PARAMETERS(string material_string=0,priority_input,radius_input)
+OUTPUT PARAMETERS (loop_index,this_sphere_volume,global_geometry_element,this_sphere_storage)
+
+/* Neutron parameters: (x,y,z,vx,vy,vz,t,sx,sy,sz,p) */
+
+SHARE
+%{
+#ifndef Sample
+#define Sample $Revision: 0.2 $
+
+#include "Sample_functions.c"
+#include "Geometry_functions.c"
+
+#endif
+
+%}
+
+DECLARE
+%{
+// Needed for transport to the main component
+struct global_geometry_element_struct global_geometry_element;
+
+#ifndef ANY_GEOMETRY_DETECTOR_DECLARE
+    #define ANY_GEOMETRY_DETECTOR_DECLARE dummy
+	struct pointer_to_global_geometry_list global_geometry_list = {0,NULL};
+#endif
+
+int loop_index;
+int loop_2_index;
+int material_index;
+
+struct Volume_struct this_sphere_volume;
+struct sphere_storage this_sphere_storage;
+%}
+
+INITIALIZE
+%{
+// Read the material input, or if it lacks, use automatic linking.
+if (material_string && strlen(material_string) && strcmp(material_string, "NULL") && strcmp(material_string, "0")) {
+    // A geometry string was given, use it to determine which material
+    if (0 == strcmp(material_string,"vacuum") || 0 == strcmp(material_string,"Vacuum")) {
+        this_sphere_volume.p_physics = malloc(sizeof(struct physics_struct));
+        this_sphere_volume.p_physics->number_of_processes = (int) 0; // Makes this volume a vacuum
+        this_sphere_volume.p_physics->my_a = 0; // Should not be used.
+    } else {
+        #ifndef MATERIAL_DETECTOR
+            printf("Need to define a material before refering to it in a geometry %s.\n",NAME_CURRENT_COMP);
+            exit(1);
+        #endif
+        for (loop_index=0;loop_index<global_material_list.num_elements;loop_index++) {
+            if (0 == strcmp(material_string,global_material_list.elements[loop_index].name))
+                this_sphere_volume.p_physics = global_material_list.elements[loop_index].physics;
+        }
+    }
+} else {
+    // Automatic linking, simply using the last defined material.
+    #ifndef MATERIAL_DETECTOR
+        printf("Need to define a material before the geometry to use automatic linking %s.\n",NAME_CURRENT_COMP);
+        exit(1);
+    #endif
+    this_sphere_volume.p_physics = global_material_list.elements[global_material_list.num_elements-1].physics;
+}
+
+sprintf(this_sphere_volume.name,NAME_CURRENT_COMP);
+sprintf(this_sphere_volume.geometry.shape,"sphere");
+this_sphere_volume.geometry.priority = priority_input; // This is not okay, need to change priority name in geometry :(
+// Currently the coordinates will be in absolute space.
+this_sphere_volume.geometry.center.x = POS_A_CURRENT_COMP.x;
+this_sphere_volume.geometry.center.y = POS_A_CURRENT_COMP.y;
+this_sphere_volume.geometry.center.z = POS_A_CURRENT_COMP.z;
+
+this_sphere_storage.radius = radius_input; // This is not okay, need to change radius name in sphere storage :(
+this_sphere_volume.geometry.geometry_parameters.p_sphere_storage = &this_sphere_storage;
+this_sphere_volume.geometry.within_function = &r_within_sphere;
+this_sphere_volume.geometry.intersect_function = &sample_sphere_intersect;
+
+rot_copy(this_sphere_volume.geometry.rotation_matrix,ROT_A_CURRENT_COMP);
+rot_transpose(ROT_A_CURRENT_COMP,this_sphere_volume.geometry.transpose_rotation_matrix);
+
+//for (loop_index=0;loop_index<3;loop_index++) {
+//    for (loop_2_index=0;loop_index<3;loop_index++) {
+//        this_sphere_volume.geometry.rotation_matrix[loop_index][loop_2_index] = ROT_A_CURRENT_COMP[loop_index][loop_2_index];
+//    }
+//}
+
+  // packing the information into the global_geometry_element, which is then included in the global_geometry_list.
+  sprintf(global_geometry_element.name,NAME_CURRENT_COMP);
+  global_geometry_element.component_index = INDEX_CURRENT_COMP;
+  global_geometry_element.Volume = &this_sphere_volume; // Would be nicer if this m was a pointer, now we have the (small) data two places
+  add_element_to_geometry_list(&global_geometry_list,global_geometry_element);
+ %}
+
+TRACE
+%{
+%}
+
+END
+

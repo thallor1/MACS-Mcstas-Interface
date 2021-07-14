@@ -1,0 +1,38 @@
+DEFINE COMPONENT tube
+DEFINITION PARAMETERS ()
+SETTING PARAMETERS (r1, r2,length)
+OUTPUT PARAMETERS (slope)
+
+DECLARE
+%{
+  double slope;
+%}
+
+INITIALIZE
+%{
+
+%}
+
+TRACE
+%{
+    double dt;
+    
+    PROP_Z0;
+    if (sqrt(x*x+y*y)>r1)
+      ABSORB;
+    dt = length/vz;
+    PROP_DT(dt);
+    if (sqrt(x*x+y*y)>r2)
+      ABSORB;
+
+%}
+
+MCDISPLAY
+%{
+
+  magnify("xy");
+  circle("xy", 0, 0, 0, r1);
+  circle("xy", 0, 0, length, r2);
+%}
+
+END
