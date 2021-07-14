@@ -83,7 +83,7 @@ class virtualMACS(object):
 		#Name of ramdisk directory for simulation output.
 		self.ramdisk_dir = '/tmp/memory'
 		self.ramdisk_size='2G'#This can be changed by user manually if needed but it should never get larger than this. 
-		self.sudo_password = 'Leuven2015' #Plaintext password for sudo access to disk
+		self.sudo_password = 'password' #Plaintext password for sudo access to disk, this needs to be fixed later.
 		self.data.kidney_sim_dir=self.ramdisk_dir+'/Kidney_simulations/'
 		self.preserve_kidney_scan_files = False #Flag to determine if files are deleted from ramdisk after each scan.
 		self.preserve_kidney_param_files= False #Flag to determine if individual kidney parmeter files are preserved. 
