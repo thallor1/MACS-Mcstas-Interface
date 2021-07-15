@@ -246,7 +246,7 @@ class Data(object):
 		flist = []
 		for fname in all_files:
 			if flagstr==False:
-				suffix=''
+				suffix='_combined_'
 				df = pd.read_csv(fname,header=0,index_col=0)
 				flist.append(df)
 			else:

@@ -162,6 +162,10 @@ class virtualMACS(object):
 	def prepare_expt_directory(self):
 		#Geneartes an instrument file using the current instrument parameters. Places it in the experiment directory.
 		#The template file will depend on the sample used. 
+		if type(self.sample.laufile)==bool:
+			#Need to generate and assign lau file
+			self.sample.cif2lau()
+
 		cwd=os.getcwd()
 		self.instr_template_dir=os.path.dirname(__file__)+'/UNION MACS Models/UNION MACS Base/'
 		self.kidney_instr_dir = os.path.dirname(__file__)+'/UNION MACS Models/UNION MACS Kidney Files/'
