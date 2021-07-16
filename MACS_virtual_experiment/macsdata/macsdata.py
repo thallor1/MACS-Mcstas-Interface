@@ -331,7 +331,7 @@ class Data(object):
 
 	def write_data_to_ng0(self,filename='McStas_output_',beta_1=1.0,beta_2=1.0):
 		'''
-		Writes the generated data matrix to a data file. 
+		Writes the current data matrix to a data file. 
 		'''
 		#First open a file and write the header. 
 		#Check if the file and output directory exists.

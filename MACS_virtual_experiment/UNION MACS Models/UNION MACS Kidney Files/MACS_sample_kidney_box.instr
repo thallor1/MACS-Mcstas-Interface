@@ -488,25 +488,21 @@ ROTATED (REPLACEcrystal_axis_xrot,REPLACEcrystal_axis_yrot,REPLACEcrystal_axis_z
 
 // Sample at beam spot (larger than needed, then masked
 // V1
-COMPONENT sample = Union_box(xwidth=REPLACEsamp_xwidth,yheight=REPLACEsamp_ywidth,zdepth=REPLACEsamp_zwidth, priority=100, material_string="replacethiswithusersamplename")
-AT (0,0,0) RELATIVE crystal_assembly
-ROTATED (0,0,0) RELATIVE crystal_axis
-
 COMPONENT sample_plate = Union_cylinder(
-    radius=0.006, yheight=0.002, priority=2,
+    radius=0.006, yheight=0.002, priority=40,
     material_string="Al")
 AT (0,plate_distance,0) RELATIVE target
-ROTATED (0,0,0) RELATIVE crystal_axis
-
-COMPONENT sample_plate_rod = Union_cylinder(radius=0.00125, yheight=0.0633, priority=3, material_string="Al")
-AT (0,2.0*plate_distance+0.0315,0) RELATIVE target
 ROTATED (0,0,0) RELATIVE target
 
-COMPONENT sample_base = Union_cylinder(radius=0.0065, yheight=0.013, priority=4, material_string="Al")
+COMPONENT sample_plate_rod = Union_cylinder(radius=0.00125, yheight=0.0633, priority=41, material_string="Al")
+AT (0,plate_distance+0.001+0.031,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+
+COMPONENT sample_base = Union_cylinder(radius=0.0065, yheight=0.013, priority=42, material_string="Al")
 AT (0,0.0628,0) RELATIVE target
 ROTATED (0,0,0) RELATIVE target
 
-COMPONENT sample_base_gap = Union_cylinder(radius=0.004, yheight=0.009, priority=5, material_string="Vacuum")
+COMPONENT sample_base_gap = Union_cylinder(radius=0.004, yheight=0.009, priority=43, material_string="Vacuum")
 AT (0,0.0668,0) RELATIVE target
 ROTATED (0,0,0) RELATIVE target
 

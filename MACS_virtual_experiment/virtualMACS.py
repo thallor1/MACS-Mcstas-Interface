@@ -823,9 +823,11 @@ class virtualMACS(object):
 				ei_ef_b1_b2_list[i][3]) for i in range(len(ei_ef_b1_b2_list)))
 			Parallel(n_jobs=n_threads)(delayed(self.simulate_ng0)(cwd+'/'+ng0_dir+file_list[i],in_scan=True) for i in range(len(file_list)))
 			#After parellel jobs are done, iterate through the files and create matching ng0s as the measurements, but McStas
+
 			for ng0_file in file_list:
-				self.data.load_data_matrix_from_csv(self.exptdir+'/Kidney_simulations/'+self.exptName+'_'+ng0_file.split('/')[-1]+\
-					self.data.csv_name)
+				csv_file = '_'+ng0_file.split('/')[-1]+\
+						self.data.csv_name
+				self.data.load_data_matrix_from_csv(csv_file)
 				self.data.write_data_to_ng0(filename=ng0_file.split('/')[-1].replace('.ng0','_mcStas.ng0'))
 		#At this point generate the data matrix. all files should be in the ramdisk. Information cannot be allowed to sit in the ramdisk.
 		return 1
