@@ -654,6 +654,13 @@ class virtualMACS(object):
 			os.chdir(orig_dir)
 
 		else:
+			if self.preserve_kidney_param_files==False:
+				while os.path.exists(param_fname):
+					try:
+						os.system('rm '+param_fname)
+					except Exception as e:
+						print('Warning when trying to remove paramter file:')
+						print(e)
 			print('Found previous identical kidney simulation. If this is a mistake, ')
 			print('delete the scan from the data matrix and try again. ')
 			print(kidney_output_dir)

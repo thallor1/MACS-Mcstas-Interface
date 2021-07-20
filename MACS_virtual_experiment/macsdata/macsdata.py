@@ -17,6 +17,8 @@ class Data(object):
 		self.compile_mode=compile_mode #Specifies if output ng0 files should be combined, individual, etc
 		self.kidney_sim_dir=None
 		self.kidney_result_dir=kidney_result_dir
+		if exptName==None:
+			exptName='McStas simulation'
 		self.exptName=exptName
 		self.sample=sample
 		self.data_matrix = False #This is a large matrix that is initialized later
@@ -339,9 +341,9 @@ class Data(object):
 		if type(self.data_matrix)==bool:
 			print('Need to generate data matrix before writing ng0.')
 			return 1
-		if not os.path.exists(current_dir+'/'+'Simulated ng0 files'):
-			os.mkdir(current_dir+'/'+'Simulated ng0 files')
-		output_dir = current_dir+'/'+'Simulated ng0 files/'
+		if not os.path.exists(current_dir+'/'+self.exptName+'/'+'Simulated ng0 files'):
+			os.mkdir(current_dir+'/'+self.exptName+'/'+'Simulated ng0 files')
+		output_dir = current_dir+'/'+self.exptName+'/'+'Simulated ng0 files'
 		#Simplest case, one large ng0 file. First open a file and write the header
 		#If an old file exists, delete it.
 		if filename.split('.')[-1]!='ng0':
