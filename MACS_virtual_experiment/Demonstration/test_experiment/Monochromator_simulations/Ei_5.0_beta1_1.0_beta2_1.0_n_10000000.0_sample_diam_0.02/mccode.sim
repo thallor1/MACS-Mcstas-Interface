@@ -1,0 +1,221 @@
+McStas simulation description file for dmtas.
+Date:    Wed Jul 21 10:52:29 2021
+Program: McStas 2.7 - Nov. 27, 2020
+
+begin instrument: dmtas
+  File: Ei_5.0_beta1_1.0_beta2_1.0_n_10000000.0_sample_diam_0.02/mccode
+  Source: MACS_monochromator.instr
+  Parameters:  EM(double) dEM(double) EF_all(double) HF(int) VF(int) sample_diameter_d(double) beta_1(double) beta_2(double) CPF(double) MPL(double) MPD(double) APE_h(double) APE_v(double) misalign_mono_deg(double) kidney_angle(double) DIRDEV(double) DIVSOU(double) L0_delta(double) L1_delta(double) mon_t(double) mon_e(double) monrot_delta(double) write_virtual_out(double)
+  Trace_enabled: no
+  Default_main: yes
+  Embedded_runtime: yes
+end instrument
+
+begin simulation: Ei_5.0_beta1_1.0_beta2_1.0_n_10000000.0_sample_diam_0.02
+  Format: McCode with text headers
+  URL: http://www.mccode.org
+  Creator: McStas 2.7 - Nov. 27, 2020
+  Instrument: MACS_monochromator.instr
+  Ncount: 10000000
+  Trace: no
+  Gravitation: no
+  Seed: 1626895178
+  Directory: Ei_5.0_beta1_1.0_beta2_1.0_n_10000000.0_sample_diam_0.02
+  Param: EM=5
+  Param: dEM=0.1
+  Param: EF_all=5
+  Param: HF=1
+  Param: VF=1
+  Param: sample_diameter_d=0.02
+  Param: beta_1=1
+  Param: beta_2=1
+  Param: CPF=0
+  Param: MPL=6.06
+  Param: MPD=0.775
+  Param: APE_h=0.35
+  Param: APE_v=0.35
+  Param: misalign_mono_deg=0.15
+  Param: kidney_angle=-10
+  Param: DIRDEV=0
+  Param: DIVSOU=3
+  Param: L0_delta=-1.06
+  Param: L1_delta=0
+  Param: mon_t=0
+  Param: mon_e=0
+  Param: monrot_delta=0
+  Param: write_virtual_out=1
+end simulation
+
+begin data
+  Date: Wed Jul 21 10:59:49 2021 (1626879589)
+  type: array_2d(11, 1000000)
+  Source: dmtas (MACS_monochromator.instr)
+  component: Virtual_out
+  position: 1.40992 0 6.2402
+  title:  Intensity Position Position Position Velocity Velocity Velocity Time_Of_Flight Spin Spin Spin Monitor (Square)
+  ratio: 7.50942e+06/1e+07
+  filename: E5.00meV_HF1_VF1_Sample0.020_b1_1.00_b2_1.00.dat
+  statistics: X0=0; dX=0; Y0=0; dY=0;
+  signal: Min=735.644; Max=735.644; Mean=0;
+  values: 0 0 0
+  xvar: List
+  yvar: p
+  xlabel: List of neutron events
+  ylabel: p x y z vx vy vz t sx sy sz 
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: 1 1e+06 1 11
+  variables: p x y z vx vy vz t sx sy sz 
+end data
+
+begin data
+  Date: Wed Jul 21 11:02:23 2021 (1626879743)
+  type: array_1d(200)
+  Source: dmtas (MACS_monochromator.instr)
+  component: E_mon
+  position: 0 0 0.1405
+  title: Energy monitor
+  Ncount: 10000000
+  filename: Emon.dat
+  statistics: X0=4.99949; dX=0.0576049;
+  signal: Min=1.8815e+07; Max=3.73556e+07; Mean=3.65646e+07;
+  values: 7.31292e+09 2.31554e+06 9.97581e+06
+  xvar: E
+  yvar: (I,I_err)
+  xlabel: Energy [meV]
+  ylabel: Intensity
+  xlimits: 4.9 5.1
+  variables: E I I_err N
+end data
+
+begin data
+  Date: Wed Jul 21 11:02:23 2021 (1626879743)
+  type: array_2d(300, 300)
+  Source: dmtas (MACS_monochromator.instr)
+  component: logger_space_zx_all
+  position: 0 0 5.84005
+  title: 2D position Union logger in plane zx
+  Ncount: 10000000
+  filename: space_horizontal.dat
+  statistics: X0=-1.20366e-05; dX=0.119573; Y0=0.00361136; dY=0.00552302;
+  signal: Min=0; Max=5.6258e+07; Mean=288051;
+  values: 2.59246e+10 4.41966e+06 3.50753e+07
+  xvar: z
+  yvar: x
+  xlabel: z [m]
+  ylabel: x [m]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -0.4 0.4 -0.2 0.2
+  variables: I I_err N
+end data
+
+begin data
+  Date: Wed Jul 21 11:02:23 2021 (1626879743)
+  type: array_2d(300, 300)
+  Source: dmtas (MACS_monochromator.instr)
+  component: logger_space_zy_all
+  position: 0 0 5.84005
+  title: 2D position Union logger in plane zy
+  Ncount: 10000000
+  filename: space_vertical.dat
+  statistics: X0=-1.2035e-05; dX=0.119556; Y0=0.000585984; dY=0.100496;
+  signal: Min=0; Max=1.28593e+06; Mean=288133;
+  values: 2.5932e+10 4.41976e+06 3.52118e+07
+  xvar: z
+  yvar: y
+  xlabel: z [m]
+  ylabel: y [m]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -0.4 0.4 -0.2 0.2
+  variables: I I_err N
+end data
+
+begin data
+  Date: Wed Jul 21 11:02:23 2021 (1626879743)
+  type: array_2d(300, 300)
+  Source: dmtas (MACS_monochromator.instr)
+  component: logger_space_xy_all
+  position: 0 0 5.84005
+  title: 2D position Union logger in plane xy
+  Ncount: 10000000
+  filename: space_xy.dat
+  statistics: X0=0.00359891; dX=0.00343883; Y0=0.000586861; dY=0.100495;
+  signal: Min=0; Max=4.20734e+06; Mean=287785;
+  values: 2.59007e+10 4.41931e+06 3.4708e+07
+  xvar: x
+  yvar: y
+  xlabel: x [m]
+  ylabel: y [m]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -0.02 0.04 -0.2 0.2
+  variables: I I_err N
+end data
+
+begin data
+  Date: Wed Jul 21 11:02:25 2021 (1626879745)
+  type: array_2d(90, 90)
+  Source: dmtas (MACS_monochromator.instr)
+  component: PSD_monitor_at_slit
+  position: 1.42243 0 6.24375
+  title: PSD monitor
+  Ncount: 10000000
+  filename: PSD_at_slit.dat
+  statistics: X0=-0.0369385; dX=0.820716; Y0=-0.00972724; dY=1.90412;
+  signal: Min=0; Max=2.96274e+06; Mean=111158;
+  values: 9.00383e+08 818984 1.33313e+06
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -6 6 -15 15
+  variables: I I_err N
+end data
+
+begin data
+  Date: Wed Jul 21 11:02:25 2021 (1626879745)
+  type: array_2d(90, 90)
+  Source: dmtas (MACS_monochromator.instr)
+  component: PSD_monitor_at_outer_cryo_start
+  position: 1.46764 0 6.25658
+  title: PSD monitor
+  Ncount: 10000000
+  filename: PSD_at_outer_cryostat_start.dat
+  statistics: X0=-0.0440044; dX=0.824406; Y0=-0.0123637; dY=1.84575;
+  signal: Min=0; Max=3.10693e+06; Mean=111158;
+  values: 9.00383e+08 818984 1.33313e+06
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -6 6 -15 15
+  variables: I I_err N
+end data
+
+begin data
+  Date: Wed Jul 21 11:02:25 2021 (1626879745)
+  type: array_2d(90, 90)
+  Source: dmtas (MACS_monochromator.instr)
+  component: PSD_monitor_at_inner_cryo_start
+  position: 1.59078 0 6.29153
+  title: PSD monitor
+  Ncount: 10000000
+  filename: PSD_at_inner_cryostat_start.dat
+  statistics: X0=-0.0633101; dX=0.88682; Y0=-0.0191203; dY=1.93115;
+  signal: Min=0; Max=3.20738e+06; Mean=111158;
+  values: 9.00383e+08 818984 1.33313e+06
+  xvar: X
+  yvar: Y
+  xlabel: X position [cm]
+  ylabel: Y position [cm]
+  zvar: I
+  zlabel: Signal per bin
+  xylimits: -6 6 -15 15
+  variables: I I_err N
+end data

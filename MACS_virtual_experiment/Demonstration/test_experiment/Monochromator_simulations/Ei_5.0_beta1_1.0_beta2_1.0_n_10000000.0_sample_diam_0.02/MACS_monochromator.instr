@@ -1,0 +1,534 @@
+/*****************************************************************************
+*  Monte-Carlo simulation of MACS
+*  
+*  Directly based on work by
+*  Yiming Qiu 4/6/00
+*  Jose A. Rodriguez  9/22/06
+*
+*  INPUT PARAMETERS:
+*    CPF(m):	distance between the focal point and the neutron source
+*		negative if the focal point is behind the source
+*    MPL(m):	distance between monochromator and source when 2theta=90 
+*    MPD(m):	distance between drum and monochromator when 2theta=90
+*               (The distance btw monoch. and sample is 1.675 m when 2theta=90.)
+*    EM(meV):	neutron energy set at monochromator
+     APE_h:	vertical aperture
+     APE_v:	horizontal aperture
+     DIRDEV(min):misorientation of the monochromator blade(FWHM)
+     DIVSOU(deg):	aceptance angle
+     L0_delta (m)  special feature to scan L0 delta to optimize the focal point.
+     L1_delta (m)  special feature to scan L0 delta to optimize the focal point.
+     mon_t(m)  Monochormator translation  (montrans)
+     mon_e(m)  Monochomator elevation (monrot)
+     monrot_delta(deg)  monochromator stand delta rotation
+     deltasource(m): special feature to move the source upwards or bakcwards respect to home (MLP) position. It updates the MPL postion.
+     
+     
+*  INPUT PARAMETERS:
+*    EM=3.4             monochromator energy setting [meV]
+*    EF_all=3.4         analyser energy setting (for all analyser pairs) [meV]
+*    HF=1               Horizontal focusing (ALWAYS 1, 0 mode broken)
+*    VF=1               Vertical focusing (ALWAYS 1, 0 mode broken)
+*    sample_diameter_d=0.02 For guide setup, not actual sample
+*    beta_1=1           Guide angle of side closest to reactor [deg]
+*    beta_2=1           Guide angle of side farthest to reactor [deg]
+*    misalign_mono_deg=0.15 Gaussian width of monochromator crystal misallignment
+*    slit_h=0.2         Slit after guide horizontal [m]
+*    slit_v=0.2         Slit after guide vertical [m]
+*    resolution_mode=0  If resolution_mode == 1, the resolution sample is used and mcresplot will work
+*    res_radius=0.01    radius of resolution sample
+*    res_height=0.03    height of resolution sample
+*    E0_resolution=0    energy mean of rays scattered in resolution sample (0 = Auto EM)
+*    dE_resolution=1    energy width of rays scattered in resolution sample
+*    CPF(m):	distance between the focal point and the neutron source
+*		negative if the focal point is behind the source
+*    MPL(m):	distance between monochromator and source when 2theta=90 
+*    MPD(m):	distance between drum and monochromator when 2theta=90
+*               (The distance btw monoch. and sample is 1.675 m when 2theta=90.)
+*    EM(meV):	neutron energy set at monochromator
+*    APE_h:	vertical aperture
+*    APE_v:	horizontal aperture
+*    DIRDEV(min):misorientation of the monochromator blade(FWHM)
+*    DIVSOU(deg):	aceptance angle
+*    L0_delta (m)  special feature to scan L0 delta to optimize the focal point.
+*    L1_delta (m)  special feature to scan L0 delta to optimize the focal point.
+*    mon_t(m)  Monochormator translation  (montrans)
+*    mon_e(m)  Monochomator elevation (monrot)
+*    monrot_delta(deg)  monochromator stand delta rotation
+*
+
+*
+******************************************************************************/
+
+
+//%include "C:\peewee\tube.comp"
+//%include "C:\peewee\Vfocus_analyzer1.comp"
+//%include "C:\peewee\collimator_radi.comp"
+//%include "C:\peewee\aperture_v.comp"
+//%include "C:\peewee\aperture_h.comp"
+//%include "C:\peewee\source_mcnp_peewee.comp"
+
+
+DEFINE INSTRUMENT dmtas(EM=3.4,dEM=0.1,EF_all=3.4, int HF=1, int VF=1, sample_diameter_d=0.02, beta_1=1, beta_2=1, CPF=0, MPL=6.06, MPD=0.775, APE_h=0.35, APE_v=0.35, misalign_mono_deg=0.15, kidney_angle=0, DIRDEV=0, DIVSOU=3.0, L0_delta=-1.06, L1_delta=0.0, mon_t=0.0, mon_e=0.0, monrot_delta=0,write_virtual_out=1)
+
+
+   //environment_radius=0.1,environment_thickness=0.005,string coh="Rb_liq_coh.sqw", string inc="Rb_liq_inc.sqw",container_thickness=0.003,string environment="Al.laz",sample_radius=0.01,analyzator_height=0.06,sample_analyzator_distance=0.4)
+
+DECLARE
+%{
+  %include "splint.c"
+  %include "monochromator.c"
+  
+  double dmtas_sou_radusv=0.055; 	/*source (in cm)*/
+  double dmtas_sou_radush=0.055;	  
+  
+  double phi_source=0;
+
+  double diverg;
+ 
+  double dmtas_sou_E0, dmtas_sou_dE, MPL;
+  // double mon_tras, mon_ele;
+  double dist_slit1,dist_slit2;
+  double xmax_slit1,xmin_slit1,ymax_slit1,ymin_slit1;
+  double xmax_slit2,xmin_slit2,ymax_slit2,ymin_slit2;
+  double emin, emax; // For resolution sample
+  double lambda;
+  double Esource_min, Esource_max;
+  double Lambda_min, Lambda_max;
+   
+  double dist_tub1	= 0.15;		/*tube1 Pee Wee*/
+  double tub1_r1	=0.065	;
+  double tub1_r2	=0.065	;
+  double tub1_length =0.79;
+
+  double dist_tub1A	= 0.95;		/*tube1A Pee Wee*/
+  double tub1A_r1	=0.165	;
+  double tub1A_r2	=0.165	;
+  double tub1A_length 	=1.69;
+
+  double dist_tub2   =2.650;      /*tube2*/
+  double tub2_r1     =0.1187       ;
+  double tub2_r2     =0.1411       ;
+  double tub2_length =0.8;
+
+  double dist_tub3   =3.475 ;      /*tube3*/
+  double tub3_r1     =0.1418       ;
+  double tub3_r2     =0.1543       ;
+  double tub3_length =0.45         ;
+ 
+  double dist_tub4   =3.935 ;      /*tube4*/
+  double tub4_r1     =0.1546       ;
+  double tub4_r2     =0.159        ;
+  double tub4_length =0.159        ;
+
+  double apev, apeh;              /*aptertures*/
+  double dist_ape_v=4.550;
+  double dist_ape_h=4.655;
+  double slv_xmin,slv_xmax,slv_ymin,slv_ymax;
+  double slh_xmin,slh_xmax,slh_ymin,slh_ymax;
+
+	
+  double dist_collA	=4.150;       /*collimatorA*/
+  double dmtas_collA_R1 =4.152,dmtas_collA_R2 =4.287;
+  double dmtas_collA_h =0.460;
+  double dmtas_collA_n  =98;
+  double dmtas_collA_w  =0.0033;
+
+  double dist_collB	=4.295;       /*collimatorB*/
+  double dmtas_collB_R1 =4.295,dmtas_collB_R2 =4.503;
+  double dmtas_collB_h =0.460;
+  double dmtas_collB_n  =98;
+  double dmtas_collB_w  =0.003415;
+
+  double hight_at_reference,R_at_reference;
+  double tan_ver,tan_hor;
+  double angle_of_ver,len_of_ver;
+  double dmtas_guide_w1;	    	/*super mirror guide*/
+  double dmtas_guide_w2;
+  double dmtas_guide_h1, dmtas_guide_h2;
+  double dmtas_guide_len;
+  double dmtas_guide_l	=1.7;			/*only use the geometry*/
+
+%include "generated_includes/monochromator_declare.c"
+
+  double dmtas_det_w  	=0.02;		/*detector*/
+  double dmtas_det_h	=0.04;
+  double xmax_det, xmin_det, ymax_det, ymin_det;
+  double tmp_dist,xx_mon;
+
+
+%include "generated_includes/kidney_declare.c"
+
+/**** Virtual output/input ****/
+  char virtual_file_name[2048];
+
+
+/**** Defining reflectivity vectors  ******/
+
+
+/***spline calculation ***/
+
+
+/* ** nD ** */
+
+/*** Guide calculations ***/
+
+  double guide_sample_center_distance;
+  double guide_start_width_1,guide_start_width_2;
+  double guide_end_width_1,guide_end_width_2;
+  double effective_sample_radius_1,effective_sample_radius_2;
+  double effective_guide_sample_distance_1,effective_guide_sample_distance_2;
+  
+  // Only a single version
+  double guide_start_offset,guide_end_offset,guide_angle_offset,guide_start_total_width,guide_end_total_width;
+
+
+ // detector setup
+ 
+ double PSD_x_size=0.12,PSD_y_size=0.30;
+
+
+%}
+ 
+INITIALIZE
+%{
+
+
+
+  dmtas_sou_E0	=	EM;
+  //dmtas_sou_dE	=	2*(1.79*exp(EM/20.07902)-1.9);
+  Esource_max = EM + dEM;
+  Esource_min = EM - dEM;
+  
+  apeh=APE_h;
+  apev=APE_v;
+  diverg=DIVSOU;
+  slv_xmin=-0.181;
+  slv_xmax=0.181;
+  slv_ymin= -apev/2.;
+  slv_ymax= apev/2.;
+  slh_xmin=-apeh/2.;
+  slh_xmax=apeh/2.;
+  slh_ymin= -0.181;
+  slh_ymax= 0.181; 
+  
+  lambda=9.045/sqrt(EM);
+  Lambda_min = 9.045/sqrt(Esource_max);
+  Lambda_max = 9.045/sqrt(Esource_min);
+
+  //%include "splint.c"
+  //%include "monochromator.c"
+  %include "generated_includes/monochromator_initialize.c"
+  
+  dist_slit1	=MPD/sin(2.*mono_theta)-0.43;
+			/*distance from monochromator to slit1*/
+  dist_slit2	=MPD/sin(2.*mono_theta)+0.65;
+			/*distance from monochromator to slit2*/
+
+  angle_of_ver =mono_theta+mono_psi[10]*DEG2RAD;
+  len_of_ver =0.22*sin(angle_of_ver)*2;
+
+  tan_ver =dist_mono_L1_pos/((hight_at_reference-0.04)/2);
+
+  tan_hor =(MPD/sin(2.*mono_theta)-0.22*cos(angle_of_ver)+0.65)/((len_of_ver-0.02)/2);
+
+  //printf("mos=%f\n",dmtas_mon_mos);
+  /*printf("dtheta=%f\n",dmtas_mon_mos);*/
+
+/* printf("tan_ver=%f,tan_hor=%f\n",tan_ver,tan_hor);*/
+  
+  dmtas_guide_h1=hight_at_reference-(MPD-0.43)/tan_ver*2;
+  dmtas_guide_h2=hight_at_reference-(MPD+0.65)/tan_ver*2;
+
+  dmtas_guide_w1=len_of_ver-(MPD/sin(2.*mono_theta)-0.22*cos(angle_of_ver)-0.43)/tan_hor*2;
+  dmtas_guide_w2=len_of_ver-(MPD/sin(2.*mono_theta)-0.22*cos(angle_of_ver)+0.65)/tan_hor*2;
+
+/*  printf("dmtas_guide_h1=%f,dmtas_guide_h2=%f,dmtas_guide_w1=%f,dmtas_guide_w2=%f\n",dmtas_guide_h1,dmtas_guide_h2,dmtas_guide_w1,dmtas_guide_w2);*/
+  dmtas_guide_len=1.080;
+  mono_phi	=mono_phi*RAD2DEG;
+  mono_theta	=mono_theta*RAD2DEG;
+  xmax_det	=dmtas_det_w/2.;
+  xmin_det	=-xmax_det;
+  ymax_det	=dmtas_det_h/2.;
+  ymin_det	=-ymax_det;
+ 
+  emin=EM-1;
+  emax=EM+1;
+
+  /**** Virtual output/input ****/
+  sprintf(virtual_file_name,"E%.2fmeV_HF%d_VF%d_Sample%.3f_b1_%.2f_b2_%.2f.dat", EM, HF, VF,sample_diameter_d, beta_1, beta_2);
+  
+  // guide calculations
+
+  guide_sample_center_distance = dist_mono_L1_pos - dist_slit1 - dmtas_guide_len; // Need to be calculated previously
+
+  effective_sample_radius_1 = 0.5*sample_diameter_d*cos(DEG2RAD*beta_1);
+  effective_sample_radius_2 = 0.5*sample_diameter_d*cos(DEG2RAD*beta_2);
+  
+  effective_guide_sample_distance_1 = guide_sample_center_distance + 0.5*sample_diameter_d*sin(DEG2RAD*beta_1);
+  effective_guide_sample_distance_2 = guide_sample_center_distance + 0.5*sample_diameter_d*sin(DEG2RAD*beta_2);
+  
+  // Each of these are only the distance from the center line to the left/right side of the guide
+  guide_end_width_1 = effective_sample_radius_1 + effective_guide_sample_distance_1*tan(DEG2RAD*beta_1);
+  guide_end_width_2 = effective_sample_radius_2 + effective_guide_sample_distance_2*tan(DEG2RAD*beta_2);
+  
+  // Each of these are only the distance from the center line to the left/right side of the guide
+  guide_start_width_1 = guide_end_width_1 + dmtas_guide_len*tan(DEG2RAD*beta_1);
+  guide_start_width_2 = guide_end_width_2 + dmtas_guide_len*tan(DEG2RAD*beta_2);
+  
+  guide_start_total_width = guide_start_width_1 + guide_start_width_2;
+  guide_end_total_width = guide_end_width_1 + guide_end_width_2;
+  
+  guide_start_offset = 0.5*(guide_start_width_1 - guide_start_width_2);
+  guide_end_offset = 0.5*(guide_end_width_1 - guide_end_width_2);
+  
+  // Could increase the length of the guide based on this angle.
+  guide_angle_offset = RAD2DEG*asin((guide_end_offset-guide_start_offset)/dmtas_guide_len);
+  
+%}
+
+TRACE
+
+COMPONENT Arm0 = Progress_bar()
+  AT (0,0,0) ABSOLUTE
+
+/*
+COMPONENT source = Source_mcnp_peewee(radius_vertical=dmtas_sou_radusv,radius_horizontal=dmtas_sou_radush, E0=dmtas_sou_E0, dE=dmtas_sou_dE,dv=DIVSOU)
+  AT (0, 0, 0.14) RELATIVE Arm0
+   ROTATED(0, 0, 0) RELATIVE Arm0
+*/
+
+// monochromator center is at dist_mono_L0_pos relative Arm0
+// Width of the monochromator is 2*0.21+0.02 m
+// Height of the monochromator is mono_total_height
+// Monochromator is rotated phi_mono + monrot_delta
+// Translated mon_t and elevated mon_e
+
+
+COMPONENT source = Source_Maxwell_3(
+        xwidth=dmtas_sou_radush*2, yheight=dmtas_sou_radush*2,
+        Lmin=Lambda_min,Lmax=Lambda_max,
+        dist=dist_mono_L0_pos-0.14-(2.0*0.21+0.02)*cos(DEG2RAD*(mono_phi+monrot_delta)),
+        focus_xw = (2.0*0.21+0.02)*sin(DEG2RAD*(mono_phi+monrot_delta))+2.0*mon_t,
+        focus_yh = mono_total_height+2*mon_e,
+        T1=27.63, I1=2.4E12/(2*PI),
+       T2=130.76, I2=4.03E12/(2*PI),
+       T3=309.33, I3=1.24E13/(2*PI))
+AT (0,0,0.14) RELATIVE Arm0
+ROTATED (0,0,0) RELATIVE Arm0
+
+
+// Three circular slits, provide the correct (almost) source shape.
+// In reality the source surface is a little bit smaller, but only by a little.
+// It should have no practical effect on the simulations
+
+COMPONENT circular_plugin1 = Slit_MACS(radius=0.094)
+  AT (0.028, 0, 0.0001) RELATIVE source
+
+COMPONENT circular_plugin2 = Slit_MACS(radius=0.094)
+  AT (-0.028, 0, 0.0002) RELATIVE source
+
+COMPONENT circular_plugin3 = Slit_MACS(radius=0.082)
+  AT (0.0, 0.0, 0.0003) RELATIVE source
+
+COMPONENT E_mon = E_monitor(xwidth=0.2,yheight=0.2,Emin=EM-dEM,Emax=EM+dEM,nE=200,
+                             filename="Emon.dat",restore_neutron=1)
+  AT (0,0,0.0005) RELATIVE source
+
+
+ 
+COMPONENT tube1	=tube(r1=tub1_r1, r2=tub1_r2,length=tub1_length)
+AT (0, 0, dist_tub1) RELATIVE Arm0
+
+
+/*
+COMPONENT tube1A=tube(r1=tub1A_r1, r2=tub1A_r2,length=tub1A_length)
+AT (0, 0, dist_tub1A) RELATIVE Arm0
+*/
+
+COMPONENT tube1A=Guide_parabolic(l=tub1A_length, rin=tub1A_r1, rout=tub1A_r2,
+ R0=0.99, Qc=0.0219, alpha=6.07, m=2, W=0.003)
+AT (0, 0, dist_tub1A) RELATIVE Arm0 // maybe? removed length
+
+COMPONENT tube2	=tube(r1=tub2_r1, r2=tub2_r2,length=tub2_length)
+AT (0, 0, dist_tub2) RELATIVE Arm0
+
+COMPONENT tube3	=tube(r1=tub3_r1, r2=tub3_r2,length=tub3_length)
+AT (0, 0, dist_tub3) RELATIVE Arm0
+
+COMPONENT tube4	=tube(r1=tub4_r1, r2=tub4_r2,length=tub4_length)
+AT (0, 0, dist_tub4) RELATIVE Arm0
+
+/*
+COMPONENT collA=Collimator_radi(r1=dmtas_collA_R1, r2=dmtas_collA_R2, h=dmtas_collA_h, d1=dmtas_collA_w, n=dmtas_collA_n)
+AT (0, 0, dist_collA) RELATIVE Arm0
+
+COMPONENT collB=Collimator_radi(r1=dmtas_collB_R1, r2=dmtas_collB_R2, h=dmtas_collB_h, d1=dmtas_collB_w, n=dmtas_collB_n)
+AT (0, 0, dist_collB) RELATIVE Arm0
+*/
+
+COMPONENT ape001 = aperture_v(
+    xmin =slv_xmin, xmax = slv_xmax, ymin = slv_ymin, ymax = slv_ymax)
+  AT (0, 0,  dist_ape_v) RELATIVE Arm0
+
+
+COMPONENT ape002 = aperture_h(
+    xmin = slh_xmin, xmax = slh_xmax, ymin = slh_ymin, ymax = slh_ymax)
+  AT (0, 0,  dist_ape_h) RELATIVE Arm0
+
+COMPONENT monofix_pos = Arm()
+  AT (0, 0, dist_mono_L0_pos) RELATIVE Arm0
+  ROTATED(0,0,0) RELATIVE Arm0
+
+COMPONENT monofix = Arm()
+  AT (0, 0, dist_mono_L0_pos) RELATIVE Arm0
+  ROTATED(0, mono_phi,0) RELATIVE Arm0
+
+COMPONENT mono = Arm()
+  AT (mon_t, mon_e, 0) RELATIVE monofix
+  ROTATED(0, monrot_delta, 0) RELATIVE monofix
+
+COMPONENT logger_space_zx_all = Union_logger_2D_space(
+  filename="space_horizontal.dat",
+  n1=300,D_direction_1="z",D1_min=-0.4,D1_max=0.4,
+  n2=300,D_direction_2="x",D2_min=-0.2,D2_max=0.2)
+AT (0,0,0) RELATIVE mono
+ROTATED (0,0,0) RELATIVE mono
+
+COMPONENT logger_space_zy_all = Union_logger_2D_space(
+  filename="space_vertical.dat",
+  n1=300,D_direction_1="z",D1_min=-0.4,D1_max=0.4,
+  n2=300,D_direction_2="y",D2_min=-0.2,D2_max=0.2)
+AT (0,0,0) RELATIVE mono
+ROTATED (0,0,0) RELATIVE mono
+
+COMPONENT logger_space_xy_all = Union_logger_2D_space(
+  filename="space_xy.dat",
+  n1=300,D_direction_1="x",D1_min=-0.02,D1_max=0.04,
+  n2=300,D_direction_2="y",D2_min=-0.2,D2_max=0.2)
+AT (0,0,0) RELATIVE mono
+ROTATED (0,0,0) RELATIVE mono
+
+%include "generated_includes/monochromator_trace.c"
+
+// References to variables used inside monochromator_trace
+COMPONENT center_mono_blade = Arm()
+  AT (0,0,mono_column_displacements[10]) RELATIVE mono
+  ROTATED (0,mono_psi[0],0) RELATIVE mono
+
+COMPONENT Arm1p = Arm()
+//  AT (0,0,0) RELATIVE mon10
+//  AT (0,0,0) RELATIVE monochromator_collumn10
+  AT (0,0,0) RELATIVE center_mono_blade
+  ROTATED(0, mono_theta, 0) RELATIVE Arm0
+
+COMPONENT Arm1 = Arm()
+  AT (0,0,0) RELATIVE Arm1p
+  ROTATED(0, mono_theta, 0) RELATIVE Arm1p
+
+COMPONENT guide_arm = Arm()
+  AT (0,0,0) RELATIVE monofix_pos
+  ROTATED (0, 2*mono_theta,0) RELATIVE monofix_pos
+
+/*
+COMPONENT guild0 = Guide_gravity(
+    w1 = dmtas_guide_w1, h1 = dmtas_guide_h1,
+    w2 = dmtas_guide_w2, h2 = dmtas_guide_h2,
+    l = dmtas_guide_len, R0 = 0.99, Qc = 0.02, alpha = 6.49, m = 3.5,
+    W = 0.003)
+  AT (0, 0, dist_slit1) RELATIVE Arm1
+//m=4 for supermirror
+*/
+
+COMPONENT Guide_gravity_MACS = Guide_gravity_MACS(
+    w1 = guide_start_total_width, h1 = dmtas_guide_h1,
+    w2 = guide_end_total_width, h2 = dmtas_guide_h2,
+    l = dmtas_guide_len, R0 = 0.99, Qc = 0.02, alpha = 6.49, m = 3.5,
+    W = 0.003)
+  AT (guide_start_offset, 0, dist_slit1) RELATIVE guide_arm
+  ROTATED (0,guide_angle_offset,0) RELATIVE guide_arm
+//m=4 for supermirror
+
+/*
+COMPONENT EPSD_monitor_sample = EPSD_monitor(xmin=-0.1, xmax=0.1, ymin=-0.1, ymax=0.1,
+   Emin=Esource_min, Emax=Esource_max, nx=90, nE=200, filename="EPSD_after_guide.dat",restore_neutron=1)
+AT (0,0,dist_mono_L1_pos) RELATIVE guide_arm
+ROTATED (0,0,0) RELATIVE guide_arm
+
+COMPONENT PSD_monitor_at_sample = PSD_monitor(xwidth = PSD_x_size, yheight = PSD_y_size,
+            nx=90, ny=90, filename="PSD_at_sample.dat",restore_neutron=1)
+AT (0,0,0.0001) RELATIVE PREVIOUS
+ROTATED (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT PSD_monitor_sample_size = PSD_monitor(xwidth = sample_diameter_d, yheight = 0.04,
+            nx=50, ny=50, filename="PSD_sample.dat",restore_neutron=1)
+AT (0,0,0.0001) RELATIVE PREVIOUS
+ROTATED (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT Divergence_after_guide = Divergence_monitor(nh=100, nv=100, filename="divergence_after_guide.dat",
+    xmin=-0.1, xmax=0.1, ymin=-0.1, ymax=0.1,maxdiv_h=6, maxdiv_v=6,restore_neutron=1)
+AT (0,0,0.0001) RELATIVE PREVIOUS
+ROTATED (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT acceptance_x_divx_sample = DivPos_monitor(
+   nh = 200, ndiv = 200, filename = "acceptance_x_divx_sample",
+   xwidth = 0.1, yheight = 0.2, maxdiv_h = 8, restore_neutron=1)
+ AT (0, 0, 0.0001) RELATIVE PREVIOUS
+ */
+
+// May be moved later to have slits in the monochromator part of the simulation
+// Virtual out 1 cm after the guide
+COMPONENT Virtual_out = Virtual_output(filename=virtual_file_name)
+WHEN (write_virtual_out == 1)
+AT (0,0,dist_slit1 + dmtas_guide_len + 0.01) RELATIVE guide_arm
+ROTATED (0,0,0) RELATIVE guide_arm
+
+
+COMPONENT PSD_monitor_at_slit = PSD_monitor(xwidth = PSD_x_size, yheight = PSD_y_size,
+            nx=90, ny=90, filename="PSD_at_slit.dat",restore_neutron=1)
+AT (0,0,dist_mono_L1_pos - dist_slit1 - dmtas_guide_len - 0.01 - 0.227) RELATIVE Virtual_out
+ROTATED (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT PSD_monitor_at_outer_cryo_start = PSD_monitor(xwidth = PSD_x_size, yheight = PSD_y_size,
+            nx=90, ny=90, filename="PSD_at_outer_cryostat_start.dat",restore_neutron=1)
+AT (0,0,dist_mono_L1_pos - dist_slit1 - dmtas_guide_len - 0.01 -0.18) RELATIVE Virtual_out
+ROTATED (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT PSD_monitor_at_inner_cryo_start = PSD_monitor(xwidth = PSD_x_size, yheight = PSD_y_size,
+            nx=90, ny=90, filename="PSD_at_inner_cryostat_start.dat",restore_neutron=1)
+AT (0,0,dist_mono_L1_pos - dist_slit1 - dmtas_guide_len - 0.01-0.052) RELATIVE Virtual_out
+ROTATED (0,0,0) RELATIVE PREVIOUS
+/*
+COMPONENT PSD_monitor_at_inner_cryo_end = PSD_monitor(xwidth = PSD_x_size, yheight = PSD_y_size,
+            nx=90, ny=90, filename="PSD_at_inner_cryostat_end.dat",restore_neutron=1)
+AT (0,0,dist_mono_L1_pos - dist_slit1 - dmtas_guide_len - 0.01 + 0.052) RELATIVE Virtual_out
+ROTATED (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT PSD_monitor_at_outer_cryo_end = PSD_monitor(xwidth = PSD_x_size, yheight = PSD_y_size,
+            nx=90, ny=90, filename="PSD_at_outer_cryostat_end.dat",restore_neutron=1)
+AT (0,0,dist_mono_L1_pos - dist_slit1 - dmtas_guide_len - 0.01 + 0.18) RELATIVE Virtual_out
+ROTATED (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT PSD_monitor_at_beamstop = PSD_monitor(xwidth = PSD_x_size, yheight = PSD_y_size,
+            nx=90, ny=90, filename="PSD_at_beamstop.dat",restore_neutron=1)
+AT (0,0,dist_mono_L1_pos - dist_slit1 - dmtas_guide_len - 0.01 + 0.22) RELATIVE Virtual_out
+ROTATED (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT acceptance_x_divx_beamstop = DivPos_monitor(
+   nh = 200, ndiv = 200, filename = "acceptance_x_divx_beamstop",
+   xwidth = 0.1, yheight = 0.2, maxdiv_h = 8, restore_neutron=1)
+ AT (0, 0,dist_mono_L1_pos - dist_slit1 - dmtas_guide_len - 0.01 + 0.22) RELATIVE Virtual_out
+
+COMPONENT PSD_lin_beamstop = PSDlin_monitor(nx=150,xwidth=0.15,yheight=0.2,filename="PSD_lin_beamstop.dat")
+AT (0, 0,dist_mono_L1_pos - dist_slit1 - dmtas_guide_len - 0.01 + 0.22) RELATIVE Virtual_out
+*/
+
+
+FINALLY
+%{
+%}
+
+END
+
+
+

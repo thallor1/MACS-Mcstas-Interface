@@ -489,12 +489,12 @@ ROTATED (REPLACEcrystal_axis_xrot,REPLACEcrystal_axis_yrot,REPLACEcrystal_axis_z
 // Sample at beam spot (larger than needed, then masked
 // V1
 
-COMPONENT sample_cube = Union_box(xwidth=2.0*REPLACEsamp_xwidth,yheight=2.0*REPLACEsamp_ywidth,zdepth=2.0*REPLACEsamp_xwidth, priority=100, material_string="replacethiswithusersamplename",number_of_activations=number_of_activations_sample)
+COMPONENT sample_cube = Union_box(xwidth=2.0*REPLACEsamp_xwidth,yheight=2.0*REPLACEsamp_ywidth,zdepth=2.0*REPLACEsamp_zwidth, priority=100, material_string="replacethiswithusersamplename",number_of_activations=number_of_activations_sample)
 AT (0,0,0) RELATIVE crystal_assembly
 ROTATED (0,0,0) RELATIVE crystal_assembly
 
 //mask to support rotation
-COMPONENT sample_cube_mask1 = Union_box(xwidth=REPLACEsamp_xwidth,yheight=REPLACEsamp_ywidth,zdepth=REPLACEsamp_xwidth, priority=100, material_string="Mask",number_of_activations=number_of_activations_sample,
+COMPONENT sample_cube_mask1 = Union_box(xwidth=REPLACEsamp_xwidth,yheight=REPLACEsamp_ywidth,zdepth=REPLACEsamp_zwidth, priority=0, material_string="Mask",number_of_activations=number_of_activations_sample,
     mask_string="sample_cube",mask_setting="All",visualize=0)
 AT (0,0,0) RELATIVE crystal_assembly
 ROTATED (0,0,0) RELATIVE crystal_axis

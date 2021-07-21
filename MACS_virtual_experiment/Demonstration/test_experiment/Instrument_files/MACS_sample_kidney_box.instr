@@ -316,7 +316,7 @@ INITIALIZE
   
   
 /**** Virtual output/input ****/
-sprintf(virtual_file_name,"E%.2fmeV_HF%d_VF%d_Sample%.3f_b1_%.2f_b2_%.2f_mono_mis%.2f_CPF%.2f_MPL%.2f_MPD%.2f_dL0_%.3f_dL1_%.3f_APE_h%.3f_APE_v%.3f.dat", EM, HF, VF,sample_diameter_d, beta_1, beta_2, misalign_mono_deg, CPF, MPL, MPD, L0_delta, L1_delta, APE_h, APE_v);
+sprintf(virtual_file_name,"E%.2fmeV_HF%d_VF%d_Sample%.3f_b1_%.2f_b2_%.2f.dat", EM, HF, VF,sample_diameter_d, beta_1, beta_2);
 
 /* Analyzator calculations */
 
@@ -509,25 +509,32 @@ ROTATED (60.0,0.0,0.0) RELATIVE crystal_assembly
 
 // Sample at beam spot (larger than needed, then masked
 // V1
-COMPONENT sample = Union_box(xwidth=0.00215,yheight=0.00165,zdepth=0.00065, priority=100, material_string="TiO2")
+
+COMPONENT sample_cube = Union_box(xwidth=2.0*0.0043,yheight=2.0*0.0033,zdepth=2.0*0.0013, priority=100, material_string="TiO2",number_of_activations=number_of_activations_sample)
+AT (0,0,0) RELATIVE crystal_assembly
+ROTATED (0,0,0) RELATIVE crystal_assembly
+
+//mask to support rotation
+COMPONENT sample_cube_mask1 = Union_box(xwidth=0.0043,yheight=0.0033,zdepth=0.0013, priority=0, material_string="Mask",number_of_activations=number_of_activations_sample,
+    mask_string="sample_cube",mask_setting="All",visualize=0)
 AT (0,0,0) RELATIVE crystal_assembly
 ROTATED (0,0,0) RELATIVE crystal_axis
 
 COMPONENT sample_plate = Union_cylinder(
-    radius=0.006, yheight=0.002, priority=2,
+    radius=0.006, yheight=0.002, priority=40,
     material_string="Al")
 AT (0,plate_distance,0) RELATIVE target
-ROTATED (0,0,0) RELATIVE crystal_axis
-
-COMPONENT sample_plate_rod = Union_cylinder(radius=0.00125, yheight=0.0633, priority=3, material_string="Al")
-AT (0,2.0*plate_distance+0.0315,0) RELATIVE target
 ROTATED (0,0,0) RELATIVE target
 
-COMPONENT sample_base = Union_cylinder(radius=0.0065, yheight=0.013, priority=4, material_string="Al")
+COMPONENT sample_plate_rod = Union_cylinder(radius=0.00125, yheight=0.0633, priority=41, material_string="Al")
+AT (0,plate_distance+0.001+0.031,0) RELATIVE target
+ROTATED (0,0,0) RELATIVE target
+
+COMPONENT sample_base = Union_cylinder(radius=0.0065, yheight=0.013, priority=42, material_string="Al")
 AT (0,0.0628,0) RELATIVE target
 ROTATED (0,0,0) RELATIVE target
 
-COMPONENT sample_base_gap = Union_cylinder(radius=0.004, yheight=0.009, priority=5, material_string="Vacuum")
+COMPONENT sample_base_gap = Union_cylinder(radius=0.004, yheight=0.009, priority=43, material_string="Vacuum")
 AT (0,0.0668,0) RELATIVE target
 ROTATED (0,0,0) RELATIVE target
 

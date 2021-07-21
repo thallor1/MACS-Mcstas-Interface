@@ -169,14 +169,17 @@ class virtualMACS(object):
 		cwd=os.getcwd()
 		self.instr_template_dir=os.path.dirname(__file__)+'/UNION MACS Models/UNION MACS Base/'
 		self.kidney_instr_dir = os.path.dirname(__file__)+'/UNION MACS Models/UNION MACS Kidney Files/'
-		if self.sample.sample_shape not in ['box','cylinder','powder','spot']:
-			print('WARNING: Only allowed sample shapes are [box, cylinder, powder, spot]')
+		if self.sample.sample_shape not in ['box','cylinder','powder','spot_box','spot_cylinder']:
+			print('WARNING: Only allowed sample shapes are [box, cylinder, powder, spot_box]')
 			print('Instr file not written. ')
 		if self.sample.sample_shape=='cylinder':
 			instr_main_file = 'MACS_sample_kidney_cylinder.instr'
 			self.instr_main_file=instr_main_file
 		if self.sample.sample_shape=='box':
 			instr_main_file = 'MACS_sample_kidney_box.instr'
+			self.instr_main_file=instr_main_file
+		if self.sample.sample_shape=='spot_box':
+			instr_main_file='MACS_sample_kidney_box_spot.instr'
 			self.instr_main_file=instr_main_file
 			#first make a copy of the template files and put them into a new experiment directory
 		while os.path.exists(cwd+'/'+self.exptName+'/Instrument_files'):
@@ -226,7 +229,7 @@ class virtualMACS(object):
 			  '   crystal_axis_yrot = '+str(self.sample.crystal_axis_yrot)+' ; \n'+\
 			  '   crystal_axis_zrot = '+str(self.sample.crystal_axis_zrot)+'; \n'+\
 			  '/*'
-		elif self.sample.sample_shape=='box':
+		elif self.sample.sample_shape=='box' or self.sample.sample_shape=='spot_box':
 			blockstr='*/ \n'+\
 			  '   samp_ax = '+str(sampmat[0,0])+'; //can be calculated from lattice params and u v matrix \n'+\
 			  '   samp_ay = '+str(sampmat[0,1])+'; \n'+\
@@ -312,14 +315,49 @@ class virtualMACS(object):
 			filedata = filedata.replace('REPLACEsamp_abs_xc',str(self.sample.rho_abs))
 			filedata = filedata.replace('REPLACEsamp_inc_xc',str(self.sample.sigma_inc))
 			filedata = filedata.replace('REPLACEsamp_cell_vol',str(self.sample.cell_vol))
-			filedata = filedata.replace('REPLACEsamp_xwidth',str(self.sample.sample_widx/2.0))
-			filedata = filedata.replace('REPLACEsamp_ywidth',str(self.sample.sample_widy/2.0))
-			filedata = filedata.replace('REPLACEsamp_zwidth',str(self.sample.sample_widz/2.0))
+			filedata = filedata.replace('REPLACEsamp_xwidth',str(self.sample.sample_widx))
+			filedata = filedata.replace('REPLACEsamp_ywidth',str(self.sample.sample_widy))
+			filedata = filedata.replace('REPLACEsamp_zwidth',str(self.sample.sample_widz))
 			filedata = filedata.replace('REPLACEcrystal_axis_xrot',str(self.sample.crystal_axis_xrot))
 			filedata = filedata.replace('REPLACEcrystal_axis_yrot',str(self.sample.crystal_axis_yrot))
 			filedata = filedata.replace('REPLACEcrystal_axis_zrot',str(self.sample.crystal_axis_zrot))
+		elif self.sample.sample_shape=='spot_box':
+			#Prepare the sample object 
+			self.prepare_spot_sample(omega=self.sample.spot_omega,spot_HKL=self.sample.spot_HKL,spot_Qmag=self.sample.spot_Qmag,\
+				spot_twoTheta=self.sample.spot_twoTheta,spot_eideal=self.sample.spot_eideal)
+			if self.sample.spot_omega==False:
+				print('WARNING: To use spot_sample delta function energy transfer must be specified.')
+				print('Check the sample.spot_omega and try again.')
+				return 1
+			elif (self.sample.spot_HKL==False and self.sample.spot_Qmag==False and self.sample.spot_twoTheta==False):
+				print('WARNING: To use spot_sample delta function scattering angle must be specified.')
+				print('Assign sample.spot_HKL, sample.spot_Qmag, or sample.spot_twoTheta and try agian.')
+			filedata = filedata.replace('REPLACEsamp_delta_d',str(self.sample.delta_d))
+			filedata = filedata.replace('REPLACEsamp_mosaic',str(self.sample.sample_mosaic))
+			filedata = filedata.replace('REPLACEsamp_ax',str(sampmat[0,0]))
+			filedata = filedata.replace('REPLACEsamp_ay',str(sampmat[0,1]))
+			filedata = filedata.replace('REPLACEsamp_az',str(sampmat[0,2]))
+			filedata = filedata.replace('REPLACEsamp_bx',str(sampmat[1,0]))
+			filedata = filedata.replace('REPLACEsamp_by',str(sampmat[1,1]))
+			filedata = filedata.replace('REPLACEsamp_bz',str(sampmat[1,2]))
+			filedata = filedata.replace('REPLACEsamp_cx',str(sampmat[2,0]))
+			filedata = filedata.replace('REPLACEsamp_cy',str(sampmat[2,1]))
+			filedata = filedata.replace('REPLACEsamp_cz',str(sampmat[2,2]))
+			filedata = filedata.replace('REPLACEsamp_abs_xc',str(self.sample.rho_abs))
+			filedata = filedata.replace('REPLACEsamp_inc_xc',str(self.sample.sigma_inc))
+			filedata = filedata.replace('REPLACEsamp_cell_vol',str(self.sample.cell_vol))
+			filedata = filedata.replace('REPLACEsamp_xwidth',str(self.sample.sample_widx))
+			filedata = filedata.replace('REPLACEsamp_ywidth',str(self.sample.sample_widy))
+			filedata = filedata.replace('REPLACEsamp_zwidth',str(self.sample.sample_widz))
+			filedata = filedata.replace('REPLACEcrystal_axis_xrot',str(self.sample.crystal_axis_xrot))
+			filedata = filedata.replace('REPLACEcrystal_axis_yrot',str(self.sample.crystal_axis_yrot))
+			filedata = filedata.replace('REPLACEcrystal_axis_zrot',str(self.sample.crystal_axis_zrot))
+			filedata = filedata.replace('REPLACEspot_omega',str(self.sample.spot_omega))
+			filedata = filedata.replace('REPLACEspot_twoTheta',str(self.sample.spot_twoTheta))
+			filedata = filedata.replace('REPLACEspot_eideal',str(self.sample.spot_eideal))
+
 		else:
-			print('WARNING: Invalid sample shape. Allowed values are currently cylinder, box.')	
+			print('WARNING: Invalid sample shape. Allowed values are currently cylinder, box, spot_box, and spot_cylinder.')	
 		with open(self.instr_main_file,'w') as f:
 			f.write(filedata)
 		
@@ -329,6 +367,33 @@ class virtualMACS(object):
 		print(' ')
 		self.modified_kidney_flag=1
 		return 1 
+
+	def prepare_spot_sample(self,omega=False,spot_HKL=False,spot_Qmag=False,spot_twoTheta=False,spot_eideal=False):
+		#Prepares the sample for a spot calculation for spot_sample. Assigns necessary 
+		# parameters to the sample before running the simulation. 
+		# May either specify an HKL point, Q_magnitude, or scattering angle.
+		# In the end only omega and twoTheta (degrees) matter. 
+
+		# If scattering angle is specified through HKL, it is an array of form [H,K,L]
+		if omega==False:
+			print("Warning: To use spot_sample configuration the delta function energy transfer must be specified.")
+			print('Assign sample.spot_omega=xx meV and try again.')
+			return 1
+		if spot_twoTheta!=False:
+			self.sample.spot_twoTheta=spot_twoTheta
+			return 1
+		if spot_HKL!=False:
+			twoTheta = self.sample.twotheta_hkl_omega(spot_HKL[0],spot_HKL[1],spot_HKL[2],Ei=self.monochromator.Ei,omega=omega)
+			self.sample.spot_twoTheta=twoTheta 
+			self.sample.spot_omega=omega 
+			return 1
+		if spot_Qmag!=False:
+			twoTheta = self.sample.QE_to_twothata(Qmag=spot_Qmag,Ei=spot_eideal,omega=omega)
+			self.sample.spot_twoTheta=twoTheta
+			self.sample.spot_omega=omega 
+			return 1
+			
+
 
 	def compileInstr(self):
 		'''

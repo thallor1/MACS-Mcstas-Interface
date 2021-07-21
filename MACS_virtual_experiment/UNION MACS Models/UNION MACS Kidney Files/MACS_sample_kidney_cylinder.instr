@@ -480,8 +480,8 @@ ROTATED (REPLACEcrystal_axis_xrot,REPLACEcrystal_axis_yrot,REPLACEcrystal_axis_z
 
 COMPONENT cylinder_sample_union = Union_cylinder(radius=REPLACEsample_radius, yheight=REPLACEsamp_length, priority=50, material_string="replacethiswithusersamplename",number_of_activations=number_of_activations_sample)
 AT (0,0,0) RELATIVE crystal_assembly
-ROTATED (0,0,0) RELATIVE crystal_axis
-/*
+ROTATED (0,0,0) RELATIVE crystal_assembly
+
 // V2
 COMPONENT replacethiswithusersamplename_mask_1 = Union_cylinder(
     radius=sample_radius+0.001, yheight=samp_length+0.001, priority=0,
@@ -489,21 +489,6 @@ COMPONENT replacethiswithusersamplename_mask_1 = Union_cylinder(
     mask_setting="All",number_of_activations=number_of_activations_sample)
 AT (0,0,0) RELATIVE crystal_axis
 ROTATED (0,0,0) RELATIVE crystal_axis
-
-// V3
-COMPONENT replacethiswithusersamplename_mask_2 = Union_box(
-    xwidth=0.02,yheight=0.03,zdepth=0.02, priority=0,
-    material_string="Mask",mask_string="cylinder_sample_union",visualize=0,
-    mask_setting="All",number_of_activations=number_of_activations_sample)
-AT (0,0,0.0055) RELATIVE crystal_assembly
-ROTATED (0,0,0) RELATIVE crystal_assembly
-*/
-// V4
-//COMPONENT replacethiswithusersamplename_poly_rod = Union_cylinder(
-//    radius=0.5*0.00619, yheight=0.04, priority=45,
-//    material_string="replacethiswithusersamplename_poly",number_of_activations=number_of_activations_sample)
-//AT (0,0.5*0.0174+0.0199,0) RELATIVE crystal_axis
-//ROTATED (0,0,0) RELATIVE crystal_axis
 
 // V5
 

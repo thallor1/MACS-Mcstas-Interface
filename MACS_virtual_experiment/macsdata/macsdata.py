@@ -343,7 +343,7 @@ class Data(object):
 			return 1
 		if not os.path.exists(current_dir+'/'+self.exptName+'/'+'Simulated ng0 files'):
 			os.mkdir(current_dir+'/'+self.exptName+'/'+'Simulated ng0 files')
-		output_dir = current_dir+'/'+self.exptName+'/'+'Simulated ng0 files'
+		output_dir = current_dir+'/'+self.exptName+'/'+'Simulated ng0 files/'
 		#Simplest case, one large ng0 file. First open a file and write the header
 		#If an old file exists, delete it.
 		if filename.split('.')[-1]!='ng0':

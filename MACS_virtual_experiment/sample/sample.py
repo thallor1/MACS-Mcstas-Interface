@@ -187,6 +187,12 @@ class Sample(object):
 		self.crystal_axis_xrot=crystal_axis_xrot
 		self.crystal_axis_yrot=crystal_axis_yrot
 		self.crystal_axis_zrot=crystal_axis_zrot
+		self.spot_omega=False #Used for resolution function calculation in spot_sample component
+		self.spot_twoTheta=False #Used for resolution function calculation in spot_sample component. 
+		self.spot_HKL=False
+		self.spot_Qmag=False
+		self.spot_eideal=False 
+
 
 		#Below info is for alignment and will probably need to be updated by user
 		self.orient_u = orient_u
@@ -450,6 +456,37 @@ class Sample(object):
 			return twotheta*180.0/np.pi 
 		else:
 			return twotheta
+
+	def twotheta_hkl_omega(self,H,K,L,Ei,omega,mode='deg'):
+		#Given HKL indices, incident energy, and energy transfer, returns the scattering angle
+		# Q^2 = ki^2 + kf^2 -2 ki kf cos(twoTheta)
+		lam_i = 9.045/np.sqrt(Ei)
+		lam_f = 9.045/np.sqrt(Ei-omega)
+		ki = 2.0*np.pi/lam_i 
+		kf = 2.0*np.pi/lam_f
+		Qmag = self.Qmag_HKL(H,K,L)
+		A = Qmag**2 - ki**2 - kf**2 
+		B = 2.0*ki*kf 
+		twoTheta = np.arccos(A/B)
+		if mode=='deg':
+			return twoTheta*180.0/np.pi
+		else:
+			return twoTheta		
+
+	def QE_to_twotheta(self,Qmag,Ei,omega,mode='deg'):
+		#Given HKL indices, incident energy, and energy transfer, returns the scattering angle
+		# Q^2 = ki^2 + kf^2 -2 ki kf cos(twoTheta)
+		lam_i = 9.045/np.sqrt(Ei)
+		lam_f = 9.045/np.sqrt(Ei-omega)
+		ki = 2.0*np.pi/lam_i 
+		kf = 2.0*np.pi/lam_f
+		A = Qmag**2 - ki**2 - kf**2 
+		B = 2.0*ki*kf 
+		twoTheta = np.arccos(A/B)
+		if mode=='deg':
+			return twoTheta*180.0/np.pi
+		else:
+			return twoTheta	
 
 	def theory_powder_bragg_I(self,obsQ,intQ,intE,H,K,L,sample_mass):
 		#Returns a scale factor to scale the data into  'barn/(eV mol sr fu)'
