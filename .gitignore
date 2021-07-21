@@ -1,2 +1,4 @@
 # Specify filepatterns you want git to ignore.
 *.dat
+param_files_kidney/
+Kidney_simulations/
