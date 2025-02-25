@@ -1,0 +1,841 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Emulate a MACS ng0 file" href="emulate_MACS_data.html" /><link rel="prev" title="Installation" href="../installation.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.05.06 -->
+        <title>pyMACS Introduction - pyMACS documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" /
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">pyMACS documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/MACS1.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">pyMACS documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">pyMACS Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="emulate_MACS_data.html">Emulate a MACS ng0 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resolution_example.html">Resolution function demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tio2_111.html">Simulation of measured TiO2 111 peak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sqw4_simulation.html">Simulation of the ferromagnet CrI<span class="math notranslate nohighlight">\(_3\)</span>, SQW4-component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cri3_plotting_example.html">pyMACS plotting capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MACS_User_notebook.html">Resolution notebook for MACS users - Use colab button for interactivity.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Resolution_ellipsoid_simulation.html">Arbitrary Resolution Ellipsoid Simulation Example</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../virtualMACS.html">virtualMACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample.html">Sample</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kidney.html">kidney</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monochromator.html">monochromator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../macsdata.html">macsdata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting.html">scripting</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/notebooks/introduction_notebook.ipynb.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <div class="admonition note">
+  This page was generated from
+  <a class="reference external" href="https://github.com/thallor1/pyMACS/tree/main/docs/source/notebooks/introduction_notebook.ipynb">docs/source/notebooks/introduction_notebook.ipynb</a>.
+  [<a href="introduction_notebook.ipynb" class="reference download internal" download>Download notebook</a>.]
+  <br>
+  Interactive online versions:
+  <span style="white-space: nowrap;"><a href="https://mybinder.org/v2/gh/thallor1/pyMACS/0.1.0?filepath=docs/source/notebooks/introduction_notebook.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a>.</span>
+  <span style="white-space: nowrap;">
+    <a target="_blank" href="https://colab.research.google.com/github/thallor1/pyMACS/blob/main/docs/source/notebooks/introduction_notebook.ipynb">
+        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+    </a>
+  </span>
+
+</div><section id="pyMACS-Introduction">
+<h1>pyMACS Introduction<a class="headerlink" href="#pyMACS-Introduction" title="Link to this heading">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyMACS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyMACS.virtualMACS</span><span class="w"> </span><span class="kn">import</span> <span class="n">VirtualMACS</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mcstasscript</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ms</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<p>Welcome to a basic introduction of the pyMACS package. Here we will go through some of the basic functionality, use cases, and limitations of the package itself. Before doing anything, please make sure that 1) You have a valid McStas 3.* installation. 2) You have installed mcstasscript and properly set up its configurator to point to your McStas installation.</p>
+<p>After importing pyMACS, we import the VirtualMACS class in the call &gt;from pyMACS.virtualMACS import VirtualMACS</p>
+<p>The VirtualMACS class is essentially a virtual MACS experiment. It contains all of the information about the sample, the instrument, and the output data. This class is broken down into the following components:</p>
+<ol class="arabic simple">
+<li><p>VirtualMACS.monochromator, contains all instrumental settings and python methods relevant to the monochromator</p></li>
+<li><p>VirtualMACS.kidney, contains all instrumental settings and python methods relevant to the 20-channel detector geometry (kidney)</p></li>
+<li><p>VirtualMACS.sample, contains the sample information such as the alignment, lattice parameters, and various assosicated methods.</p></li>
+<li><p>VirtualMACS.data, class that handles all input and output data of both real ng0 files and simulated data.</p></li>
+</ol>
+<p>Let’s begin by creating a simple experiment.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">macs</span> <span class="o">=</span> <span class="n">VirtualMACS</span><span class="p">(</span><span class="n">exptName</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="n">cifName</span><span class="o">=</span><span class="s2">&quot;TiO2.cif&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#########################
+Old simulations found in /mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/Kidney_simulations/
+
+Successfully combined old simulations into /mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/Kidney_simulations/test_total.csv
+
+Data matrix instantiated and ready to use.
+#########################
+</pre></div></div>
+</div>
+<p>Now, define sample parameters relevant to the simulation. Here, we will align the sample in the (H0L) plane.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">formula_weight</span><span class="o">=</span><span class="mf">79.87</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample_widx</span><span class="o">=</span><span class="mf">5e-3</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample_widz</span><span class="o">=</span><span class="mf">5e-3</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample_widy</span><span class="o">=</span><span class="mf">5e-3</span>
+
+<span class="c1">#Alignment, orient_u is defined as perpendicular to the beam, orient_v is parallel</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">orient_u</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">orient_v</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>McStas requires lattice vector inputs in the lab frame. This function automatically performs that projection given that the orient u and v vectors have been specified.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">project_sample_realspace</span><span class="p">()</span>
+<span class="c1">#Print the projection</span>
+<span class="n">labproj_h0l</span> <span class="o">=</span> <span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">labframe_mat</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Projection of TiO2 lattice parameters in (H0L) plane;</span><span class="se">\n</span><span class="s2">Format is [[ax,ay,az],[bx,by,bz],[cx,cy,cz]]&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">labproj_h0l</span><span class="p">)</span>
+<span class="c1">#Now try reorienting the sample into the (HHL) frame:</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">orient_u</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">orient_v</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">project_sample_realspace</span><span class="p">()</span>
+<span class="c1">#Print the projection</span>
+<span class="n">labproj</span> <span class="o">=</span> <span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">labframe_mat</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Projection of TiO2 lattice parameters in (HHL) plane;</span><span class="se">\n</span><span class="s2">Format is [[ax,ay,az],[bx,by,bz],[cx,cy,cz]]&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">labproj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Projection of TiO2 lattice parameters in (H0L) plane;
+Format is [[ax,ay,az],[bx,by,bz],[cx,cy,cz]]
+[[4.6001 0.     0.    ]
+ [0.     4.6001 0.    ]
+ [0.     0.     2.9288]]
+Projection of TiO2 lattice parameters in (HHL) plane;
+Format is [[ax,ay,az],[bx,by,bz],[cx,cy,cz]]
+[[ 3.25276 -3.25276  0.     ]
+ [ 3.25276  3.25276  0.     ]
+ [ 0.       0.       2.9288 ]]
+</pre></div></div>
+</div>
+<p>There are a few more options available in the sample class, but for now this is the minimum to start a simulation.</p>
+<p><strong>A key part of the achitecture of pyMACS is the definition the scattering in the sample environment</strong></p>
+<p>There are two mandatory objects that must be defined and to run the simulation. They are : 1) A scattering definition, which dictates the various possible scattering processes in the sample. Common choices are incoherent scattering and single crystal Bragg scattering. More advanced options are covered later in the documentation. 2) The scattering geometry, including the sample holder. Using the UNION notation, one must specify the size and shape of the sample and its holder. Scattering processes
+for Aluminum have already been defined, support for more sample holder materials may be added in a future update.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The scattering definition comes first</span>
+<span class="n">scattering_def</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">McStas_instr</span><span class="p">(</span><span class="s2">&quot;scattering_definition&quot;</span><span class="p">,</span><span class="n">checks</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># At launch of pyMACS, only &quot;Incoherent_process&quot;, &quot;Single_crystal_process&quot;,</span>
+<span class="c1">#    and &quot;SQW4_process&quot; are supported.</span>
+<span class="n">inc_scatter</span> <span class="o">=</span> <span class="n">scattering_def</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="s2">&quot;inc_scatter&quot;</span><span class="p">,</span><span class="s2">&quot;Incoherent_process&quot;</span><span class="p">)</span>
+<span class="n">inc_scatter</span><span class="o">.</span><span class="n">sigma</span><span class="o">=</span><span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sigma_inc</span>
+<span class="n">inc_scatter</span><span class="o">.</span><span class="n">unit_cell_volume</span> <span class="o">=</span> <span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">cell_vol</span>
+<span class="n">inc_scatter</span><span class="o">.</span><span class="n">packing_factor</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">inc_scatter</span><span class="o">.</span><span class="n">set_AT</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1">#Single crystal process.</span>
+<span class="n">crystal_scatter</span> <span class="o">=</span> <span class="n">scattering_def</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="s2">&quot;crystal_scatter&quot;</span><span class="p">,</span><span class="s2">&quot;Single_crystal_process&quot;</span><span class="p">)</span>
+<span class="c1">#Information about the mosaic is provided below</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">delta_d_d</span><span class="o">=</span><span class="mf">0.005</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">mosaic</span> <span class="o">=</span> <span class="mf">30.0</span>
+<span class="c1">#Projections of lattice vectors onto lab frame is handled by the previous helper process.</span>
+<span class="n">labproj</span> <span class="o">=</span> <span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">labframe_mat</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">labproj</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">ay</span> <span class="o">=</span> <span class="n">labproj</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">az</span> <span class="o">=</span> <span class="n">labproj</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">bx</span> <span class="o">=</span> <span class="n">labproj</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">by</span> <span class="o">=</span> <span class="n">labproj</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">bz</span> <span class="o">=</span> <span class="n">labproj</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">cx</span> <span class="o">=</span> <span class="n">labproj</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">cy</span> <span class="o">=</span> <span class="n">labproj</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">cz</span> <span class="o">=</span> <span class="n">labproj</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1"># This requires a call to the function &quot;sample.cif2lau()&quot;, which translates the input cif</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">cif2lau</span><span class="p">()</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">reflections</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span><span class="o">+</span><span class="s2">&quot;TiO2.lau&quot;</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">barns</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">packing_factor</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">powder</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">PG</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">interact_fraction</span><span class="o">=</span><span class="mf">0.8</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">set_AT</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">crystal_scatter</span><span class="o">.</span><span class="n">set_ROTATED</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1">#Now, we combine these scattering processes to form a single TiO2 material</span>
+<span class="n">scattering</span> <span class="o">=</span> <span class="n">scattering_def</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="s2">&quot;TiO2&quot;</span><span class="p">,</span><span class="s2">&quot;Union_make_material&quot;</span><span class="p">)</span>
+<span class="n">scattering</span><span class="o">.</span><span class="n">process_string</span><span class="o">=</span><span class="s1">&#39;&quot;crystal_scatter,inc_scatter&quot;&#39;</span>
+<span class="n">scattering</span><span class="o">.</span><span class="n">my_absorption</span><span class="o">=</span><span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">rho_abs</span>
+<span class="n">scattering</span><span class="o">.</span><span class="n">set_AT</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1">#IMPORTANT: This pseudo-instrument will be saved as the scattering definition of the sample.</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">scattering_def</span> <span class="o">=</span> <span class="n">scattering_def</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Conversion of CIF to crystallographical LAU file successful.
+</pre></div></div>
+</div>
+<p>Define a geometry object representing the sample and its holder.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Make a second object for the geometry. This particular case replicates the validation experiment for this package.</span>
+<span class="n">geo_def</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">McStas_instr</span><span class="p">(</span><span class="s2">&quot;geometry_definition&quot;</span><span class="p">,</span><span class="n">checks</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">sample_cube</span><span class="o">=</span><span class="n">geo_def</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="s2">&quot;sample_cube&quot;</span><span class="p">,</span><span class="s2">&quot;Union_box&quot;</span><span class="p">)</span>
+<span class="n">sample_cube</span><span class="o">.</span><span class="n">xwidth</span><span class="o">=</span><span class="mf">1.0</span><span class="o">*</span><span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample_widx</span>
+<span class="n">sample_cube</span><span class="o">.</span><span class="n">yheight</span><span class="o">=</span><span class="mf">1.0</span><span class="o">*</span><span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample_widy</span>
+<span class="n">sample_cube</span><span class="o">.</span><span class="n">zdepth</span><span class="o">=</span><span class="mf">1.0</span><span class="o">*</span><span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample_widz</span>
+<span class="n">sample_cube</span><span class="o">.</span><span class="n">priority</span><span class="o">=</span><span class="mi">100</span>
+<span class="n">sample_cube</span><span class="o">.</span><span class="n">material_string</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">TiO2</span><span class="se">\&quot;</span><span class="s1">&#39;</span>
+<span class="n">sample_cube</span><span class="o">.</span><span class="n">number_of_activations</span><span class="o">=</span><span class="s2">&quot;number_of_activations_sample&quot;</span> <span class="c1">#Do not change.</span>
+<span class="n">sample_cube</span><span class="o">.</span><span class="n">set_AT</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">RELATIVE</span><span class="o">=</span><span class="s1">&#39;crystal_assembly&#39;</span><span class="p">)</span>
+<span class="n">sample_cube</span><span class="o">.</span><span class="n">set_ROTATED</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">RELATIVE</span><span class="o">=</span><span class="s1">&#39;crystal_assembly&#39;</span><span class="p">)</span>
+
+
+<span class="n">sample_plate</span> <span class="o">=</span> <span class="n">geo_def</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="s2">&quot;sample_plate&quot;</span><span class="p">,</span><span class="s2">&quot;Union_cylinder&quot;</span><span class="p">)</span>
+<span class="n">sample_plate</span><span class="o">.</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.006</span>
+<span class="n">sample_plate</span><span class="o">.</span><span class="n">yheight</span><span class="o">=</span><span class="mf">0.002</span>
+<span class="n">sample_plate</span><span class="o">.</span><span class="n">priority</span><span class="o">=</span><span class="mi">40</span>
+<span class="n">sample_plate</span><span class="o">.</span><span class="n">material_string</span><span class="o">=</span><span class="s1">&#39;&quot;Al&quot;&#39;</span>
+<span class="n">plate_distance</span> <span class="o">=</span> <span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample_widy</span><span class="o">+</span><span class="mf">0.002</span>
+<span class="n">sample_plate</span><span class="o">.</span><span class="n">set_AT</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">plate_distance</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">RELATIVE</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+<span class="n">sample_plate</span><span class="o">.</span><span class="n">set_ROTATED</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">RELATIVE</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+
+<span class="n">sample_plate_rod</span> <span class="o">=</span> <span class="n">geo_def</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="s2">&quot;sample_plate_rod&quot;</span><span class="p">,</span><span class="s2">&quot;Union_cylinder&quot;</span><span class="p">)</span>
+<span class="n">sample_plate_rod</span><span class="o">.</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.00125</span>
+<span class="n">sample_plate_rod</span><span class="o">.</span><span class="n">yheight</span><span class="o">=</span><span class="mf">0.0633</span>
+<span class="n">sample_plate_rod</span><span class="o">.</span><span class="n">priority</span><span class="o">=</span><span class="mi">41</span>
+<span class="n">sample_plate_rod</span><span class="o">.</span><span class="n">material_string</span><span class="o">=</span><span class="s1">&#39;&quot;Al&quot;&#39;</span>
+<span class="n">sample_plate_rod</span><span class="o">.</span><span class="n">set_AT</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">plate_distance</span><span class="o">+</span><span class="mf">0.001</span><span class="o">+</span><span class="mf">0.031</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">RELATIVE</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+<span class="n">sample_plate_rod</span><span class="o">.</span><span class="n">set_ROTATED</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">RELATIVE</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+
+<span class="n">sample_base</span> <span class="o">=</span> <span class="n">geo_def</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="s2">&quot;sample_base&quot;</span><span class="p">,</span><span class="s2">&quot;Union_cylinder&quot;</span><span class="p">)</span>
+<span class="n">sample_base</span><span class="o">.</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.0065</span>
+<span class="n">sample_base</span><span class="o">.</span><span class="n">yheight</span><span class="o">=</span><span class="mf">0.013</span>
+<span class="n">sample_base</span><span class="o">.</span><span class="n">priority</span><span class="o">=</span><span class="mi">42</span>
+<span class="n">sample_base</span><span class="o">.</span><span class="n">material_string</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">Al</span><span class="se">\&quot;</span><span class="s1">&#39;</span>
+<span class="n">sample_base</span><span class="o">.</span><span class="n">set_AT</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.0628</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">RELATIVE</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+<span class="n">sample_base</span><span class="o">.</span><span class="n">set_ROTATED</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">RELATIVE</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+
+<span class="n">sample_base_gap</span> <span class="o">=</span> <span class="n">geo_def</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="s2">&quot;sample_base_gap&quot;</span><span class="p">,</span><span class="s2">&quot;Union_cylinder&quot;</span><span class="p">)</span>
+<span class="n">sample_base_gap</span><span class="o">.</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.004</span>
+<span class="n">sample_base_gap</span><span class="o">.</span><span class="n">yheight</span><span class="o">=</span><span class="mf">0.009</span>
+<span class="n">sample_base_gap</span><span class="o">.</span><span class="n">priority</span><span class="o">=</span><span class="mi">43</span>
+<span class="n">sample_base_gap</span><span class="o">.</span><span class="n">material_string</span><span class="o">=</span><span class="s1">&#39;&quot;Vacuum&quot;&#39;</span>
+<span class="n">sample_base_gap</span><span class="o">.</span><span class="n">set_AT</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.0668</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">RELATIVE</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+<span class="n">sample_base_gap</span><span class="o">.</span><span class="n">set_ROTATED</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">RELATIVE</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+
+<span class="c1"># IMPORTANT: Assign the geometry definition to the sample.</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">geometry_def</span> <span class="o">=</span> <span class="n">geo_def</span>
+<br/></pre></div>
+</div>
+</div>
+<p>While this may seem intimidating at first, this is the most difficult part of setting up the instrument. Many different sample geometries can be built up using the mcstasscript language, the backend of the MACS simulation is constructed in this way.</p>
+<p><strong>Define parameters relevant to the McStas simulation:</strong></p>
+<p>There are a number of attributes of the virtualMACS object that dictate the Monte-Carlo simulation parameters.</p>
+<p>By default, McStas will create a new directory in the project folder containing all of the necessary files for the experiment. If the “useOld” option is flagged as true, the object will attempt to load in all previous simulated results. It will also preserve the directory, instead of deleting it and overwriting it with new files.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># It is usually a good idea to leave this flag as True, however if you want to</span>
+<span class="c1"># start from scratch it can be a good idea to make it False.</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">useOld</span><span class="o">=</span><span class="kc">False</span>
+
+<span class="k">if</span> <span class="n">macs</span><span class="o">.</span><span class="n">useOld</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+    <span class="n">macs</span><span class="o">.</span><span class="n">useOld</span><span class="o">=</span><span class="kc">True</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">macs</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">data_matrix</span><span class="o">=</span><span class="kc">False</span>
+    <span class="c1"># prepare_expt_directory populates the a folder in the base directory with all necessary files</span>
+    <span class="c1"># to perform the simulation.</span>
+    <span class="n">macs</span><span class="o">.</span><span class="n">prepare_expt_directory</span><span class="p">()</span>
+    <span class="c1">#The below command write the McStas .instr file for the full MACS simulation based on the</span>
+    <span class="c1"># user-provided definitions above</span>
+    <span class="n">macs</span><span class="o">.</span><span class="n">edit_instr_file</span><span class="p">()</span>
+    <span class="n">macs</span><span class="o">.</span><span class="n">compileMonochromator</span><span class="p">()</span>
+    <span class="n">macs</span><span class="o">.</span><span class="n">compileInstr</span><span class="p">()</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+WARNING: Old instrument directory found. Older files deleted, instrument will need to be recompiled.
+/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks
+#################
+
+Starting compilation of monochromator.
+
+Compilation of monochromator geometry successful.
+
+#################
+
+#################
+
+Starting compilation of sample kidney geometry.
+
+Compilation of sample kidney geometry successful.
+
+#################
+
+</pre></div></div>
+</div>
+<p>All of the relevant McStas files have now been prepared, it may be instructive to browse them in &gt;exptName/Instrument files/</p>
+<p>We assign a few more parameters relevant to the simulation. Here we are doing the simplest possible scan, which is defining a single instrumental configuration and running.</p>
+<p><strong>Assign Instrument Parameters</strong></p>
+<p>In this example, we use Ei=5meV = Ef</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">macs</span><span class="o">.</span><span class="n">monochromator</span><span class="o">.</span><span class="n">Ei</span><span class="o">=</span><span class="mf">9.078</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">kidney</span><span class="o">.</span><span class="n">Ef</span><span class="o">=</span><span class="mf">9.078</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">A3_angle</span> <span class="o">=</span> <span class="mf">67.37</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">kidney</span><span class="o">.</span><span class="n">kidney_angle</span><span class="o">=</span><span class="mf">3.0</span>
+
+<span class="c1">#The parameters n_sample and n_mono are the number of Monte-Carlo counts for the</span>
+<span class="c1"># sample end and the monochromator end of the simulation respectively. It is usually</span>
+<span class="c1"># appropriate for n_mono=10*n_sample.</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">n_sample</span><span class="o">=</span><span class="mf">1e5</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">n_mono</span> <span class="o">=</span> <span class="mf">1e6</span>
+
+
+<span class="n">macs</span><span class="o">.</span><span class="n">runMonoScan</span><span class="p">()</span>
+<span class="n">csvname</span> <span class="o">=</span> <span class="n">macs</span><span class="o">.</span><span class="n">runKidneyScan</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scan complete. Saved to </span><span class="si">{</span><span class="n">csvname</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Scan complete. Saved to test_Ei_9.078_Ef_9.078_A3_67.3700_kidney_3.0000_dataMatrix.csv.
+</pre></div></div>
+</div>
+<p>Simulation results live in the VirtualMACS.data.data_matrix, which is a pandas dataframe containing all simulation results. Results are also written to .csv files and .ng0 files which can be found in the simulation directory.</p>
+<p>There are a number of useful methods here for exporting and importing data. We start by loading the result of the previous scan, and appending it to the data matrix. We can also write it to an ng0 file to examine in DAVE, if you are more comfortable in that environment.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#The files are saved as csv&#39;s for now, add to the data_matrix manually.</span>
+<span class="c1"># The replace is due to a bad naming convention that I plan to fix in a future update.</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load_data_matrix_from_csv</span><span class="p">(</span><span class="n">csvname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">macs</span><span class="o">.</span><span class="n">exptName</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+<span class="c1"># Save this to a DAVE-readable ng0 file.</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">write_data_to_ng0</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;test.ng0&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1
+</pre></div></div>
+</div>
+<p>We can use the built in tools to visualize the data below:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The data must be converted from detector numbers and angles to the sample frame.</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">project_data_QE</span><span class="p">()</span>
+<span class="n">U</span><span class="p">,</span><span class="n">V</span><span class="p">,</span><span class="n">I</span> <span class="o">=</span> <span class="n">macs</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">bin_constE_slice</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span><span class="mi">120</span><span class="p">,[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">V</span><span class="p">,</span><span class="n">I</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;[HH0]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;[00L]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;TiO2 A3 Scan, Elastic&quot;</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;TiO2 A3 Scan, Elastic&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_introduction_notebook_21_1.png" src="../_images/notebooks_introduction_notebook_21_1.png" />
+</div>
+</div>
+<p>As expected, a single scan won’t do much good to visualize sample scattering. Below is an example showing a scripted A3/A4 scan.</p>
+<p>This method automatically appends the calculations to the data_matrix.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#The parameter below is the A4 / twoTheta resolution. The Kidney angles are generated</span>
+<span class="c1"># identically to MACS from this.</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">kidney</span><span class="o">.</span><span class="n">Ef</span><span class="o">=</span><span class="mf">5.0</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">monochromator</span><span class="o">.</span><span class="n">Ei</span><span class="o">=</span><span class="mf">5.0</span>
+
+<span class="n">macs</span><span class="o">.</span><span class="n">kidney_angle_resolution</span><span class="o">=</span><span class="mf">0.7</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">preserve_kidney_scan_files</span><span class="o">=</span><span class="kc">False</span>
+<span class="c1"># pyMACS natively supports multithreading through joblib threading.</span>
+<span class="n">macs</span><span class="o">.</span><span class="n">script_scan</span><span class="p">(</span><span class="n">A3_list</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mf">0.2</span><span class="p">),</span><span class="n">Ei_list</span><span class="o">=</span><span class="p">[</span><span class="mf">5.0</span><span class="p">],</span>\
+                    <span class="n">num_threads</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="n">scan_title</span><span class="o">=</span><span class="s1">&#39;_tio2_a3scan_cube&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "63ca8e6f7ca54b939b3cdd4fe8b907de", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "ee9792815c3c445b8c7679906a710fb0", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m67.79999999999997_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m67.19999999999996_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m51.399999999999736_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m22.19999999999932_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m68.19999999999997_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m58.79999999999984_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m38.19999999999955_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m56.59999999999981_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m41.399999999999594_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m22.999999999999332_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m57.599999999999824_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m52.59999999999975_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m47.59999999999968_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m37.999999999999545_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m36.39999999999952_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m25.399999999999366_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m23.59999999999934_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m57.19999999999982_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m38.99999999999956_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m69.19999999999999_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m67.59999999999997_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m47.199999999999676_Ef_5.0.txt&#39;
+Warning when trying to remove paramter file:
+[Errno 2] No such file or directory: &#39;/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks/test/param_files_kidney/test_kidney_params_Ei_5.0_kid_angle_3.0_A3_angle_m39.19999999999956_Ef_5.0.txt&#39;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">macs</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">project_data_QE</span><span class="p">()</span>
+<span class="n">U</span><span class="p">,</span><span class="n">V</span><span class="p">,</span><span class="n">I</span> <span class="o">=</span> <span class="n">macs</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">bin_constE_slice</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span><span class="mi">90</span><span class="p">,[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">V</span><span class="p">,</span><span class="n">I</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;[HH0]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;[00L]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;TiO2 A3 Scan, Elastic&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;TiO2 A3 Scan, Elastic&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_introduction_notebook_24_1.png" src="../_images/notebooks_introduction_notebook_24_1.png" />
+</div>
+</div>
+<p>With this, the most simple iteration of a pyMACS project is complete.</p>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="emulate_MACS_data.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Emulate a MACS ng0 file</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../installation.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Installation</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Thomas Halloran
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>

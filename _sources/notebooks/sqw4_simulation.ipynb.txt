@@ -1,0 +1,570 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "fced8cb9-c7a1-4ba5-9bde-55b157f18a4b",
+   "metadata": {},
+   "source": [
+    "# Simulation of the ferromagnet CrI$_3$, SQW4-component\n",
+    "\n",
+    "The files necessary to perform the simulation are generated using the SpinW software, and the exchange parameters and model are taken from literature. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "7692b808-248a-4bf5-a29f-005ebd3862a3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#More complex example of pyMACS usage\n",
+    "\n",
+    "import numpy as np\n",
+    "import pyMACS\n",
+    "from pyMACS.virtualMACS import VirtualMACS\n",
+    "import mcstasscript as ms\n",
+    "\n",
+    "macs = VirtualMACS('cri3_experiment',cifName='CrI3.cif',useOld=False)\n",
+    "macs.sample.formula_weight=432.7\n",
+    "numthreads=8"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "34b5a6bc-4224-4438-abab-3fa6d0626b27",
+   "metadata": {},
+   "source": [
+    "\n",
+    "This is a more complex example of the usage of the pyMACS interface, which \n",
+    "simulates a real experiment from start to finish. The system of choice is \n",
+    "CrI3, which has a well defined spin hamiltonian. The system was simulated using\n",
+    "SpinW, with the spin interactions defined by the following work \n",
+    "\n",
+    "https://journals.aps.org/prx/abstract/10.1103/PhysRevX.8.041028\n",
+    "\n",
+    "The sample is assumed to be larger than is realistic, to give appreciable intensity\n",
+    "from spin waves. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "e13f888d-00ce-4bdb-94e3-6dc3bd66a933",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      " \n",
+      "Conversion of CIF to crystallographical LAU file successful. \n",
+      "Real Space projection of lattice vectors [ax,ay,az; bx,by,bz;cx,cy,cz]\n",
+      "[[  5.947    0.      -3.4335]\n",
+      " [ -0.       0.       6.867 ]\n",
+      " [  0.     -19.807    0.    ]]\n",
+      "\n",
+      "Structure factors:\n",
+      "|F(110)|^2 = 3.3963 barn\n",
+      "|F(100)|^2 = 0.0 barn\n",
+      "|F(1-10)|^2 = 0.0 barn\n",
+      "|F(001)|^2 = 0.0 barn\n",
+      "sigma_abs =129.00000000000003 barn/unit cell\n",
+      "sigma_inc =2.76 barn/unit cell\n"
+     ]
+    }
+   ],
+   "source": [
+    "#Going to make our sample artifically big to increase count rate. \n",
+    "macs.sample.sample_widx=0.01\n",
+    "macs.sample.sample_widy=0.01\n",
+    "macs.sample.sample_widz=0.01\n",
+    "\n",
+    "macs.monochromator.Ei = 5.0\n",
+    "macs.monochromator.Ef = 5.0\n",
+    "macs.sample.cif2lau()\n",
+    "\n",
+    "#Sample is aligned in the HK0 plane\n",
+    "macs.sample.orient_u=[1,0,0]\n",
+    "macs.sample.orient_v=[-1,2,0]\n",
+    "macs.sample.project_sample_realspace()\n",
+    "print('Real Space projection of lattice vectors [ax,ay,az; bx,by,bz;cx,cy,cz]')\n",
+    "print(macs.sample.labframe_mat)\n",
+    "print('')\n",
+    "print('Structure factors:')\n",
+    "print('|F(110)|^2 = '+str(round(macs.sample.fetch_F_HKL(1,1,0)[3],4))+' barn')\n",
+    "print('|F(100)|^2 = '+str(round(macs.sample.fetch_F_HKL(1,0,0)[3],4))+' barn')\n",
+    "print('|F(1-10)|^2 = '+str(round(macs.sample.fetch_F_HKL(1,-1,0)[3],4))+' barn')\n",
+    "print('|F(001)|^2 = '+str(round(macs.sample.fetch_F_HKL(0,0,1)[3],4))+' barn')\n",
+    "\n",
+    "print('sigma_abs ='+str(macs.sample.rho_abs)+' barn/unit cell')\n",
+    "print('sigma_inc ='+str(macs.sample.sigma_inc)+' barn/unit cell')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d201d08a-7d7a-4435-8a34-5bb12ad358b7",
+   "metadata": {},
+   "source": [
+    "## Single Crystal SQW4 process. \n",
+    "\n",
+    "pyMACS includes an experimental UNION process, the Sqw4_process. It will work out of the box, and behaves very similarly to the single_crystal_process. It is essentially a port of Single_crystal_inelastic.comp by Duc Le. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "265aef34-52d6-424f-ac30-a204596252ef",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import os\n",
+    "import shutil\n",
+    "#To use the sqw4 process, it requires the copying of the component into the current directory. \n",
+    "if not os.path.exists(\"Sqw4_process.comp\"):\n",
+    "    shutil.copy(macs.instr_template_dir+\"Sqw4_process.comp\",\"Sqw4_process.comp\")\n",
+    "\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "c93183ff-136b-46fd-b26d-835b8a3dea0a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#MACS can't actually access the full spinwave spectrum of this system, we will only \n",
+    "# look at energy transfers below 12 meV. Ei_max = 17 meV\n",
+    "\n",
+    "# In this example, the sample has three different scattering processes. \n",
+    "# Bragg diffraction, incoherent scattering, and spin waves. \n",
+    "\n",
+    "scattering_def = ms.McStas_instr(\"scattering_definition\",checks=False)\n",
+    "inc_scatter = scattering_def.add_component(\"inc_scatter\",\"Incoherent_process\")\n",
+    "inc_scatter.sigma=macs.sample.sigma_inc\n",
+    "inc_scatter.unit_cell_volume = macs.sample.cell_vol\n",
+    "inc_scatter.packing_factor = 1\n",
+    "inc_scatter.interact_fraction=1\n",
+    "inc_scatter.set_AT([0,0,0])\n",
+    "\n",
+    "#Single crystal process. \n",
+    "crystal_scatter = scattering_def.add_component(\"crystal_scatter\",\"Single_crystal_process\")\n",
+    "crystal_scatter.delta_d_d=0.005\n",
+    "crystal_scatter.mosaic = 30.0\n",
+    "#Projections of lattice vectors onto lab frame is handled by the previous helper process.\n",
+    "labproj = macs.sample.labframe_mat\n",
+    "crystal_scatter.ax = 6.867*np.sqrt(3)/2.0\n",
+    "crystal_scatter.ay = 0\n",
+    "crystal_scatter.az = -6.867*0.5\n",
+    "crystal_scatter.bx =0\n",
+    "crystal_scatter.by = 0\n",
+    "crystal_scatter.bz = 6.867\n",
+    "crystal_scatter.cx = 0\n",
+    "crystal_scatter.cy = 19.807\n",
+    "crystal_scatter.cz = 0\n",
+    "crystal_scatter.reflections='\\\"'+\"CrI3.lau\"+'\\\"'\n",
+    "crystal_scatter.barns=1\n",
+    "crystal_scatter.packing_factor=1\n",
+    "crystal_scatter.powder=0\n",
+    "crystal_scatter.PG=0\n",
+    "crystal_scatter.interact_fraction=1\n",
+    "crystal_scatter.set_AT([0,0,0])\n",
+    "crystal_scatter.set_ROTATED([0,0,0])\n",
+    "\n",
+    "#Sample sqw4 processs\n",
+    "sample_sqw4 = scattering_def.add_component(\"sample_sqw4\", \"Sqw4_process\")\n",
+    "sample_sqw4.sqw = '\"spinw_CrI3_full.sqw4\"'\n",
+    "#This file must also be added to the instrument file dependencies to be copied correctly.\n",
+    "macs.file_dependencies=\"spinw_CrI3_full.sqw4\"\n",
+    "#We are choosing to have the (100) vector along the x-axis\n",
+    "sample_sqw4.ax=6.867*np.sqrt(3)/2.0\n",
+    "sample_sqw4.ay=0\n",
+    "sample_sqw4.az=-6.867*0.5\n",
+    "sample_sqw4.bx=0\n",
+    "sample_sqw4.by=0\n",
+    "sample_sqw4.bz=6.867\n",
+    "sample_sqw4.cx=0\n",
+    "sample_sqw4.cy=19.807\n",
+    "sample_sqw4.cz=0\n",
+    "sample_sqw4.aa=90\n",
+    "sample_sqw4.bb=90\n",
+    "sample_sqw4.cc=120\n",
+    "sample_sqw4.barns=1\n",
+    "sample_sqw4.max_stored_ki=1e5\n",
+    "sample_sqw4.max_bad=1e5\n",
+    "sample_sqw4.stored_dTheta = 0.1\n",
+    "sample_sqw4.stored_dkmag = 1e-4\n",
+    "sample_sqw4.recip_cell=0\n",
+    "sample_sqw4.interact_fraction=1\n",
+    "#sample_sqw4.init=\"'init'\"\n",
+    "#sample_sqw4.append_EXTEND(\"// Remove direct beam\\nif(!SCATTERED) ABSORB;\")\n",
+    "sample_sqw4.set_AT([0,0,0])\n",
+    "sample_sqw4.set_ROTATED([0,0,0])\n",
+    "\n",
+    "scattering = scattering_def.add_component(\"CrI3\",\"Union_make_material\")\n",
+    "scattering.process_string='\"crystal_scatter,inc_scatter,sample_sqw4\"'\n",
+    "scattering.my_absorption=macs.sample.rho_abs\n",
+    "scattering.set_AT([0,0,0])\n",
+    "\n",
+    "#Now, this pseudo-instrument will be saved as the scattering definition of the sample. \n",
+    "macs.sample.scattering_def = scattering_def\n",
+    "\n",
+    "#Make a second object for the geometry. This particular case replicates the validation experiment for this package.\n",
+    "geo_def = ms.McStas_instr(\"geometry_definition\",checks=False)\n",
+    "\n",
+    "sample_cube=geo_def.add_component(\"sample_cube\",\"Union_box\")\n",
+    "sample_cube.xwidth=1.0*macs.sample.sample_widx\n",
+    "sample_cube.yheight=1.0*macs.sample.sample_widy\n",
+    "sample_cube.zdepth=1.0*macs.sample.sample_widz\n",
+    "sample_cube.priority=100\n",
+    "sample_cube.material_string='\\\"CrI3\\\"'\n",
+    "sample_cube.number_of_activations=\"number_of_activations_sample\" #Do not change. \n",
+    "sample_cube.set_AT([0,0,0],RELATIVE='crystal_assembly')\n",
+    "sample_cube.set_ROTATED([0,0,0],RELATIVE='crystal_assembly')\n",
+    "\n",
+    "sample_plate = geo_def.add_component(\"sample_plate\",\"Union_cylinder\")\n",
+    "sample_plate.radius=0.006\n",
+    "sample_plate.yheight=0.002\n",
+    "sample_plate.priority=40\n",
+    "sample_plate.material_string='\"Al\"'\n",
+    "plate_distance = macs.sample.sample_widy+0.002\n",
+    "sample_plate.set_AT([0,plate_distance,0],RELATIVE=\"target\")\n",
+    "sample_plate.set_ROTATED([0,0,0],RELATIVE=\"target\")\n",
+    "\n",
+    "sample_plate_rod = geo_def.add_component(\"sample_plate_rod\",\"Union_cylinder\")\n",
+    "sample_plate_rod.radius=0.00125\n",
+    "sample_plate_rod.yheight=0.0633\n",
+    "sample_plate_rod.priority=41\n",
+    "sample_plate_rod.material_string='\"Al\"'\n",
+    "sample_plate_rod.set_AT([0,plate_distance+0.001+0.031,0], RELATIVE=\"target\")\n",
+    "sample_plate_rod.set_ROTATED([0,0,0],RELATIVE=\"target\")\n",
+    "\n",
+    "sample_base = geo_def.add_component(\"sample_base\",\"Union_cylinder\")\n",
+    "sample_base.radius=0.0065\n",
+    "sample_base.yheight=0.013\n",
+    "sample_base.priority=42\n",
+    "sample_base.material_string='\\\"Al\\\"'\n",
+    "sample_base.set_AT([0,0.0628,0],RELATIVE=\"target\")\n",
+    "sample_base.set_ROTATED([0,0,0],RELATIVE=\"target\")\n",
+    "\n",
+    "sample_base_gap = geo_def.add_component(\"sample_base_gap\",\"Union_cylinder\")\n",
+    "sample_base_gap.radius=0.004\n",
+    "sample_base_gap.yheight=0.009\n",
+    "sample_base_gap.priority=43\n",
+    "sample_base_gap.material_string='\"Vacuum\"'\n",
+    "sample_base_gap.set_AT([0,0.0668,0], RELATIVE=\"target\")\n",
+    "sample_base_gap.set_ROTATED([0,0,0],RELATIVE=\"target\")\n",
+    "\n",
+    "macs.sample.geometry_def = geo_def"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "bf108c73-5164-4570-ad1d-1f3da49519f9",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "WARNING: Old instrument directory found. Older files deleted, instrument will need to be recompiled.\n",
+      "/mnt/c/Users/tjh/OneDrive - NIST/GitHub/pyMACS/docs/source/notebooks\n",
+      "#################\n",
+      "\n",
+      "Starting compilation of monochromator.\n",
+      "\n",
+      "Compilation of monochromator geometry successful.\n",
+      "\n",
+      "#################\n",
+      "\n",
+      "#################\n",
+      "\n",
+      "Starting compilation of sample kidney geometry.\n",
+      "\n",
+      "Compilation of sample kidney geometry successful.\n",
+      "\n",
+      "#################\n",
+      "\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#Some housekeeping steps needed for simulation\n",
+    "macs.prepare_expt_directory()\n",
+    "macs.edit_instr_file()\n",
+    "macs.compileMonochromator()\n",
+    "macs.compileInstr()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d86ce34d-f43f-421b-b58c-5b51ca29b63d",
+   "metadata": {},
+   "source": [
+    "Perform the actual scan. This will take a long time."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "35422fad-93e3-4a4a-9f80-d3f2ff6dd440",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "7bd15feb1d5e4a3fb235fe4bcc393a3c",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Total Scans:   0%|          | 0/12 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "c6c41f01fa1043eb952d2df3a0787c68",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=5.0 meV:   0%|          | 0/12 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "22cd3fa146c14d3494fa6278c3c03bb3",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=6.0 meV:   0%|          | 0/12 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "9f8384f7fcbd4169905a6519a6180f72",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=7.0 meV:   0%|          | 0/11 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "3ec95f0ebffc4c848e2da4f1a5219178",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=8.0 meV:   0%|          | 0/11 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "70527c38780844a7b4c0fbce444e5b83",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=9.0 meV:   0%|          | 0/12 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "0e88b79c7141460098dcd13fc09ce7d1",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=10.0 meV:   0%|          | 0/11 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "fb7b9e2a13dd4f22ba704608f1493371",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=11.0 meV:   0%|          | 0/11 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "86b8d0f3dd3b4298b1eef1812aa96809",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=12.0 meV:   0%|          | 0/11 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "fd6defd2222e42229b7be469f67836da",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=13.0 meV:   0%|          | 0/11 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "702f3f03260b4185abb34e383129027a",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=14.0 meV:   0%|          | 0/11 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "4e20fe5666f748a3a4028ede39964dab",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=15.0 meV:   0%|          | 0/10 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "6f0e0cc891e247da9d9d2b7b716ae40f",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Ei=16.0 meV:   0%|          | 0/10 [00:00<?, ?it/s]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#A note about file sizes here - a single 1e8 monochromator scan will make a \n",
+    "# 350 Mb output file, so just be aware of this.\n",
+    "macs.n_mono=1e7\n",
+    "macs.n_sample=5e5\n",
+    "\n",
+    "\n",
+    "#The object is now set up and ready to perform simulations. \n",
+    "\n",
+    "macs.kidney.Ef=5.0\n",
+    "macs.kidney_angle_resolution=0.8\n",
+    "Ei_list = np.arange(5.0,17.0,1)\n",
+    "\n",
+    "\n",
+    "macs.preserve_kidney_scan_files=False\n",
+    "macs.script_scan(A3_list=np.arange(-120,120,0.8),Ei_list=Ei_list,\\\n",
+    "                    num_threads=8,scan_title=\"cri3_a3scan_cube\")\n",
+    "\n",
+    "macs.data.load_data_matrix_from_csv(\"cri3_a3scan_cube_dataMatrix.csv\")\n",
+    "macs.data.write_data_to_ng0(f\"cri3_a3scan_cube.ng0\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7a630a81-18d8-49a9-b2bd-901fc2d2fa97",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.13"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

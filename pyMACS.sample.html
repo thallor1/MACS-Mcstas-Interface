@@ -1,0 +1,636 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.05.06 -->
+        <title>pyMACS.sample package - pyMACS documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" /
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">pyMACS documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/MACS1.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">pyMACS documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/introduction_notebook.html">pyMACS Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/emulate_MACS_data.html">Emulate a MACS ng0 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/resolution_example.html">Resolution function demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tio2_111.html">Simulation of measured TiO2 111 peak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/sqw4_simulation.html">Simulation of the ferromagnet CrI<span class="math notranslate nohighlight">\(_3\)</span>, SQW4-component</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/cri3_plotting_example.html">pyMACS plotting capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/MACS_User_notebook.html">Resolution notebook for MACS users - Use colab button for interactivity.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Resolution_ellipsoid_simulation.html">Arbitrary Resolution Ellipsoid Simulation Example</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="virtualMACS.html">virtualMACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample.html">Sample</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kidney.html">kidney</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monochromator.html">monochromator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="macsdata.html">macsdata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scripting.html">scripting</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/pyMACS.sample.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="pymacs-sample-package">
+<h1>pyMACS.sample package<a class="headerlink" href="#pymacs-sample-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pyMACS.sample.import_NIST_table">
+<span id="pymacs-sample-import-nist-table-module"></span><h2>pyMACS.sample.import_NIST_table module<a class="headerlink" href="#module-pyMACS.sample.import_NIST_table" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyMACS.sample.import_NIST_table.import_NIST_table">
+<span class="sig-prename descclassname"><span class="pre">pyMACS.sample.import_NIST_table.</span></span><span class="sig-name descname"><span class="pre">import_NIST_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nist_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nist_scattering_table.txt'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.import_NIST_table.import_NIST_table" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pyMACS.sample.parseCif">
+<span id="pymacs-sample-parsecif-module"></span><h2>pyMACS.sample.parseCif module<a class="headerlink" href="#module-pyMACS.sample.parseCif" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyMACS.sample.parseCif.parseCIF">
+<span class="sig-prename descclassname"><span class="pre">pyMACS.sample.parseCif.</span></span><span class="sig-name descname"><span class="pre">parseCIF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cif_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.parseCif.parseCIF" title="Link to this definition">¶</a></dt>
+<dd><p>A wrapper for the “ReadCif” untility from externaly python library.
+Given a cif, returns a dictionary with relevant attributes defined by the parameters in the line.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyMACS.sample.sample">
+<span id="pymacs-sample-sample-module"></span><h2>pyMACS.sample.sample module<a class="headerlink" href="#module-pyMACS.sample.sample" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyMACS.sample.sample.</span></span><span class="sig-name descname"><span class="pre">Sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.28</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.28</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.28</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_vol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_recip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default_sample'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cylinder'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_diameter_d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_tilt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.04</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_widx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.003</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_widy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.003</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_widz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.003</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symm_ops</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ciffile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laufile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">customlaufile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_arr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orient_u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">0,</span> <span class="pre">0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orient_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orient_w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho_abs_fu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho_abs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_inc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_mosaic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0005</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abs_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crystal_axis_xrot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">45.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crystal_axis_yrot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crystal_axis_zrot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-15.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scattering_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The purpose of this class is to perform operations related to intrinsic sample properties that will ultimately be simulated.
+It contains information regarding the sample itself as well as its orientaion, and methods to calculate crystallographic quantities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>float</em>) – Length of lattice vector in a-direction (Ang)</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Length of lattice vector in b-direction (Ang)</p></li>
+<li><p><strong>c</strong> (<em>float</em>) – length of lattice vector in c-direction (Ang)</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – Lattice alpha angle (deg)</p></li>
+<li><p><strong>beta</strong> (<em>float</em>) – Lattice beta angle (deg)</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Lattice gamma angle (deg)</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Name assosciated with the sample.</p></li>
+<li><p><strong>astar</strong> (<em>np.ndarray</em><em> of </em><em>len 3</em>) – Reciprocal lattice vector astarin Ang^-1. Calculated from direct lattice and should not be input.</p></li>
+<li><p><strong>bstar</strong> (<em>np.ndarray</em><em> of </em><em>len 3</em>) – Reciprocal lattice vector bstar in Ang^-1. Calculated from direct lattice and should not be input.</p></li>
+<li><p><strong>cstar</strong> (<em>np.ndarray</em><em> of </em><em>len 3</em>) – Reciprocal lattice vector cstar in Ang^-1. Calculated from direct lattice and should not be input</p></li>
+<li><p><strong>avec</strong> (<em>np.ndarray</em><em> of </em><em>len 3</em>) – Direct lattice vector a in Ang. Calculated from lattice specification and should not be input.</p></li>
+<li><p><strong>bvec</strong> (<em>np.ndarray</em><em> of </em><em>len 3</em>) – Direct lattice vector b in Ang. Calculated from lattice specification and should not be input.</p></li>
+<li><p><strong>cvec</strong> (<em>np.ndarray</em><em> of </em><em>len 3</em>) – Direct lattice vector c in Ang. Calculated from lattice specification and should not be input.</p></li>
+<li><p><strong>cell_vol</strong> (<em>float</em>) – Direct unit cell volume in Ang^3, again calculated.</p></li>
+<li><p><strong>cell_vol_recip</strong> (<em>float</em>) – Recriprocal unit cell volume in Ang^-1, calculated.</p></li>
+<li><p><strong>sample_shape</strong> (<em>str</em>) – Sample shape which also affects many parts of the simulation. The allowed values for this are the following (‘box’,’cylinder’,’powder’,’spot_box’,’spot_cylinder’,’box_inel_crystal’). 
+The first three simulate only elastic scattering with their respective geometries. The spot_box and spot_cylinder components are effectively powders with a delta function in Q and energy. 
+Finally, the box_inel_crystal shape allows for the insertion of a delta function at arbitrary points in Q-E space.</p></li>
+<li><p><strong>sample_diameter_d</strong> (<em>float</em>) – For cylinder shape, the diameter</p></li>
+<li><p><strong>sample_tilt</strong> (<em>float</em>) – Tilt of cylinder from the vertical axis, with 0 being vertical and the rotation axis being the x-axis
+or perpendicular to the beam. In degrees.</p></li>
+<li><p><strong>sample_length</strong> (<em>float</em>) – Length of cylinder geometry in m.</p></li>
+<li><p><strong>sample_widx</strong> (<em>float</em>) – Box geometry width in the x-direction in m.</p></li>
+<li><p><strong>sample_widy</strong> (<em>float</em>) – Box geometry width in the y-direction in m.</p></li>
+<li><p><strong>sample_widz</strong> (<em>float</em>) – Box geometry width in the z-direction in m.</p></li>
+<li><p><strong>ciffile</strong> (<em>str</em>) – Cif file assosciated with sample initialization.</p></li>
+<li><p><strong>b_arr</strong> (<em>dict</em>) – Scattering lengths of ions in sample. Usually extracted from built in NIST tables.</p></li>
+<li><p><strong>scattering_def</strong> (<em>mcstasscript_instrument</em>) – McStas script instrument containing the relevant UNION scattering process from which the trace will be
+extracted in the final instrument file. See example for how to build this.</p></li>
+<li><p><strong>geometry_def</strong> (<em>mcstasscript_instrument</em>) – Mcstasscript instrument containing the relevant UNION geometry objects that define the sample environment.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.HKL_to_QxQz">
+<span class="sig-name descname"><span class="pre">HKL_to_QxQz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.HKL_to_QxQz" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.QE_to_twotheta">
+<span class="sig-name descname"><span class="pre">QE_to_twotheta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Qmag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ei</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'deg'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.QE_to_twotheta" title="Link to this definition">¶</a></dt>
+<dd><p>Given HKL indices, incident energy, and energy transfer, returns the scattering angle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Qmag</strong> (<em>float</em>) – Input Q-magnitude in Ang^-1</p></li>
+<li><p><strong>Ei</strong> (<em>float</em>) – Incident neutron energy in meV</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) – Neutron energy transfer at sample in meV</p></li>
+<li><p><strong>mode</strong> – Determines if angle is returned in degrees or radians. Allowed values ‘deg’ or ‘rad’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return twoTheta<span class="colon">:</span></dt>
+<dd class="field-even"><p>Neutron scattering angle in (deg/rad)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.Qmag_HKL">
+<span class="sig-name descname"><span class="pre">Qmag_HKL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.Qmag_HKL" title="Link to this definition">¶</a></dt>
+<dd><p>For a specfied reflection in H, K, L, returns the magnitude of its momentum transfer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>H</strong> (<em>int / float</em>) – H-index of reflection. (rlu)</p></li>
+<li><p><strong>K</strong> (<em>int / float</em>) – K-index of reflection. (rlu)</p></li>
+<li><p><strong>L</strong> (<em>int / float</em>) – L-index of reflection. (rlu)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return qmag<span class="colon">:</span></dt>
+<dd class="field-even"><p>Structure factor squared (barn)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.cif2lau">
+<span class="sig-name descname"><span class="pre">cif2lau</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/home/runner/work/pyMACS/pyMACS/docs/source'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">launame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.cif2lau" title="Link to this definition">¶</a></dt>
+<dd><p>Converts input cif file to a Crystallographica format .lau file. Not intended for users.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.fetch_F_HKL">
+<span class="sig-name descname"><span class="pre">fetch_F_HKL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.fetch_F_HKL" title="Link to this definition">¶</a></dt>
+<dd><p>For a specified reflection in H, K, L, returns a squared structure factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>H</strong> (<em>int / float</em>) – H-index of reflection. (rlu)</p></li>
+<li><p><strong>K</strong> (<em>int / float</em>) – K-index of reflection. (rlu)</p></li>
+<li><p><strong>L</strong> (<em>int / float</em>) – L-index of reflection. (rlu)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return F<span class="colon">:</span></dt>
+<dd class="field-even"><p>Structure factor squared (barn)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.gen_flines">
+<span class="sig-name descname"><span class="pre">gen_flines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.gen_flines" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.gen_reflection_list">
+<span class="sig-name descname"><span class="pre">gen_reflection_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxQmag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.gen_reflection_list" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the structure factor for all reflections in the unit cell up to some maximum momentum transfer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_tau</strong> (<em>int</em>) – Maximum index (doesn’t matter which) allowed for reflection generation. Default is 20.</p></li>
+<li><p><strong>maxQmag</strong> (<em>float</em>) – Alternate way to specify maximum allowed reflection, maximum momentum transfer in Ang^-1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return tau<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of reflections in a matrix with columns [H K L S(Q)^2] where S(Q)^2 is the structure factor. 
+Structure factors account for multiplicity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.gen_unique_coords">
+<span class="sig-name descname"><span class="pre">gen_unique_coords</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.gen_unique_coords" title="Link to this definition">¶</a></dt>
+<dd><p>Generates the unique coordinates in the unit cell in fractional coordinates. Uses symmetry 
+operations as specified in cif file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return coords<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a dictionary of coordinates with columns [ion,label,x,y,z,occupancy,thermal_dispacement,Uiso,site_multiplicity]
+Here, x,y,z are the coordinates in fractional coordinates and ‘ion’ refers to the element.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.gen_unit_cell_positions">
+<span class="sig-name descname"><span class="pre">gen_unit_cell_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.gen_unit_cell_positions" title="Link to this definition">¶</a></dt>
+<dd><p>Generates the coordinates of ions in the unit cell in fractional coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return structure array<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a numpy array with coulmns of [ion, b_elastic, x, y, z, occupancy].
+Here ion refers to the ion name and b_elastic is the elastic scattering cross section.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.generate_symmetry_operations">
+<span class="sig-name descname"><span class="pre">generate_symmetry_operations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.generate_symmetry_operations" title="Link to this definition">¶</a></dt>
+<dd><p>Extracts the symmetry operations from the stored cif file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return symm_arr<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of symmetry operations in format of [x,y,z]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.project_sample_realspace">
+<span class="sig-name descname"><span class="pre">project_sample_realspace</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.project_sample_realspace" title="Link to this definition">¶</a></dt>
+<dd><p>Given an alignment in the objects orient_u and orient_v, with u being perpendicular to beam and v parallel to beam
+Used to write instr file, where convention is that x is perpendicular to beam, z is beam direction, y is vertical.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.twotheta_hkl">
+<span class="sig-name descname"><span class="pre">twotheta_hkl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'deg'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.twotheta_hkl" title="Link to this definition">¶</a></dt>
+<dd><p>For a specfied reflection in H, K, L, and incident energy, returns the scattering angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>H</strong> (<em>int / float</em>) – H-index of reflection. (rlu)</p></li>
+<li><p><strong>K</strong> (<em>int / float</em>) – K-index of reflection. (rlu)</p></li>
+<li><p><strong>L</strong> (<em>int / float</em>) – L-index of reflection. (rlu)</p></li>
+<li><p><strong>E</strong> (<em>float</em>) – Incident neutron energy. (meV)</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Specifies if angle should be returned in radians or degrees. Allowed values are ‘deg’ and ‘rad’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return twoTheta<span class="colon">:</span></dt>
+<dd class="field-even"><p>Scattering angle (degrees / rad)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyMACS.sample.sample.Sample.twotheta_hkl_omega">
+<span class="sig-name descname"><span class="pre">twotheta_hkl_omega</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ei</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'deg'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyMACS.sample.sample.Sample.twotheta_hkl_omega" title="Link to this definition">¶</a></dt>
+<dd><p>For a specfied reflection in H, K, L, and incident energy, and energy transfer returns the scattering angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>H</strong> (<em>int / float</em>) – H-index of reflection. (rlu)</p></li>
+<li><p><strong>K</strong> (<em>int / float</em>) – K-index of reflection. (rlu)</p></li>
+<li><p><strong>L</strong> (<em>int / float</em>) – L-index of reflection. (rlu)</p></li>
+<li><p><strong>Ei</strong> (<em>float</em>) – Incident neutron energy. (meV)</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) – Neutron energy transfer at sample. (meV)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return twoTheta<span class="colon">:</span></dt>
+<dd class="field-even"><p>Scattering angle (degrees / rad)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pyMACS.sample">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyMACS.sample" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, Thomas Halloran
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">pyMACS.sample package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyMACS.sample.import_NIST_table">pyMACS.sample.import_NIST_table module</a><ul>
+<li><a class="reference internal" href="#pyMACS.sample.import_NIST_table.import_NIST_table"><code class="docutils literal notranslate"><span class="pre">import_NIST_table()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyMACS.sample.parseCif">pyMACS.sample.parseCif module</a><ul>
+<li><a class="reference internal" href="#pyMACS.sample.parseCif.parseCIF"><code class="docutils literal notranslate"><span class="pre">parseCIF()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyMACS.sample.sample">pyMACS.sample.sample module</a><ul>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample"><code class="docutils literal notranslate"><span class="pre">Sample</span></code></a><ul>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.HKL_to_QxQz"><code class="docutils literal notranslate"><span class="pre">Sample.HKL_to_QxQz()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.QE_to_twotheta"><code class="docutils literal notranslate"><span class="pre">Sample.QE_to_twotheta()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.Qmag_HKL"><code class="docutils literal notranslate"><span class="pre">Sample.Qmag_HKL()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.cif2lau"><code class="docutils literal notranslate"><span class="pre">Sample.cif2lau()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.fetch_F_HKL"><code class="docutils literal notranslate"><span class="pre">Sample.fetch_F_HKL()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.gen_flines"><code class="docutils literal notranslate"><span class="pre">Sample.gen_flines()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.gen_reflection_list"><code class="docutils literal notranslate"><span class="pre">Sample.gen_reflection_list()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.gen_unique_coords"><code class="docutils literal notranslate"><span class="pre">Sample.gen_unique_coords()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.gen_unit_cell_positions"><code class="docutils literal notranslate"><span class="pre">Sample.gen_unit_cell_positions()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.generate_symmetry_operations"><code class="docutils literal notranslate"><span class="pre">Sample.generate_symmetry_operations()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.project_sample_realspace"><code class="docutils literal notranslate"><span class="pre">Sample.project_sample_realspace()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.twotheta_hkl"><code class="docutils literal notranslate"><span class="pre">Sample.twotheta_hkl()</span></code></a></li>
+<li><a class="reference internal" href="#pyMACS.sample.sample.Sample.twotheta_hkl_omega"><code class="docutils literal notranslate"><span class="pre">Sample.twotheta_hkl_omega()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyMACS.sample">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=4e2eecee"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>
